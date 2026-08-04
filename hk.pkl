@@ -1,0 +1,36 @@
+amends "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Config.pkl"
+
+import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtins.pkl"
+
+local linters = new Mapping<String, Step> {
+  ["editorconfig-checker"] = Builtins.editorconfig_checker
+  ["hk-test"] = Builtins.hk_test
+  // Formats mise's own config files, which tombi is configured to format identically
+  ["mise"] = Builtins.mise
+  // LazyVim rewrites lazyvim.json without a trailing newline
+  ["newlines"] = (Builtins.newlines) {
+    exclude = "nvim/lazyvim.json"
+  }
+  ["pkl"] = Builtins.pkl
+  ["pkl-format"] = Builtins.pkl_format
+  ["rumdl"] = Builtins.rumdl
+  ["shellcheck"] = Builtins.shellcheck
+  // Indent style comes from .editorconfig rather than a flag override
+  ["shfmt"] = Builtins.shfmt
+  ["tombi"] = Builtins.tombi
+  ["tombi-format"] = Builtins.tombi_format
+}
+
+hooks {
+  ["check"] {
+    steps = linters
+  }
+  ["fix"] {
+    steps = linters
+  }
+  ["pre-commit"] {
+    fix = true
+    stash = "git"
+    steps = linters
+  }
+}

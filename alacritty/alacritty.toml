@@ -4,6 +4,12 @@ blinking = "Always"
 [font]
 size = 12
 
+# Sends ESC+CR so terminal applications can tell Shift+Enter from Enter
+[[keyboard.bindings]]
+chars = "\u001B\r"
+key = "Return"
+mods = "Shift"
+
 [mouse]
 hide_when_typing = true
 
@@ -12,14 +18,14 @@ save_to_clipboard = true
 
 [window]
 dynamic_padding = true
-option_as_alt   = "Both"
+option_as_alt = "Both"
 
 # TODO: remove with the theme block
 opacity = 0.8
 
 [window.dimensions]
 columns = 160
-lines   = 40
+lines = 40
 
 [window.padding]
 x = 8
@@ -28,25 +34,25 @@ y = 8
 # TODO: remove once the theme layer exists
 # CachyOS defaults, kept as an interim look
 [colors.primary]
-background = "0x2E3440"
-foreground = "0xD8DEE9"
+background = "#2e3440"
+foreground = "#d8dee9"
 
 [colors.normal]
-black   = "0x3B4252"
-blue    = "0x81A1C1"
-cyan    = "0x88C0D0"
-green   = "0xA3BE8C"
-magenta = "0xB48EAD"
-red     = "0xBF616A"
-white   = "0xE5E9F0"
-yellow  = "0xEBCB8B"
+black = "#3b4252"
+blue = "#81a1c1"
+cyan = "#88c0d0"
+green = "#a3be8c"
+magenta = "#b48ead"
+red = "#bf616a"
+white = "#e5e9f0"
+yellow = "#ebcb8b"
 
 [colors.bright]
-black   = "0x4C566A"
-blue    = "0x81A1C1"
-cyan    = "0x8FBCBB"
-green   = "0xA3BE8C"
-magenta = "0xB48EAD"
-red     = "0xBF616A"
-white   = "0xECEFF4"
-yellow  = "0xEBCB8B"
+black = "#4c566a"
+blue = "#81a1c1"
+cyan = "#8fbcbb"
+green = "#a3be8c"
+magenta = "#b48ead"
+red = "#bf616a"
+white = "#eceff4"
+yellow = "#ebcb8b"

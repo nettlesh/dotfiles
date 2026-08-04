@@ -1,16 +1,27 @@
 min_version = "2026.7.16"
 
 [dotfiles]
-"~/.config/alacritty"  = "alacritty"
-"~/.config/fish"       = { source = "fish", mode = "symlink-each" }
+"~/.config/alacritty" = { source = "alacritty", mode = "symlink-each" }    # Tools that edit this config leave backup files beside it
+"~/.config/fish" = { source = "fish", mode = "symlink-each" }
 "~/.config/git/config" = { source = "git/config.tmpl", mode = "template" }
-"~/.config/herdr"      = { source = "herdr", mode = "symlink-each" }       # herdr writes logs and session state here
-"~/.config/mise"       = "mise"
-"~/.config/nvim"       = "nvim"
-"~/.config/ripgrep"    = "ripgrep"
+"~/.config/herdr" = { source = "herdr", mode = "symlink-each" }            # herdr writes logs and session state here
+"~/.config/hk" = "hk"
+"~/.config/mise" = "mise"
+"~/.config/nvim" = "nvim"
+"~/.config/ripgrep" = "ripgrep"
 
 [tools]
-taplo = "latest"
+editorconfig-checker = "latest"
+hk = "latest"
+pkl = "latest"
+rumdl = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+tombi = "latest"
+
+# Lets hk find its linters through mise when git runs the hooks
+[env]
+HK_MISE = 1
 
 # Runs as bootstrap step 10, after tools are installed and dotfiles are linked
 [tasks.bootstrap]
@@ -27,8 +38,10 @@ run = [
 ]
 
 [tasks.fmt]
-run = "taplo fmt"
+run = "hk fix --all"
 
-# TODO: add "hk check --all" once hk.pkl exists
 [tasks.lint]
-run = "taplo lint"
+run = "hk check --all"
+
+[tasks.pre-commit]
+run = "hk run pre-commit"

@@ -1,0 +1,6 @@
+root = true
+
+# shfmt reads indent style from here rather than from a flag
+[*.sh]
+indent_style = space
+indent_size = 4

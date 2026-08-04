@@ -1,0 +1,39 @@
+amends "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Config.pkl"
+
+import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtins.pkl"
+
+// Every step here runs inside the hk binary, so a repository inherits them without
+// installing anything. Steps a repository defines under the same name replace these.
+local hygiene = new Mapping<String, Step> {
+  ["byte-order-marker"] = Builtins.byte_order_marker
+  ["check-added-large-files"] = Builtins.check_added_large_files
+  ["check-case-conflict"] = Builtins.check_case_conflict
+  ["check-executables-have-shebangs"] = Builtins.check_executables_have_shebangs
+  ["check-merge-conflict"] = Builtins.check_merge_conflict
+  ["check-symlinks"] = Builtins.check_symlinks
+  ["detect-private-key"] = Builtins.detect_private_key
+  ["fix-smart-quotes"] = Builtins.fix_smart_quotes
+  ["mixed-line-ending"] = Builtins.mixed_line_ending
+  ["newlines"] = Builtins.newlines
+  ["trailing-whitespace"] = Builtins.trailing_whitespace
+}
+
+// Hook properties are not merged, so a repository defining a hook must set its own
+hooks {
+  ["check"] {
+    steps = hygiene
+  }
+  ["commit-msg"] {
+    steps {
+      ["check-conventional-commit"] = Builtins.check_conventional_commit
+    }
+  }
+  ["fix"] {
+    steps = hygiene
+  }
+  ["pre-commit"] {
+    fix = true
+    stash = "git"
+    steps = hygiene
+  }
+}
