@@ -1,0 +1,57 @@
+[core]
+    editor = nvim
+    pager  = delta
+
+[delta]
+    navigate = true
+
+[diff]
+    colorMoved = default
+
+[init]
+    defaultBranch = main
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictstyle = zdiff3
+
+[push]
+    autoSetupRemote = true
+{# Guarded so a machine with no identity set still bootstraps -#}
+{% if vars?.git_email %}
+[user]
+    email = {{ vars.git_email }}
+    name  = {{ vars.git_name }}
+{% endif %}
+[alias]
+    a    = add
+    aa   = add --all
+    au   = add --update
+    b    = branch
+    bd   = branch --delete
+    c    = commit -m
+    ca   = commit --amend
+    d    = diff
+    ds   = diff --staged
+    f    = fetch --prune
+    fa   = fetch --all --prune
+    l    = log --oneline
+    lg   = log --graph --oneline --all
+    m    = merge
+    p    = push
+    pl   = pull
+    r    = rebase
+    rc   = rebase --continue
+    ri   = rebase --interactive
+    root = rev-parse --show-toplevel
+    rs   = restore
+    rss  = restore --staged
+    s    = status -sb
+    st   = stash
+    stp  = stash pop
+    sw   = switch
+    swc  = switch --create
+    t    = tag
+    td   = tag --delete

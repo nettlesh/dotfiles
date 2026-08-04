@@ -1,0 +1,17 @@
+[bootstrap.packages]
+"brew-cask:alacritty"                   = "latest"
+"brew-cask:font-symbols-only-nerd-font" = "latest"
+"brew:bat"                              = "latest"
+"brew:eza"                              = "latest"
+"brew:fastfetch"                        = "latest"
+"brew:fd"                               = "latest"
+"brew:fish"                             = "latest"
+"brew:fisher"                           = "latest"
+"brew:git"                              = "latest"
+"brew:git-delta"                        = "latest"
+"brew:ripgrep"                          = "latest"
+"brew:television"                       = "latest"
+"brew:zoxide"                           = "latest"
+
+[bootstrap.user]
+login_shell = "/opt/homebrew/bin/fish"
