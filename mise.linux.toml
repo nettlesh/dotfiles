@@ -1,0 +1,22 @@
+[bootstrap.packages]
+"pacman:alacritty"                   = "latest"
+"pacman:bat"                         = "latest"
+"pacman:curl"                        = "latest"
+"pacman:expac"                       = "latest"
+"pacman:eza"                         = "latest"
+"pacman:fastfetch"                   = "latest"
+"pacman:fd"                          = "latest"
+"pacman:fish"                        = "latest"
+"pacman:fisher"                      = "latest"
+"pacman:gcc"                         = "latest"
+"pacman:git"                         = "latest"
+"pacman:git-delta"                   = "latest"
+"pacman:hwinfo"                      = "latest"
+"pacman:openssh"                     = "latest"
+"pacman:ripgrep"                     = "latest"
+"pacman:television"                  = "latest"
+"pacman:ttf-nerd-fonts-symbols-mono" = "latest"
+"pacman:zoxide"                      = "latest"
+
+[bootstrap.user]
+login_shell = "/usr/bin/fish"

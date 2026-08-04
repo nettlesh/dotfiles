@@ -1,0 +1,17 @@
+# Search hidden files / directories
+--hidden
+
+# Preview lines
+--max-columns=150
+--max-columns-preview
+
+# Case insensitive
+--smart-case
+
+# Include/exclude files and folders
+--glob
+!.git/*
+
+# Add 'web' type
+--type-add
+web:*.{html,css,js}*
