@@ -11,8 +11,14 @@ mise trust --all --quiet
 
 # Identity must exist before the dotfiles phase renders it
 if [ ! -f mise.local.toml ]; then
-    [ -n "${GIT_EMAIL:-}" ] || { printf 'Git email: '; read -r GIT_EMAIL; }
-    [ -n "${GIT_NAME:-}" ] || { printf 'Git name: '; read -r GIT_NAME; }
+    [ -n "${GIT_EMAIL:-}" ] || {
+        printf 'Git email: '
+        read -r GIT_EMAIL
+    }
+    [ -n "${GIT_NAME:-}" ] || {
+        printf 'Git name: '
+        read -r GIT_NAME
+    }
     : >mise.local.toml
     mise trust --quiet mise.local.toml
     mise config set -f mise.local.toml vars.git_email "$GIT_EMAIL"

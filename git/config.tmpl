@@ -8,6 +8,25 @@
 [diff]
     colorMoved = default
 
+# `hk install --global` would write into this file, which mise overwrites on apply
+# mise_bin avoids the absolute, version-pinned path hk would hardcode
+# TODO: hk installs four of the nine events it supports; revisit when that changes
+[hook "hk-commit-msg"]
+    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run commit-msg --from-hook
+    event   = commit-msg
+
+[hook "hk-pre-commit"]
+    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run pre-commit --from-hook --staged
+    event   = pre-commit
+
+[hook "hk-pre-push"]
+    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run pre-push --from-hook
+    event   = pre-push
+
+[hook "hk-prepare-commit-msg"]
+    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run prepare-commit-msg --from-hook
+    event   = prepare-commit-msg
+
 [init]
     defaultBranch = main
 

@@ -2,9 +2,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-My dotfiles for Linux and macOS, managed by [mise](https://github.com/jdx/mise) and compliant with the [XDG Base Directory spec](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html). One command takes a fresh machine to a working environment.
+My dotfiles for Linux and macOS,
+managed by [mise](https://github.com/jdx/mise) and compliant with the
+[XDG Base Directory spec](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
+One command takes a fresh machine to a working environment.
 
-An opinionated bootstrap, becoming less opinionated as more platforms are supported.
+An opinionated bootstrap.
 
 ## Features
 
@@ -35,7 +38,9 @@ and some other stuff worth mentioning:
 
 ### Prerequisites
 
-`git` and `curl`. `install.sh` acquires mise, and mise installs everything else (even system packages via `pacman` on Arch and `brew` on macOS).
+`git` and `curl`.
+`install.sh` acquires mise, and mise installs everything else
+(even system packages via `pacman` on Arch and `brew` on macOS).
 
 ### Steps
 
@@ -45,31 +50,46 @@ cd ~/.dotfiles
 ./install.sh
 ```
 
-On first run you will be prompted for a git email and name. To skip the prompt, set them beforehand:
+On first run you will be prompted for a git email and name.
+To skip the prompt, set them beforehand:
 
 ```sh
 GIT_EMAIL=you@example.com GIT_NAME="Your Name" ./install.sh
 ```
 
-Either way they are written to `mise.local.toml`, which is gitignored and never leaves your machine.
+Either way they are written to `mise.local.toml`,
+which is gitignored and never leaves your machine.
 
-Arguments are forwarded to `mise bootstrap`, so `./install.sh --dry-run` previews the run and `./install.sh --only dotfiles` restricts it.
+Arguments are forwarded to `mise bootstrap`,
+so `./install.sh --dry-run` previews the run
+and `./install.sh --only dotfiles` restricts it.
 
-mise refuses to replace config files it does not manage, so on a machine that already has an Alacritty or Fish config (like CachyOS) the run stops and names them. Confirm the list is what you expect, then re-run with `./install.sh --force-dotfiles`.
+mise refuses to replace config files it does not manage,
+so on a machine that already has an Alacritty or Fish config
+(like CachyOS) the run stops and names them.
+Confirm the list is what you expect,
+then re-run with `./install.sh --force-dotfiles`.
 
 ## What this does
 
 - Installs mise to `~/.local/bin/mise`
 - Marks this repo as trusted, so mise will read its config without prompting
-- Installs system packages, then the tools in [mise/config.toml](https://github.com/nettlesh/dotfiles/blob/main/mise/config.toml)
-- Symlinks configs into `~/.config`, replacing existing Alacritty and Fish configs when `--force-dotfiles` is passed
+- Installs system packages, then the tools in
+  [mise/config.toml](https://github.com/nettlesh/dotfiles/blob/main/mise/config.toml)
+- Symlinks configs into `~/.config`,
+  replacing existing Alacritty and Fish configs
+  when `--force-dotfiles` is passed
 - Sets Fish as the login shell
 
 ## Notes
 
 ### Changing git config by hand
 
-`~/.config/git/config` is rendered from a template rather than symlinked, because the git identity is injected from machine-local values. So `git config --global ...` writes to the rendered file and is overwritten on the next apply. To keep such a change, capture it back into the repo:
+`~/.config/git/config` is rendered from a template rather than symlinked,
+because the git identity is injected from machine-local values.
+So `git config --global ...` writes to the rendered file
+and is overwritten on the next apply.
+To keep such a change, capture it back into the repo:
 
 ```sh
 mise bootstrap dotfiles add ~/.config/git/config

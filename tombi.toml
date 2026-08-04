@@ -1,0 +1,17 @@
+# Matches mise's own formatter byte-for-byte, so both can format these files
+[format.rules]
+trailing-comment-alignment = true
+trailing-comment-space-width = 1
+
+# Schemas otherwise resolve from the SchemaStore catalog; this one is pinned so an
+# ordering rule can be attached to it
+[[schemas]]
+path = "https://mise.jdx.dev/schema/mise.json"
+include = ["mise.toml", "mise.*.toml", "**/mise/config.toml"]
+
+# Keeps these tables alphabetical
+[[schemas.overrides]]
+targets = ["tools", "dotfiles", "env", "bootstrap.packages"]
+
+[schemas.overrides.format.rules]
+table-keys-order = "ascending"
