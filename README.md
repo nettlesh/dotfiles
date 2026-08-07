@@ -18,9 +18,9 @@ An opinionated bootstrap.
 | Plugin Manager |    [Fisher](https://github.com/jorgebucaran/fisher)      |    [fish_plugins](https://github.com/nettlesh/dotfiles/blob/main/fish/fish_plugins)         |
 | Prompt         |       [Pure](https://github.com/pure-fish/pure)          |    [fish_plugins](https://github.com/nettlesh/dotfiles/blob/main/fish/fish_plugins)         |
 | Multiplexer    |            [Herdr](https://herdr.dev)                    |     [config.toml](https://github.com/nettlesh/dotfiles/blob/main/herdr/config.toml)         |
-| Editor         | [Neovim](https://github.com/neovim/neovim)/[LazyVim](https://github.com/LazyVim/LazyVim) | [nvim](https://github.com/nettlesh/dotfiles/tree/main/nvim) |
+| Editor         | [Neovim](https://github.com/neovim/neovim)/[MiniMax](https://github.com/nvim-mini/MiniMax) | [nvim](https://github.com/nettlesh/dotfiles/tree/main/nvim) |
 | Tool Manager   |          [mise](https://github.com/jdx/mise)             |        [mise.toml](https://github.com/nettlesh/dotfiles/blob/main/mise.toml)               |
-| Version Control|            [Git](https://git-scm.com)                    |           [config](https://github.com/nettlesh/dotfiles/blob/main/git/config)              |
+| Version Control|            [Git](https://git-scm.com)                    |      [config.tmpl](https://github.com/nettlesh/dotfiles/blob/main/git/config.tmpl)         |
 | Search         |   [ripgrep](https://github.com/BurntSushi/ripgrep)       |        [ripgreprc](https://github.com/nettlesh/dotfiles/blob/main/ripgrep/ripgreprc)       |
 | Fuzzy Finder   | [Television](https://github.com/alexpasmantier/television) |                                        ---                                        |
 

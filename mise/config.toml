@@ -14,5 +14,5 @@ shfmt = "latest"
 stylua = "latest"
 tealdeer = "latest"
 tombi = "latest"
-tree-sitter = "latest" # LazyVim requirement
+tree-sitter = "latest" # nvim-treesitter builds parsers with it
 uv = "latest"

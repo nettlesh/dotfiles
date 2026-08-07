@@ -17,6 +17,7 @@ pkl = "latest"
 rumdl = "latest"
 shellcheck = "latest"
 shfmt = "latest"
+stylua = "latest"
 tombi = "latest"
 
 # Lets hk find its linters through mise when git runs the hooks

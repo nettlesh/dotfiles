@@ -4,19 +4,29 @@ import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtin
 
 local linters = new Mapping<String, Step> {
   ["editorconfig-checker"] = Builtins.editorconfig_checker
+  // hk ships no fish builtin, and `fish -n` parses only its first argument and
+  // treats the rest as $argv, so the files are looped one at a time
+  ["fish"] = new Step {
+    glob = "**/*.fish"
+    check = "failed=0; for f in {{ files }}; do fish -n \"$f\" || failed=1; done; exit $failed"
+  }
+  ["fish-format"] = new Step {
+    glob = "**/*.fish"
+    check = "fish_indent -c {{ files }}"
+    fix = "fish_indent -w {{ files }}"
+  }
   ["hk-test"] = Builtins.hk_test
   // Formats mise's own config files, which tombi is configured to format identically
   ["mise"] = Builtins.mise
-  // LazyVim rewrites lazyvim.json without a trailing newline
-  ["newlines"] = (Builtins.newlines) {
-    exclude = "nvim/lazyvim.json"
-  }
+  ["newlines"] = Builtins.newlines
   ["pkl"] = Builtins.pkl
   ["pkl-format"] = Builtins.pkl_format
   ["rumdl"] = Builtins.rumdl
   ["shellcheck"] = Builtins.shellcheck
   // Indent style comes from .editorconfig rather than a flag override
   ["shfmt"] = Builtins.shfmt
+  // Reads nvim/.stylua.toml, which stylua finds by walking up from each file
+  ["stylua"] = Builtins.stylua
   ["tombi"] = Builtins.tombi
   ["tombi-format"] = Builtins.tombi_format
 }
