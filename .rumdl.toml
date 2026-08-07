@@ -1,7 +1,6 @@
 [global]
 # CLAUDE.md is a one-line pointer file, so MD041 cannot apply
-# TODO: nvim/ is a vendored upstream starter, excluded while it stays verbatim
-exclude = ["CLAUDE.md", "nvim"]
+exclude = ["CLAUDE.md"]
 
 # Markdown Style Guide wrap:inner-sentence, which rumdl implements as semantic line breaks
 # https://cirosantilli.com/markdown-style-guide/#line-wrapping
