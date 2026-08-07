@@ -7,7 +7,12 @@ trailing-comment-space-width = 1
 # ordering rule can be attached to it
 [[schemas]]
 path = "https://mise.jdx.dev/schema/mise.json"
-include = ["mise.toml", "mise.*.toml", "**/mise/config.toml"]
+include = [
+  "mise.toml",
+  "mise.*.toml",
+  "**/mise/config.toml",
+  "**/mise/conf.d/*.toml"
+]
 
 # Keeps these tables alphabetical
 [[schemas.overrides]]
