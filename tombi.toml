@@ -3,16 +3,9 @@
 trailing-comment-alignment = true
 trailing-comment-space-width = 1
 
-# Schemas otherwise resolve from the SchemaStore catalog; this one is pinned so an
-# ordering rule can be attached to it
 [[schemas]]
 path = "https://mise.jdx.dev/schema/mise.json"
-include = [
-  "mise.toml",
-  "mise.*.toml",
-  "**/mise/config.toml",
-  "**/mise/conf.d/*.toml"
-]
+include = ["mise.toml", "mise.*.toml", "**/mise/config.toml"]
 
 # Keeps these tables alphabetical
 [[schemas.overrides]]
