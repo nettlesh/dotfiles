@@ -1,7 +1,8 @@
 min_version = "2026.7.16"
 
 [dotfiles]
-"~/.config/alacritty" = { source = "alacritty", mode = "symlink-each" }    # Tools that edit this config leave backup files beside it
+"~/.config/bat/config" = "bat/config"
+"~/.config/ghostty/config.ghostty" = "ghostty/config.ghostty"
 "~/.config/fish" = { source = "fish", mode = "symlink-each" }
 "~/.config/git/config" = { source = "git/config.tmpl", mode = "template" }
 "~/.config/herdr" = { source = "herdr", mode = "symlink-each" }            # herdr writes logs and session state here
@@ -9,6 +10,8 @@ min_version = "2026.7.16"
 "~/.config/mise" = "mise"
 "~/.config/nvim" = "nvim"
 "~/.config/ripgrep" = "ripgrep"
+"~/.config/starship.toml" = "starship/starship.toml"
+"~/.config/tealdeer/config.toml" = "tealdeer/config.toml"
 
 [tools]
 editorconfig-checker = "latest"
@@ -30,7 +33,7 @@ HK_MISE = 1
 run = [
   "mkdir -p {{ xdg_config_home }}/fish/completions",
   "mise completion fish >{{ xdg_config_home }}/fish/completions/mise.fish",
-  "fish -c 'fisher update'",
+  "{{ '/opt/homebrew/bin/fish' if os() == 'macos' else '/usr/bin/fish' }} -c 'fisher update'",
   "if command -v paru >/dev/null; then mise run aur; fi",
 ]
 
