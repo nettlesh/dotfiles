@@ -7,6 +7,10 @@ trailing-comment-space-width = 1
 path = "https://mise.jdx.dev/schema/mise.json"
 include = ["mise.toml", "mise.*.toml", "**/mise/config.toml"]
 
+[[schemas]]
+path = "https://starship.rs/config-schema.json"
+include = ["**/starship.toml"]
+
 # Keeps these tables alphabetical
 [[schemas.overrides]]
 targets = ["tools", "dotfiles", "env", "bootstrap.packages"]

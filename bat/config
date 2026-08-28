@@ -1,0 +1,4 @@
+--theme="base16"
+
+# TODO: Re-enable this upon new bat release
+# --pager=builtin

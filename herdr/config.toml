@@ -1,4 +1,22 @@
 onboarding = false
 
+[theme]
+name = "terminal"
+
 [keys]
-prefix = "ctrl+a"
+prefix = "ctrl+space"
+
+detach = "prefix+d"
+
+[ui]
+# tmux-style borders
+pane_gaps = false
+pane_outer_borders = false
+pane_scrollbars = false
+
+# Stop asking me
+confirm_close = false
+prompt_new_tab_name = false
+
+[experimental]
+kitty_graphics = true

@@ -1,0 +1,58 @@
+# Theme
+background-opacity = 0.5
+background-blur = macos-glass-regular
+macos-titlebar-style = transparent
+
+cursor-style-blink = true
+
+macos-option-as-alt = true
+mouse-hide-while-typing = true
+
+# Font
+font-family = Fira Code
+font-size = 14
+
+# Keybindings (herdr inspired)
+keybind = ctrl+shift+space>shift+r=reload_config
+keybind = ctrl+shift+space>e=write_scrollback_file:open
+keybind = ctrl+shift+space>shift+p=prompt_surface_title
+keybind = ctrl+shift+space>x=close_surface
+
+# Tabs
+keybind = ctrl+shift+space>c=new_tab
+keybind = ctrl+shift+space>p=previous_tab
+keybind = ctrl+shift+space>n=next_tab
+keybind = ctrl+shift+space>1=goto_tab:1
+keybind = ctrl+shift+space>2=goto_tab:2
+keybind = ctrl+shift+space>3=goto_tab:3
+keybind = ctrl+shift+space>4=goto_tab:4
+keybind = ctrl+shift+space>5=goto_tab:5
+keybind = ctrl+shift+space>6=goto_tab:6
+keybind = ctrl+shift+space>7=goto_tab:7
+keybind = ctrl+shift+space>8=goto_tab:8
+keybind = ctrl+shift+space>9=goto_tab:9
+keybind = ctrl+shift+space>shift+t=prompt_tab_title
+keybind = ctrl+shift+space>shift+x=close_tab:this
+
+# Splits
+keybind = ctrl+shift+space>h=goto_split:left
+keybind = ctrl+shift+space>j=goto_split:down
+keybind = ctrl+shift+space>k=goto_split:up
+keybind = ctrl+shift+space>l=goto_split:right
+keybind = ctrl+shift+space>tab=goto_split:next
+keybind = ctrl+shift+space>shift+tab=goto_split:previous
+keybind = ctrl+shift+space>v=new_split:right
+keybind = ctrl+shift+space>-=new_split:down
+keybind = ctrl+shift+space>z=toggle_split_zoom
+
+# Resize mode
+keybind = ctrl+shift+space>r=activate_key_table:resize
+keybind = resize/h=resize_split:left,10
+keybind = resize/j=resize_split:down,10
+keybind = resize/k=resize_split:up,10
+keybind = resize/l=resize_split:right,10
+keybind = resize/escape=deactivate_key_table
+keybind = resize/enter=deactivate_key_table
+
+# Cancels unknown commands
+keybind = ctrl+shift+space>escape=ignore

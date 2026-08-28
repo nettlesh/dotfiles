@@ -38,12 +38,14 @@
 
 [push]
     autoSetupRemote = true
+
 {# Guarded so a machine with no identity set still bootstraps -#}
 {% if vars?.git_email %}
 [user]
     email = {{ vars.git_email }}
     name  = {{ vars.git_name }}
 {% endif %}
+
 [alias]
     a    = add
     aa   = add --all
