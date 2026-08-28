@@ -9,7 +9,7 @@ macos-option-as-alt = true
 mouse-hide-while-typing = true
 
 # Font
-font-family = Fira Code
+font-family = FiraCode Nerd Font Mono
 font-size = 14
 
 # Keybindings (herdr inspired)

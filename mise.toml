@@ -2,8 +2,9 @@ min_version = "2026.7.16"
 
 [dotfiles]
 "~/.config/bat/config" = "bat/config"
-"~/.config/ghostty/config.ghostty" = "ghostty/config.ghostty"
+"~/.config/fastfetch/config.jsonc" = "fastfetch/config.jsonc"
 "~/.config/fish" = { source = "fish", mode = "symlink-each" }
+"~/.config/ghostty/config.ghostty" = "ghostty/config.ghostty"
 "~/.config/git/config" = { source = "git/config.tmpl", mode = "template" }
 "~/.config/herdr" = { source = "herdr", mode = "symlink-each" }            # herdr writes logs and session state here
 "~/.config/hk" = "hk"
