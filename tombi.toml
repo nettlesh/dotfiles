@@ -7,13 +7,15 @@ trailing-comment-space-width = 1
 path = "https://mise.jdx.dev/schema/mise.json"
 include = ["mise.toml", "mise.*.toml", "**/mise/config.toml"]
 
-[[schemas]]
-path = "https://starship.rs/config-schema.json"
-include = ["**/starship.toml"]
-
 # Keeps these tables alphabetical
+# NOTE: Must stay attached to the mise schema above
+#       [[schemas.overrides]] binds to the nearest preceding [[schemas]]
 [[schemas.overrides]]
 targets = ["tools", "dotfiles", "env", "bootstrap.packages"]
 
 [schemas.overrides.format.rules]
 table-keys-order = "ascending"
+
+[[schemas]]
+path = "https://starship.rs/config-schema.json"
+include = ["**/starship.toml"]
