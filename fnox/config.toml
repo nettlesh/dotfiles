@@ -1,0 +1,20 @@
+env = "exec"
+
+[providers.age]
+type = "age"
+recipients = ["age16d3p75camff6x6xe9yansddlt8lx5zsz794fujfkcxmut2a7e3hqqakl49"]
+key_file = "~/.config/fnox/age.txt"
+
+[profiles.personal.providers.op]
+type = "1password"
+account = "my.1password.com"
+vault = "Personal"
+
+# Read with fnox get; nothing here is exported
+[profiles.personal.secrets]
+DOCKERHUB_TOKEN = { provider = "op", value = "kmr6imxnt6iqfl6klg33n3qr3y/credential", env = false }
+
+[profiles.work.providers.op]
+type = "1password"
+account = "obscurity-labs.1password.com"
+vault = "Employee"

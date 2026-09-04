@@ -27,12 +27,21 @@ Rules for working in this repository.
   after stating what new information changed the decision
 - Claim a tool supports or recommends a pattern only with a documentation
   citation; otherwise call it a convention
+- Use documented mechanisms only.
+  Where none fits, say so and stop; never invent a name, file, variable,
+  or structure to fill the gap
+- Mark anything you originate as proposed, and never present it
+  alongside established names as though it carried the same weight
 
 ## Implementation
 
 - Address observed problems only;
   do not add defensive handling for hypothetical failures.
   Let them surface first
+- Documented setup is not speculative;
+  follow the golden path before anything breaks
+- Agree the design before writing it.
+  Present the options, name the tradeoffs, and wait
 
 ## Configuration
 
@@ -47,6 +56,9 @@ Rules for working in this repository.
   not its history
 - Do not restate code, mention removed tools or old revisions,
   depend on unstated plans, or leave stale comments
-- Capitalise comments, omit terminal punctuation, and prefer one line
+- Preserve canonical spelling for names and identifiers, including at the
+  start of a sentence; for example, hk, herdr, mise, and fish remain lowercase
+- Otherwise capitalise comments, omit terminal punctuation, and prefer one line
+- Keep comments short and to the point
 - Use conventional annotations such as `NOTE:`, `TODO:`,
   and `FIXME:` when appropriate

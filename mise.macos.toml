@@ -1,13 +1,4 @@
 [bootstrap.packages]
-"brew-cask:1password" = "latest"
-"brew-cask:1password-cli" = "latest"
-"brew-cask:discord" = "latest"
-"brew-cask:font-fira-code-nerd-font" = "latest"
-"brew-cask:ghostty" = "latest"
-"brew-cask:keymapp" = "latest"
-"brew-cask:obsidian" = "latest"
-"brew-cask:spotify" = "latest"
-"brew-cask:zen" = "latest"
 "brew:fish" = "latest"
 "brew:fisher" = "latest"
 "brew:git" = "latest"
@@ -24,3 +15,6 @@ show_pathbar = true
 
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/fish"
+
+[env]
+_.path = "/opt/homebrew/bin"

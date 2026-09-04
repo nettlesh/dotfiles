@@ -1,11 +1,9 @@
-amends "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Config.pkl"
+amends "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Builtins.pkl"
 
-import "package://github.com/jdx/hk/releases/download/v1.54.0/hk@1.54.0#/Builtins.pkl"
-
-local linters = new Mapping<String, Step> {
+local linters = new Mapping {
   ["editorconfig-checker"] = Builtins.editorconfig_checker
-  // hk ships no fish builtin, and `fish -n` parses only its first argument and
-  // treats the rest as $argv, so the files are looped one at a time
+  // fish -n treats additional paths as arguments, so validate each file separately
   ["fish"] = new Step {
     glob = "**/*.fish"
     check = "failed=0; for f in {{ files }}; do fish -n \"$f\" || failed=1; done; exit $failed"
@@ -16,16 +14,15 @@ local linters = new Mapping<String, Step> {
     fix = "fish_indent -w {{ files }}"
   }
   ["hk-test"] = Builtins.hk_test
-  // Formats mise's own config files, which tombi is configured to format identically
+  // mise and tombi intentionally enforce identical formatting
   ["mise"] = Builtins.mise
   ["newlines"] = Builtins.newlines
   ["pkl"] = Builtins.pkl
   ["pkl-format"] = Builtins.pkl_format
   ["rumdl"] = Builtins.rumdl
   ["shellcheck"] = Builtins.shellcheck
-  // Indent style comes from .editorconfig rather than a flag override
+  // shfmt inherits indentation from .editorconfig
   ["shfmt"] = Builtins.shfmt
-  // Reads nvim/.stylua.toml, which stylua finds by walking up from each file
   ["stylua"] = Builtins.stylua
   ["tombi"] = Builtins.tombi
   ["tombi-format"] = Builtins.tombi_format
