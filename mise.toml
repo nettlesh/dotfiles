@@ -1,12 +1,31 @@
-min_version = "2026.7.16"
+min_version = "2026.9.2"
+
+[settings]
+lockfile = true
+lockfile_platforms = ["linux-x64", "macos-arm64"]
+
+[vars]
+op_personal_account = "my.1password.com"
+op_work_account = "obscurity-labs.1password.com"
+
+[bootstrap.hooks.post-dotfiles]
+run = 'mise set --file mise.local.toml GIT_EMAIL="$GIT_EMAIL"'
+
+[bootstrap.hooks.post-tools]
+run = [
+  'mkdir -p "{{ xdg_config_home }}/fish/completions"',
+  'mise completion fish >"{{ xdg_config_home }}/fish/completions/mise.fish"',
+  "{{ '/opt/homebrew/bin/fish' if os() == 'macos' else '/usr/bin/fish' }} -c 'fisher update'",
+]
 
 [dotfiles]
 "~/.config/bat/config" = "bat/config"
 "~/.config/fastfetch/config.jsonc" = "fastfetch/config.jsonc"
 "~/.config/fish" = { source = "fish", mode = "symlink-each" }
+"~/.config/fnox/config.toml" = "fnox/config.toml"
 "~/.config/ghostty/config.ghostty" = "ghostty/config.ghostty"
 "~/.config/git/config" = { source = "git/config.tmpl", mode = "template" }
-"~/.config/herdr" = { source = "herdr", mode = "symlink-each" }            # herdr writes logs and session state here
+"~/.config/herdr/config.toml" = "herdr/config.toml"
 "~/.config/hk" = "hk"
 "~/.config/mise" = "mise"
 "~/.config/nvim" = "nvim"
@@ -28,29 +47,34 @@ tombi = "latest"
 [env]
 HK_MISE = 1
 
-# Runs second to last in bootstrap, after tools are installed and dotfiles are linked
-# Guards test for the command rather than the OS, so this stays platform-neutral
-[tasks.bootstrap]
-run = [
-  "mkdir -p {{ xdg_config_home }}/fish/completions",
-  "mise completion fish >{{ xdg_config_home }}/fish/completions/mise.fish",
-  "{{ '/opt/homebrew/bin/fish' if os() == 'macos' else '/usr/bin/fish' }} -c 'fisher update'",
-  "if command -v paru >/dev/null; then mise run aur; fi",
-]
+[tasks."bootstrap:identity"]
+hide = true
+interactive = true
+run = '''
+set -eu
 
-# mise cannot see AUR packages, so pacman -Q carries that assertion instead
+op_personal_account="{{ vars.op_personal_account }}"
+op_work_account="{{ vars.op_work_account }}"
+
+for account in "$op_personal_account" "$op_work_account"; do
+    if ! op account get --account "$account" >/dev/null 2>&1; then
+        eval "$(op account add --address "$account" --signin)"
+    fi
+done
+
+age_file="{{ xdg_config_home }}/fnox/age.txt"
+if [ ! -f "$age_file" ]; then
+    eval "$(op signin --account "$op_personal_account")"
+    mkdir -p "$(dirname "$age_file")"
+    # age identity file document, by ID so renaming the item can't break bootstrap
+    op document get pfrztbtg5nchqnm6gdsnx72yqq \
+        --account "$op_personal_account" \
+        --out-file "$age_file"
+fi
+'''
+
 [tasks.check]
-run = [
-  "mise bootstrap dotfiles status --missing",
-  "mise bootstrap packages status --missing",
-  "if command -v pacman >/dev/null; then pacman -Q 1password 1password-cli zsa-keymapp-bin >/dev/null; fi",
-]
-
-[tasks.fmt]
-run = "hk fix --all"
-
-[tasks.lint]
-run = "hk check --all"
+run = ["mise bootstrap status --missing", "fnox check", "hk check --all"]
 
 [tasks.pre-commit]
 run = "hk run pre-commit"

@@ -1,37 +1,14 @@
 [bootstrap.packages]
-"flatpak:app.zen_browser.zen" = "latest"
-"pacman:cachyos-gaming-applications" = "latest" # Pulls the gaming meta which pulls steam
 "pacman:curl" = "latest"
-"pacman:discord" = "latest"
 "pacman:fish" = "latest"
 "pacman:fisher" = "latest"
-"pacman:flatpak" = "latest"
 "pacman:gcc" = "latest"
-"pacman:ghostty" = "latest"
 "pacman:git" = "latest"
-"pacman:jq" = "latest"                          # NOTE: Required by done on Sway and Niri
-"pacman:libnotify" = "latest"
+# TODO: Check whether done inherits the mise shim PATH
+"pacman:jq" = "latest"       # NOTE: Required by done on Sway and Niri
 "pacman:neovim" = "latest"
-"pacman:obsidian" = "latest"
 "pacman:openssh" = "latest"
-"pacman:paru" = "latest"
-"pacman:spotify-launcher" = "latest"
 "pacman:starship" = "latest"
-"pacman:ttf-firacode-nerd" = "latest"
-
-[bootstrap.hooks.post-packages]
-run = [
-  "flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo",
-  "mise bootstrap packages apply --manager flatpak --yes",
-]
 
 [bootstrap.user]
 login_shell = "/usr/bin/fish"
-
-# NOTE: paru handles AUR packages after mise installs system packages
-#       Keymapp is separate because its unversioned source changes checksums
-[tasks.aur]
-run = [
-  "paru -S --needed --noconfirm 1password 1password-cli",
-  "paru -S --needed --noconfirm zsa-keymapp-bin",
-]

@@ -1,0 +1,39 @@
+# NOTE: Platform configs contain the restricted-host baseline
+#       personal currently adds the CachyOS desktop and private identity integration
+# TODO: Split CachyOS into its own environment if personal needs to span platforms
+[bootstrap.packages]
+"flatpak:app.zen_browser.zen" = "latest"
+"pacman:cachyos-gaming-applications" = "latest" # Pulls the gaming meta which pulls steam
+"pacman:discord" = "latest"
+"pacman:flatpak" = "latest"
+"pacman:ghostty" = "latest"
+"pacman:libnotify" = "latest"
+"pacman:obsidian" = "latest"
+"pacman:paru" = "latest"
+"pacman:spotify-launcher" = "latest"
+"pacman:ttf-firacode-nerd" = "latest"
+
+# NOTE: paru handles AUR packages after mise installs system packages
+#       Keymapp is separate because its unversioned source changes checksums
+[bootstrap.hooks.post-packages]
+run = [
+  "flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo",
+  "mise bootstrap packages apply --manager flatpak --yes",
+  "paru -S --needed --noconfirm 1password 1password-cli",
+  "paru -S --needed --noconfirm zsa-keymapp-bin",
+]
+
+[bootstrap.hooks.post-dotfiles]
+run = 'mise set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
+
+[dotfiles]
+"~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
+"~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }
+"~/.ssh/config" = { source = "ssh/config.tmpl", mode = "template" }
+
+[env]
+FNOX_PROFILE = "personal"
+OP_ACCOUNT = "{{ vars.op_personal_account }}"
+
+[tasks.bootstrap]
+run = [{ task = "bootstrap:identity" }]

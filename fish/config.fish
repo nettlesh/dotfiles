@@ -35,7 +35,7 @@ alias la 'eza -a --group-directories-first'
 alias ll 'eza -al --group-directories-first'
 alias tree 'eza -T --group-directories-first'
 
-alias cat='bat --paging=never' # Use bat insteaed
+alias cat='bat --paging=never' # Use bat instead
 
 alias n nvim
 alias v nvim
@@ -45,6 +45,9 @@ alias vim nvim
 # CLIs
 mise activate fish | source # mise activates first
 fnox activate fish | source
+if command -q op
+    op completion fish | source
+end
 fzf --fish | source
 zoxide init fish | source
 
