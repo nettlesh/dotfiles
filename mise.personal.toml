@@ -4,8 +4,10 @@
 [bootstrap.packages]
 "aur:1password" = "latest"
 "aur:1password-cli" = "latest"
+"aur:claude-desktop" = "latest"            # Pulls the qemu VM stack that Cowork's sandbox needs
 "aur:zsa-keymapp-bin" = "latest"
 "flatpak:app.zen_browser.zen" = "latest"
+"flatpak:com.fastmail.Fastmail" = "latest"
 
 # NOTE: Remove CachyOS defaults superseded by these dotfiles or mise tools
 "pacman:alacritty" = { state = "absent" }
