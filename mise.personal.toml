@@ -1,5 +1,5 @@
 # NOTE: Platform configs contain the restricted-host baseline
-#       personal currently adds the CachyOS desktop and private identity integration
+#       Personal currently adds the CachyOS desktop and private identity integration
 # TODO: Split CachyOS into its own environment if personal needs to span platforms
 [bootstrap.packages]
 "aur:1password" = "latest"
@@ -35,7 +35,7 @@ run = [
 ]
 
 [bootstrap.hooks.post-dotfiles]
-run = 'mise set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
+run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
 
 [dotfiles]
 "~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
@@ -47,4 +47,7 @@ FNOX_PROFILE = "personal"
 OP_ACCOUNT = "{{ vars.op_personal_account }}"
 
 [tasks.bootstrap]
-run = [{ task = "bootstrap:identity" }]
+run = [
+  { task = "bootstrap:identity" },
+  { task = "bootstrap:claude" },
+]

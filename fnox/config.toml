@@ -1,5 +1,9 @@
 env = "exec"
 
+[mcp]
+# Exclude get_secret so raw values do not enter agent transcripts
+tools = ["exec"]
+
 [providers.age]
 type = "age"
 recipients = ["age16d3p75camff6x6xe9yansddlt8lx5zsz794fujfkcxmut2a7e3hqqakl49"]
@@ -10,9 +14,8 @@ type = "1password"
 account = "my.1password.com"
 vault = "Personal"
 
-# Read with fnox get; nothing here is exported
 [profiles.personal.secrets]
-DOCKERHUB_TOKEN = { provider = "op", value = "kmr6imxnt6iqfl6klg33n3qr3y/credential", env = false }
+DOCKERHUB_TOKEN = { provider = "op", value = "kmr6imxnt6iqfl6klg33n3qr3y/credential" }
 
 [profiles.work.providers.op]
 type = "1password"

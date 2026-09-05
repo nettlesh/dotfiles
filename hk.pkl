@@ -1,8 +1,14 @@
 amends "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Config.pkl"
+
 import "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Builtins.pkl"
 
+// herdr owns and overwrites its generated hook
+local herdrHook = "claude/hooks/herdr-agent-state.sh"
+
 local linters = new Mapping {
-  ["editorconfig-checker"] = Builtins.editorconfig_checker
+  ["editorconfig-checker"] = (Builtins.editorconfig_checker) {
+    exclude = herdrHook
+  }
   // fish -n treats additional paths as arguments, so validate each file separately
   ["fish"] = new Step {
     glob = "**/*.fish"
@@ -21,8 +27,9 @@ local linters = new Mapping {
   ["pkl-format"] = Builtins.pkl_format
   ["rumdl"] = Builtins.rumdl
   ["shellcheck"] = Builtins.shellcheck
-  // shfmt inherits indentation from .editorconfig
-  ["shfmt"] = Builtins.shfmt
+  ["shfmt"] = (Builtins.shfmt) {
+    exclude = herdrHook
+  }
   ["stylua"] = Builtins.stylua
   ["tombi"] = Builtins.tombi
   ["tombi-format"] = Builtins.tombi_format

@@ -10,7 +10,7 @@
 "brew-cask:zen" = "latest"
 
 [bootstrap.hooks.post-dotfiles]
-run = 'mise set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
+run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
 
 [dotfiles]
 "~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
@@ -22,4 +22,7 @@ FNOX_PROFILE = "work"
 OP_ACCOUNT = "{{ vars.op_work_account }}"
 
 [tasks.bootstrap]
-run = [{ task = "bootstrap:identity" }]
+run = [
+  { task = "bootstrap:identity" },
+  { task = "bootstrap:claude" },
+]
