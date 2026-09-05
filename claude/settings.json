@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "refreshInterval": 60,
+    "hideVimModeIndicator": true
+  },
+  "theme": "auto",
+  "editorMode": "vim",
+  "voice": {
+    "enabled": true
+  },
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
+}

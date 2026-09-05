@@ -1,15 +1,14 @@
-min_version = "2026.9.2"
+min_version = "2026.9.0"
 
 [settings]
 lockfile = true
 lockfile_platforms = ["linux-x64", "macos-arm64"]
 
 [vars]
+git_email = { required = "Set git_email in mise.local.toml or the process environment" }
+git_signing_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOWqnOUZkNfa0mvlobU+pg15gwMi5F4/5Ab9lf9y8vP"
 op_personal_account = "my.1password.com"
 op_work_account = "obscurity-labs.1password.com"
-
-[bootstrap.hooks.post-dotfiles]
-run = 'mise set --file mise.local.toml GIT_EMAIL="$GIT_EMAIL"'
 
 [bootstrap.hooks.post-tools]
 run = [
@@ -19,6 +18,7 @@ run = [
 ]
 
 [dotfiles]
+"~/.claude" = { source = "claude", mode = "symlink-each" }
 "~/.config/bat/config" = "bat/config"
 "~/.config/fastfetch/config.jsonc" = "fastfetch/config.jsonc"
 "~/.config/fish" = { source = "fish", mode = "symlink-each" }
@@ -43,7 +43,7 @@ shfmt = "latest"
 stylua = "latest"
 tombi = "latest"
 
-# Lets hk find its linters through mise when git runs the hooks
+# Let hk find its linters through mise when Git runs the hooks
 [env]
 HK_MISE = 1
 
@@ -70,6 +70,24 @@ if [ ! -f "$age_file" ]; then
     op document get pfrztbtg5nchqnm6gdsnx72yqq \
         --account "$op_personal_account" \
         --out-file "$age_file"
+fi
+'''
+
+[tasks."bootstrap:claude"]
+hide = true
+run = '''
+set -eu
+
+if ! claude mcp get hk >/dev/null 2>&1; then
+    claude mcp add --scope user --transport stdio hk -- hk mcp --root .
+fi
+
+if ! claude mcp get mise >/dev/null 2>&1; then
+    claude mcp add --scope user --env MISE_EXPERIMENTAL=1 --transport stdio mise -- mise mcp
+fi
+
+if ! claude mcp get fnox >/dev/null 2>&1; then
+    claude mcp add --scope user --transport stdio fnox -- fnox --config "{{ xdg_config_home }}/fnox/config.toml" mcp
 fi
 '''
 

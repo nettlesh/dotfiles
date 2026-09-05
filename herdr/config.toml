@@ -18,5 +18,8 @@ pane_scrollbars = false
 confirm_close = false
 prompt_new_tab_name = false
 
+[ui.toast]
+delivery = "herdr"
+
 [experimental]
 kitty_graphics = true

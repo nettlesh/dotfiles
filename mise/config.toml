@@ -31,5 +31,8 @@ uv = "latest"
 yq = "latest"
 zoxide = "latest"
 
+[env]
+_.path = "~/.local/bin"
+
 [settings]
 minimum_release_age_excludes = ["claude-code", "codex"]

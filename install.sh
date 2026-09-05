@@ -17,6 +17,9 @@ if [ -z "$GIT_EMAIL" ]; then
 fi
 
 export GIT_EMAIL
+export git_email="$GIT_EMAIL"
+
+mise config set --file mise.local.toml --type string vars.git_email "$GIT_EMAIL"
 
 mise trust --all --quiet
 

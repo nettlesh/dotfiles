@@ -7,14 +7,20 @@
 "brew:terminal-notifier" = "latest"
 
 [bootstrap.macos.dock]
+mru_spaces = false
 show_recents = false
 
 [bootstrap.macos.finder]
+preferred_view_style = "list"
 show_all_files = true
 show_pathbar = true
+show_status_bar = true
+
+[bootstrap.macos.keyboard]
+press_and_hold = false
 
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/fish"
 
 [env]
-_.path = "/opt/homebrew/bin"
+_.path = ["~/.local/bin", "/opt/homebrew/bin"]
