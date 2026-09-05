@@ -1,7 +1,9 @@
 [bootstrap.packages]
 "brew-cask:1password" = "latest"
 "brew-cask:1password-cli" = "latest"
+"brew-cask:claude" = "latest"
 "brew-cask:discord" = "latest"
+"brew-cask:fastmail" = "latest"
 "brew-cask:font-fira-code-nerd-font" = "latest"
 "brew-cask:ghostty" = "latest"
 "brew-cask:keymapp" = "latest"

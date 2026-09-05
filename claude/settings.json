@@ -17,7 +17,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "$HOME/.claude/statusline.sh",
+    "command": "~/.claude/statusline.sh",
     "refreshInterval": 60,
     "hideVimModeIndicator": true
   },

@@ -43,7 +43,7 @@ shfmt = "latest"
 stylua = "latest"
 tombi = "latest"
 
-# Let hk find its linters through mise when Git runs the hooks
+# hk finds its linters through mise when Git runs hooks
 [env]
 HK_MISE = 1
 
