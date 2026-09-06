@@ -17,6 +17,9 @@ run = [
   "{{ '/opt/homebrew/bin/fish' if os() == 'macos' else '/usr/bin/fish' }} -c 'fisher update'",
 ]
 
+[bootstrap.hooks.final]
+run = "mise bootstrap status --missing"
+
 [dotfiles]
 "~/.claude" = { source = "claude", mode = "symlink-each" }
 "~/.config/bat/config" = "bat/config"
@@ -79,7 +82,8 @@ run = '''
 set -eu
 
 if ! claude mcp get hk >/dev/null 2>&1; then
-    claude mcp add --scope user --transport stdio hk -- hk mcp --root .
+    claude mcp add --scope user --transport stdio hk -- \
+        sh -c 'exec hk mcp --root "$CLAUDE_PROJECT_DIR"'
 fi
 
 if ! claude mcp get mise >/dev/null 2>&1; then
@@ -92,7 +96,12 @@ fi
 '''
 
 [tasks.check]
-run = ["mise bootstrap status --missing", "fnox check", "hk check --all"]
+description = "Check source files"
+run = "hk check --all"
+
+[tasks.fix]
+description = "Fix source files"
+run = "hk fix --all"
 
 [tasks.pre-commit]
 run = "hk run pre-commit"

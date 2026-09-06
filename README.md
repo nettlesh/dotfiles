@@ -51,9 +51,9 @@ cd ~/.dotfiles
 ./install.sh -E work     # Managed macOS desktop
 ```
 
-Run `./install.sh` without an environment for a restricted host.
+Run `./install.sh` without an environment for the baseline.
 
-On first run you will be prompted for a git email.
+On first run you will be prompted for a Git email.
 To skip the prompt, set it beforehand:
 
 ```sh
@@ -71,10 +71,13 @@ If mise is already installed,
 it can clone and bootstrap the repository directly:
 
 ```sh
-GIT_EMAIL=you@example.com mise -E personal bootstrap \
+git_email=you@example.com mise -E personal bootstrap \
   --from https://github.com/nettlesh/dotfiles.git \
   --from-dir "$HOME/.dotfiles"
 ```
+
+This path sets the mise variable directly, so the name is lowercase.
+`install.sh` takes `GIT_EMAIL` and passes it through.
 
 mise refuses to replace config files it does not manage,
 so on a machine that already has a Ghostty or fish
@@ -94,17 +97,21 @@ then re-run with `./install.sh -E personal --force-dotfiles`.
   when `--force-dotfiles` is passed
 - Sets fish as the login shell
 
-Check the state associated with a machine by selecting the same environment:
+`mise run check` lints the files in this repo
+and `mise run fix` applies what can be fixed automatically.
+
+Machine state is verified at the end of every bootstrap.
+To check it on demand, select the same environment:
 
 ```sh
-mise -E personal run check
-mise -E work run check
-mise run check # Restricted baseline
+mise -E personal bootstrap status --missing
+mise -E work bootstrap status --missing
+mise bootstrap status --missing # Baseline
 ```
 
 ## Notes
 
-### Changing git config by hand
+### Changing Git config by hand
 
 `~/.config/git/config` is rendered from a template rather than symlinked,
 because the Git identity is injected from machine-local values.
@@ -119,3 +126,28 @@ mise bootstrap dotfiles add ~/.config/git/config
 Most other configs in this repo are symlinked and stay live-editable.
 Profile-specific Git and SSH files are templates because their paths
 and principals differ by platform or machine identity.
+
+### Container
+
+The Dockerfile builds the baseline on Arch Linux.
+
+```sh
+docker build -t dotfiles .
+docker run --rm -it dotfiles
+```
+
+The image carries a placeholder Git identity.
+Bake in your own at build time:
+
+```sh
+docker build --build-arg git_email=you@example.com -t dotfiles .
+```
+
+Or set it per-container, which takes precedence over the baked-in value:
+
+```sh
+docker run --rm -it \
+  -e GIT_AUTHOR_EMAIL=you@example.com \
+  -e GIT_COMMITTER_EMAIL=you@example.com \
+  dotfiles
+```
