@@ -1,0 +1,6 @@
+.dockerignore
+.git
+.github
+.rumdl_cache
+**/*.local.toml
+Dockerfile

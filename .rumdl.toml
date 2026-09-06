@@ -1,7 +1,3 @@
-[global]
-# CLAUDE.md is a one-line pointer file, so MD041 cannot apply
-exclude = ["CLAUDE.md"]
-
 # Markdown Style Guide wrap:inner-sentence, which rumdl implements as semantic line breaks
 # https://cirosantilli.com/markdown-style-guide/#line-wrapping
 [MD013]
