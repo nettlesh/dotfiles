@@ -3,7 +3,6 @@
 "brew:fisher" = "latest"
 "brew:git" = "latest"
 "brew:neovim" = "latest"
-"brew:starship" = "latest"
 "brew:terminal-notifier" = "latest"
 
 [bootstrap.macos.dock]
