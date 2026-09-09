@@ -2,6 +2,7 @@
 age = "latest"
 bat = "latest"
 claude-code = "latest"
+cmake = "4.4.3"
 codex = "latest"
 delta = "latest"
 eza = "latest"
@@ -21,13 +22,14 @@ node = "latest"
 python = "latest"
 ripgrep = "latest"
 rumdl = "latest"
+rust = { version = "latest", components = ["rust-analyzer", "rust-src"] }
 shellcheck = "latest"
 shfmt = "latest"
 starship = "latest"
 stylua = "latest"
 tealdeer = "latest"
 tombi = "latest"
-tree-sitter = "latest"                # nvim-treesitter builds parsers with it
+tree-sitter = "latest"                                                    # nvim-treesitter builds parsers with it
 uv = "latest"
 yq = "latest"
 zoxide = "latest"
@@ -37,3 +39,37 @@ _.path = "~/.local/bin"
 
 [settings]
 minimum_release_age_excludes = ["claude-code", "codex"]
+
+[dotfiles]
+"~/.dotfiles/.miserc.toml" = { mode = "track" }
+"~/.dotfiles/agents/skills" = { mode = "track" }
+"~/.dotfiles/bat" = { mode = "track" }
+"~/.dotfiles/claude" = { mode = "track" }
+"~/.dotfiles/codex" = { mode = "track" }
+"~/.dotfiles/fastfetch" = { mode = "track" }
+"~/.dotfiles/fish/config.fish" = { mode = "track" }
+"~/.dotfiles/fish/fish_plugins" = { mode = "track" }
+"~/.dotfiles/fnox/config.toml" = { mode = "track" }
+"~/.dotfiles/ghostty" = { mode = "track" }
+"~/.dotfiles/git" = { mode = "track" }
+"~/.dotfiles/herdr" = { mode = "track" }
+"~/.dotfiles/hk" = { mode = "track" }
+"~/.dotfiles/mise.desktop.toml" = { mode = "track" }
+"~/.dotfiles/mise.linux.toml" = { mode = "track" }
+"~/.dotfiles/mise.lock" = { mode = "track" }
+"~/.dotfiles/mise.macos.toml" = { mode = "track" }
+"~/.dotfiles/mise.personal.toml" = { mode = "track" }
+"~/.dotfiles/mise.toml" = { mode = "track" }
+"~/.dotfiles/mise.work.toml" = { mode = "track" }
+"~/.dotfiles/mise/config.toml" = { mode = "track" }
+"~/.dotfiles/mise/mise.lock" = { mode = "track" }
+"~/.dotfiles/nvim" = { mode = "track" }
+"~/.dotfiles/ripgrep" = { mode = "track" }
+"~/.dotfiles/ssh" = { mode = "track" }
+"~/.dotfiles/starship" = { mode = "track" }
+"~/.dotfiles/tealdeer" = { mode = "track" }
+
+[bootstrap.services.mise-history]
+builtin = "history-watch"
+# The shared declaration is loaded after dotfiles and needs gh for synchronization
+requires_tools = true

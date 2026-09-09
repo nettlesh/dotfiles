@@ -1,0 +1,43 @@
+[tools]
+# NOTE: Required by done on Sway and Niri
+jq = { version = "latest", os = ["linux"] }
+
+[bootstrap.packages]
+"aur:1password" = { os = "linux" }
+"aur:1password-cli" = { os = "linux" }
+"aur:zsa-keymapp-bin" = { os = "linux" }
+"brew-cask:1password" = { os = "macos" }
+"brew-cask:1password-cli" = { os = "macos" }
+"brew-cask:chatgpt" = { os = "macos" }
+"brew-cask:claude" = { os = "macos" }
+"brew-cask:discord" = { os = "macos" }
+"brew-cask:fastmail" = { os = "macos" }
+"brew-cask:font-fira-code-nerd-font" = { os = "macos" }
+"brew-cask:ghostty" = { os = "macos" }
+"brew-cask:keymapp" = { os = "macos" }
+"brew-cask:obsidian" = { os = "macos" }
+"brew-cask:spotify" = { os = "macos" }
+"brew-cask:zen" = { os = "macos" }
+"flatpak:app.zen_browser.zen" = { os = "linux" }
+"flatpak:com.fastmail.Fastmail" = { os = "linux" }
+"pacman:discord" = { os = "linux" }
+"pacman:flatpak" = { os = "linux" }
+"pacman:ghostty" = { os = "linux" }
+"pacman:libnotify" = { os = "linux" }
+"pacman:obsidian" = { os = "linux" }
+"pacman:spotify-launcher" = { os = "linux" }
+"pacman:ttf-firacode-nerd" = { os = "linux" }
+
+# Flathub must exist before the second Flatpak package pass
+[bootstrap.hooks.post-packages]
+run = '''
+if [ "{{ os() }}" = "linux" ]; then
+    flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    mise bootstrap packages apply --manager flatpak --yes
+fi
+'''
+
+[dotfiles]
+"~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
+"~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }
+"~/.ssh/config" = { source = "ssh/config.tmpl", mode = "template" }

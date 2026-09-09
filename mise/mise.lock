@@ -49,20 +49,35 @@ checksum = "sha256:041fe31aabf7cd5111bc916e5dc0b5b3a2e8d456a0e007b364beaf602f68c
 url = "https://github.com/anthropics/claude-code/releases/download/v2.1.261/claude-darwin-arm64.tar.gz"
 url_api = "https://api.github.com/repos/anthropics/claude-code/releases/assets/544686529"
 
+[[tools.cmake]]
+version = "4.4.3"
+backend = "aqua:Kitware/CMake"
+specifiers = ["4.4.3"]
+
+[tools.cmake."platforms.linux-x64"]
+checksum = "sha256:d6c83076c575bc00b823522ac974bda66d0af05d6ddc30e739c12385cf32c6cc"
+url = "https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/Kitware/CMake/releases/assets/529577408"
+
+[tools.cmake."platforms.macos-arm64"]
+checksum = "sha256:0c5d65251c14cc884bfa16bdbed3c263ce5bffe2e21c0d0d00962cb0610464fa"
+url = "https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3-macos-universal.tar.gz"
+url_api = "https://api.github.com/repos/Kitware/CMake/releases/assets/529577557"
+
 [[tools.codex]]
-version = "0.152.1"
+version = "0.153.4"
 backend = "aqua:openai/codex"
 specifiers = ["latest"]
 
 [tools.codex."platforms.linux-x64"]
-checksum = "sha256:2aeea68239b4d96081b3e7fe91d0d64e4875b224668c381985d22bb31d7566b9"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.1/codex-package-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/540234347"
+checksum = "sha256:a822187e1a2420c61c5926721bfbd878701ed95547c9bb0d4de4498a16ba1821"
+url = "https://github.com/openai/codex/releases/download/rust-v0.153.4/codex-package-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/openai/codex/releases/assets/545043416"
 
 [tools.codex."platforms.macos-arm64"]
-checksum = "sha256:0a5dffe5a4ab6769e70d962708d2a195b2adcf8cb96e7b9d969a2c95d2238575"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.1/codex-package-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/540234419"
+checksum = "sha256:35438da1fbf7a6db7ddb3bcec84448fa6015ba188461472a97d9d1da7d9c4353"
+url = "https://github.com/openai/codex/releases/download/rust-v0.153.4/codex-package-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/openai/codex/releases/assets/545043538"
 
 [[tools.delta]]
 version = "0.19.2"
@@ -121,20 +136,20 @@ url = "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch6
 url_api = "https://api.github.com/repos/sharkdp/fd/releases/assets/530481346"
 
 [[tools.fnox]]
-version = "1.34.1"
+version = "1.35.1"
 backend = "github:jdx/fnox"
 specifiers = ["latest"]
 
 [tools.fnox."platforms.linux-x64"]
-checksum = "sha256:19961030a6580bc4e4153ab1d2ae112e28e09611971f3bcc0d2dc90ffd47603c"
-url = "https://github.com/jdx/fnox/releases/download/v1.34.1/fnox-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/fnox/releases/assets/531310192"
+checksum = "sha256:ecdbccd01cac2d5e32601636cc0a7b1d8b1501151b4683d660b1c024763ced45"
+url = "https://github.com/jdx/fnox/releases/download/v1.35.1/fnox-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/fnox/releases/assets/546210980"
 provenance = "github-attestations"
 
 [tools.fnox."platforms.macos-arm64"]
-checksum = "sha256:b9efa09f551470f8d664a2e040754d14993293e45dc08a69df4a9df782bbd1d4"
-url = "https://github.com/jdx/fnox/releases/download/v1.34.1/fnox-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/jdx/fnox/releases/assets/531310160"
+checksum = "sha256:9b733a2b9e3e893e73131cc3c7d64c8596de4c7210b47f3695ed4011d798a1e6"
+url = "https://github.com/jdx/fnox/releases/download/v1.35.1/fnox-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/jdx/fnox/releases/assets/546210951"
 provenance = "github-attestations"
 provenance_verified = true
 
@@ -315,6 +330,14 @@ url = "https://github.com/rvben/rumdl/releases/download/v0.2.62/rumdl-v0.2.62-aa
 url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/532322359"
 provenance = "github-attestations"
 
+[[tools.rust]]
+version = "1.98.1"
+backend = "core:rust"
+specifiers = ["latest"]
+
+[tools.rust.options]
+components = "rust-analyzer,rust-src"
+
 [[tools.shellcheck]]
 version = "0.11.0"
 backend = "aqua:koalaman/shellcheck"
@@ -391,20 +414,20 @@ url = "https://github.com/tealdeer-rs/tealdeer/releases/download/v1.9.0/tealdeer
 url_api = "https://api.github.com/repos/tealdeer-rs/tealdeer/releases/assets/527792693"
 
 [[tools.tombi]]
-version = "1.5.0"
+version = "1.5.2"
 backend = "aqua:tombi-toml/tombi"
 specifiers = ["latest"]
 
 [tools.tombi."platforms.linux-x64"]
-checksum = "sha256:440381b5d3ea67d325c6b4c4b4d0c681bc4aabd3623f31fce379a30cec6694db"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.0/tombi-cli-1.5.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/534556771"
+checksum = "sha256:871aa9cd9e9f54da46f8b4e7318c5b9777ad18f46745071f1c693d352c487c9d"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.2/tombi-cli-1.5.2-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/545681167"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.macos-arm64"]
-checksum = "sha256:0e14d1f61ecfba7dd22fce1417be4c1c0428354cfe7e5b2756a2fe36424e15f1"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.0/tombi-cli-1.5.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/534556743"
+checksum = "sha256:ad84d0b2185fbab7a8f3629e826b04958e86f3cfe65a1348753b02b3b1bcd3af"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.2/tombi-cli-1.5.2-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/545681154"
 provenance = "github-attestations"
 
 [[tools.tree-sitter]]

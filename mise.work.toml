@@ -1,27 +1,9 @@
-[bootstrap.packages]
-"brew-cask:1password" = "latest"
-"brew-cask:1password-cli" = "latest"
-"brew-cask:claude" = "latest"
-"brew-cask:discord" = "latest"
-"brew-cask:fastmail" = "latest"
-"brew-cask:font-fira-code-nerd-font" = "latest"
-"brew-cask:ghostty" = "latest"
-"brew-cask:keymapp" = "latest"
-"brew-cask:obsidian" = "latest"
-"brew-cask:spotify" = "latest"
-"brew-cask:zen" = "latest"
-
 [bootstrap.hooks.post-dotfiles]
-run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
+run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE=work OP_ACCOUNT={{ vars.op_work_account | quote }}'
 
 # fnox check needs profile secrets, so it cannot run on the baseline
 [bootstrap.hooks.final]
 run = "fnox check"
-
-[dotfiles]
-"~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
-"~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }
-"~/.ssh/config" = { source = "ssh/config.tmpl", mode = "template" }
 
 [env]
 FNOX_PROFILE = "work"
@@ -31,4 +13,5 @@ OP_ACCOUNT = "{{ vars.op_work_account }}"
 run = [
   { task = "bootstrap:identity" },
   { task = "bootstrap:claude" },
+  { task = "bootstrap:codex" },
 ]

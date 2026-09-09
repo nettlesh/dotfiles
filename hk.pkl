@@ -2,12 +2,12 @@ amends "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Config.
 
 import "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Builtins.pkl"
 
-// herdr owns and overwrites its generated hook
-local herdrHook = "claude/hooks/herdr-agent-state.sh"
+// Preserve generated herdr scripts without formatter changes
+local herdrHooks = "**/herdr-agent-state.sh"
 
 local linters = new Mapping {
   ["editorconfig-checker"] = (Builtins.editorconfig_checker) {
-    exclude = herdrHook
+    exclude = herdrHooks
   }
   // fish -n treats additional paths as arguments, so validate each file separately
   ["fish"] = new Step {
@@ -28,7 +28,7 @@ local linters = new Mapping {
   ["rumdl"] = Builtins.rumdl
   ["shellcheck"] = Builtins.shellcheck
   ["shfmt"] = (Builtins.shfmt) {
-    exclude = herdrHook
+    exclude = herdrHooks
   }
   ["stylua"] = Builtins.stylua
   ["tombi"] = Builtins.tombi

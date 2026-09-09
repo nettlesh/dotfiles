@@ -1,9 +1,5 @@
-[user]
-    email = {{ vars.git_email }}
-    name  = Sebastian Battle
-
-# Profile bootstraps add 1Password-backed signing here
 [include]
+    path = ~/.config/git/identity
     path = ~/.config/git/1password
 
 [core]
@@ -22,23 +18,22 @@
 [merge]
     conflictstyle = zdiff3
 
-# Keep hooks declarative because mise owns this file
 # Resolve hk through mise instead of a versioned executable path
 # TODO: Revisit these four events if hk changes its global install set
 [hook "hk-commit-msg"]
-    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run commit-msg --from-hook
+    command = test \"${HK:-1}\" = \"0\" || mise x hk -- hk run commit-msg --from-hook
     event   = commit-msg
 
 [hook "hk-pre-commit"]
-    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run pre-commit --from-hook --staged
+    command = test \"${HK:-1}\" = \"0\" || mise x hk -- hk run pre-commit --from-hook --staged
     event   = pre-commit
 
 [hook "hk-pre-push"]
-    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run pre-push --from-hook
+    command = test \"${HK:-1}\" = \"0\" || mise x hk -- hk run pre-push --from-hook
     event   = pre-push
 
 [hook "hk-prepare-commit-msg"]
-    command = test \"${HK:-1}\" = \"0\" || {{ mise_bin }} x hk -- hk run prepare-commit-msg --from-hook
+    command = test \"${HK:-1}\" = \"0\" || mise x hk -- hk run prepare-commit-msg --from-hook
     event   = prepare-commit-msg
 
 [init]

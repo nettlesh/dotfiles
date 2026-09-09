@@ -1,52 +1,9 @@
-# NOTE: Platform configs contain the baseline
-#       Personal currently adds the CachyOS desktop and private identity integration
-# TODO: Split CachyOS into its own environment if personal needs to span platforms
-[bootstrap.packages]
-"aur:1password" = "latest"
-"aur:1password-cli" = "latest"
-"aur:claude-desktop" = "latest"            # Pulls the qemu VM stack that Cowork's sandbox needs
-"aur:zsa-keymapp-bin" = "latest"
-"flatpak:app.zen_browser.zen" = "latest"
-"flatpak:com.fastmail.Fastmail" = "latest"
-
-# NOTE: Remove CachyOS defaults superseded by these dotfiles or mise tools
-"pacman:alacritty" = { state = "absent" }
-"pacman:bat" = { state = "absent" }
-"pacman:cachyos-fish-config" = { state = "absent" }
-"pacman:cachyos-gaming-applications" = "latest"     # Pulls the gaming meta which pulls steam
-"pacman:discord" = "latest"
-"pacman:eza" = { state = "absent" }
-"pacman:fastfetch" = { state = "absent" }
-"pacman:fish-autopair" = { state = "absent" }
-"pacman:fish-pure-prompt" = { state = "absent" }
-"pacman:flatpak" = "latest"
-"pacman:fzf" = { state = "absent" }
-"pacman:ghostty" = "latest"
-"pacman:libnotify" = "latest"
-"pacman:obsidian" = "latest"
-"pacman:spotify-launcher" = "latest"
-"pacman:tealdeer" = { state = "absent" }
-"pacman:ttf-fantasque-nerd" = { state = "absent" }
-"pacman:ttf-firacode-nerd" = "latest"
-
-# NOTE: Flathub must exist before mise can apply its Flatpak package
-[bootstrap.hooks.post-packages]
-run = [
-  "flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo",
-  "mise bootstrap packages apply --manager flatpak --yes",
-]
-
 [bootstrap.hooks.post-dotfiles]
-run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE="$FNOX_PROFILE" OP_ACCOUNT="$OP_ACCOUNT"'
+run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE=personal OP_ACCOUNT={{ vars.op_personal_account | quote }}'
 
 # fnox check needs profile secrets, so it cannot run on the baseline
 [bootstrap.hooks.final]
 run = "fnox check"
-
-[dotfiles]
-"~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
-"~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }
-"~/.ssh/config" = { source = "ssh/config.tmpl", mode = "template" }
 
 [env]
 FNOX_PROFILE = "personal"
@@ -56,4 +13,5 @@ OP_ACCOUNT = "{{ vars.op_personal_account }}"
 run = [
   { task = "bootstrap:identity" },
   { task = "bootstrap:claude" },
+  { task = "bootstrap:codex" },
 ]
