@@ -13,11 +13,12 @@ set -gx EZA_ICONS_AUTO 1
 set -gx FZF_CTRL_T_OPTS "--walker-skip .git,node_modules,.venv,__pycache__,.ruff_cache,.pytest_cache,target --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 # PATH
+# Locate host tools before mise activation
 if test (uname) = Darwin
-    fish_add_path /opt/homebrew/bin
+    fish_add_path --path --move /opt/homebrew/bin
 end
 
-fish_add_path ~/.local/bin
+fish_add_path --path --move ~/.local/bin
 
 status is-interactive; or exit
 

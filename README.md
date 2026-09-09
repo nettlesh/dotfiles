@@ -2,12 +2,36 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-My dotfiles for CachyOS and macOS,
-managed by [mise](https://github.com/jdx/mise) and compliant with the
-[XDG Base Directory spec](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
-One command takes a fresh machine to a working environment.
+My dotfiles for CachyOS and macOS, managed by [mise](https://mise.jdx.dev).
+Most configuration lives under `~/.config`.
 
-An opinionated bootstrap.
+These are _my_ dotfiles,
+so don't expect everything to work out of the box on your machine.
+There's a lot of cool stuff here
+(in my opinion), so feel free to clone, fork, and edit to your heart's content.
+
+## Contents
+
+- [Features](#features)
+- [Installation](#installation)
+  - [Requirements](#requirements)
+  - [Machine settings](#machine-settings)
+  - [Bootstrap](#bootstrap)
+    - [Direct mise setup](#direct-mise-setup)
+    - [Using install.sh](#using-installsh)
+    - [Restore from history](#restore-from-history)
+  - [Partial setup and dry runs](#partial-setup-and-dry-runs)
+  - [Verify installation](#verify-installation)
+- [Container](#container)
+  - [Pull and run from GHCR](#pull-and-run-from-ghcr)
+  - [Build and run locally](#build-and-run-locally)
+- [Private history](#private-history)
+  - [Connect a private repository](#connect-a-private-repository)
+  - [After syncing](#after-syncing)
+- [Configuration](#configuration)
+  - [Git](#git)
+  - [Shell and agent integrations](#shell-and-agent-integrations)
+  - [Source checks](#source-checks)
 
 ## Features
 
@@ -18,13 +42,13 @@ An opinionated bootstrap.
 | Plugin Manager  |          [Fisher](https://github.com/jorgebucaran/fisher)          | [fish_plugins](https://github.com/nettlesh/dotfiles/blob/main/fish/fish_plugins) |
 | Prompt          |                   [Starship](https://starship.rs)                   | [starship.toml](https://github.com/nettlesh/dotfiles/blob/main/starship/starship.toml)    |
 | Multiplexer     |                   [herdr](https://herdr.dev)                    | [config.toml](https://github.com/nettlesh/dotfiles/blob/main/herdr/config.toml)   |
-| Editor          | [Neovim](https://github.com/neovim/neovim)/[MiniMax](https://github.com/nvim-mini/MiniMax) | [nvim](https://github.com/nettlesh/dotfiles/tree/main/nvim) |
+| Editor          | [Neovim](https://github.com/neovim/neovim)/[mini.nvim](https://github.com/nvim-mini/mini.nvim) | [nvim](https://github.com/nettlesh/dotfiles/tree/main/nvim) |
 | Tool Manager    |                [mise](https://github.com/jdx/mise)                | [mise.toml](https://github.com/nettlesh/dotfiles/blob/main/mise.toml)             |
-| Version Control |                   [Git](https://git-scm.com)                    | [config.tmpl](https://github.com/nettlesh/dotfiles/blob/main/git/config.tmpl)     |
+| Version Control |                   [Git](https://git-scm.com)                    | [config](https://github.com/nettlesh/dotfiles/blob/main/git/config)     |
 | Search          |          [ripgrep](https://github.com/BurntSushi/ripgrep)          | [ripgreprc](https://github.com/nettlesh/dotfiles/blob/main/ripgrep/ripgreprc)     |
 | Fuzzy Finder    |                 [fzf](https://github.com/junegunn/fzf)                 | [config.fish](https://github.com/nettlesh/dotfiles/blob/main/fish/config.fish)    |
 
-and some other stuff worth mentioning:
+A few other tools I use:
 
 - [bat](https://github.com/sharkdp/bat)
 - [delta](https://github.com/dandavison/delta)
@@ -36,114 +60,225 @@ and some other stuff worth mentioning:
 
 ## Installation
 
-### Prerequisites
+Bootstrap installs system packages and mise tools, links the configuration,
+fills in Git and SSH templates, sets fish as the login shell,
+and starts the local history watcher.
+Your machine settings select the desktop apps and account setup.
 
-`git` and `curl`.
-`install.sh` acquires mise, and mise installs everything else
-(even system packages via `pacman` on CachyOS and `brew` on macOS).
+To try the environment without installing it on your machine,
+use the [container](#container) instead.
 
-### Steps
+### Requirements
 
-```sh
-git clone https://github.com/nettlesh/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-./install.sh -E personal # CachyOS desktop
-./install.sh -E work     # Managed macOS desktop
+Git and curl.
+The config-based Git hooks require Git 2.54 or newer.
+[Install mise](https://mise.jdx.dev/getting-started.html) to use it directly;
+`install.sh` installs it if needed.
+
+### Machine settings
+
+Set this machine's environments in `~/.config/mise/miserc.toml`.
+Keep `~/.config/mise` as a regular directory
+so it can hold your local settings alongside the shared files.
+
+For my work MacBook:
+
+```toml
+env = ["desktop", "work"]
 ```
 
-Run `./install.sh` without an environment for the baseline.
+For my personal CachyOS desktop:
 
-On first run you will be prompted for a Git email.
-To skip the prompt, set it beforehand:
-
-```sh
-GIT_EMAIL=you@example.com ./install.sh -E personal
+```toml
+env = ["desktop", "personal", "cachyos"]
 ```
 
-Either way it is written to `mise.local.toml`,
-which is gitignored and never leaves your machine.
+Headless machines don't need any of these environments.
+`desktop` adds graphical apps, Fastmail, and 1Password.
+`personal` and `work` both set up my two 1Password accounts,
+but choose different defaults for `FNOX_PROFILE` and `OP_ACCOUNT`.
+`cachyos` adds packages from the CachyOS repositories
+and removes some bundled packages that this setup replaces.
 
-Arguments are forwarded to `mise bootstrap`,
-so `./install.sh -E personal --dry-run` previews the run
-and `./install.sh -E personal --only dotfiles` restricts it.
+This file stays on the machine and applies to mise in other projects too.
+Use `-E` to
+[choose environments for one command](https://mise.jdx.dev/configuration/environments.html)
+without changing the saved choice.
+The repo's `.miserc.toml` selects the Linux
+or macOS configuration automatically.
 
-If mise is already installed,
-it can clone and bootstrap the repository directly:
+Shared mise files are linked individually with `symlink-each`.
+That leaves `~/.config/mise` as a regular directory,
+with room for your own `miserc.toml` and `config.local.toml`.
+
+### Bootstrap
+
+Choose one of the methods below.
+If you have shared history to restore,
+use [Restore from history](#restore-from-history)
+before running a normal bootstrap.
+You don't need to sign in to 1Password just to apply the dotfiles;
+the `personal` and `work` setup tasks ask you to sign in when needed.
+
+#### Direct mise setup
+
+Clone and bootstrap with mise:
 
 ```sh
-git_email=you@example.com mise -E personal bootstrap \
+git_email=you@example.com mise bootstrap \
   --from https://github.com/nettlesh/dotfiles.git \
   --from-dir "$HOME/.dotfiles"
 ```
 
-This path sets the mise variable directly, so the name is lowercase.
-`install.sh` takes `GIT_EMAIL` and passes it through.
+[`--from`](https://mise.jdx.dev/bootstrap.html#starting-from-a-repository)
+uses the public repo's `mise.toml` and source files.
+`--adopt` restores [shared history](#restore-from-history).
 
-mise refuses to replace config files it does not manage,
-so on a machine that already has a Ghostty or fish
-(like CachyOS) the run stops and names them.
-Confirm the list is what you expect,
-then re-run with `./install.sh -E personal --force-dotfiles`.
-
-## What this does
-
-- Installs mise to `~/.local/bin/mise`
-- Marks this repo as trusted, so mise will read its config without prompting
-- Installs system packages, then the tools in
-  [mise/config.toml](https://github.com/nettlesh/dotfiles/blob/main/mise/config.toml)
-- Adds desktop applications and private identity integration when the
-  `personal` or `work` environment is selected
-- Applies configs under `~/.config`, replacing existing managed configs
-  when `--force-dotfiles` is passed
-- Sets fish as the login shell
-
-`mise run check` lints the files in this repo
-and `mise run fix` applies what can be fixed automatically.
-
-Machine state is verified at the end of every bootstrap.
-To check it on demand, select the same environment:
+For an existing checkout:
 
 ```sh
-mise -E personal bootstrap status --missing
-mise -E work bootstrap status --missing
-mise bootstrap status --missing # Baseline
+cd ~/.dotfiles
+mise trust
+git_email=you@example.com mise bootstrap
 ```
 
-## Notes
+The dotfiles step saves your email in `mise.local.toml`, which Git ignores.
+Later runs reuse it.
+A dry run doesn't save the email.
 
-### Changing Git config by hand
+#### Using install.sh
 
-`~/.config/git/config` is rendered from a template rather than symlinked,
-because the Git identity is injected from machine-local values.
-So `git config --global ...` writes to the rendered file
-and is overwritten on the next apply.
-To keep such a change, capture it back into the repo:
+Clone the repo and run the installer:
 
 ```sh
-mise bootstrap dotfiles add ~/.config/git/config
+git clone https://github.com/nettlesh/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./install.sh
 ```
 
-Most other configs in this repo are symlinked and stay live-editable.
-Profile-specific Git and SSH files are templates because their paths
-and principals differ by platform or machine identity.
+The script prompts for your email unless one is saved.
+To supply it directly:
 
-### Container
+```sh
+GIT_EMAIL=you@example.com ./install.sh
+```
 
-The Dockerfile builds the baseline on Arch Linux.
+The script passes `GIT_EMAIL` to mise as `git_email`,
+marks the configuration as trusted, and runs `mise bootstrap`.
+
+#### Restore from history
+
+Install Git and mise, then clone the public repo.
+Restore your history before running the normal setup
+so the watcher doesn't start a separate history first.
+
+```sh
+git clone https://github.com/nettlesh/dotfiles.git ~/.dotfiles
+cd ~
+mise x gh -- gh auth login --hostname github.com --git-protocol https --web
+GIT_CONFIG_GLOBAL="$HOME/.gitconfig" mise x gh -- gh auth setup-git --hostname github.com
+mise bootstrap --adopt https://github.com/YOUR-USER/dotfiles-history.git --only dotfiles
+```
+
+This uses mise's
+[history adoption workflow](https://mise.jdx.dev/bootstrap/setup.html#set-up-another-machine)
+to restore tracked files to their original paths under your home directory.
+Review any reported conflicts before continuing.
+
+Choose the [machine settings](#machine-settings),
+then bootstrap from the restored checkout:
+
+```sh
+cd ~/.dotfiles
+mise trust
+git_email=you@example.com mise bootstrap
+```
+
+Or use `./install.sh` for the email prompt.
+This repo tracks the source of the global mise configuration at
+`~/.dotfiles/mise/config.toml`, rather than its link under `~/.config/mise`.
+Running setup from the checkout creates that link and installs the tools
+and services.
+
+If the machine already has its own history,
+inspect it before adopting another. mise doesn't automatically merge unrelated
+histories; keep the existing history and follow its recovery guidance.
+
+### Partial setup and dry runs
+
+From `~/.dotfiles`, preview changes or apply only dotfiles:
+
+```sh
+mise bootstrap --dry-run
+mise bootstrap --only dotfiles
+```
+
+On the first run, supply `git_email=you@example.com` as above.
+The installer accepts the same options:
+
+```sh
+./install.sh --dry-run
+./install.sh --only dotfiles
+```
+
+The installer's dry run still installs mise if needed
+and trusts the configuration before passing `--dry-run` to bootstrap.
+
+If existing files conflict with this setup, mise reports them and stops.
+Review those paths before allowing replacements with `--force-dotfiles`.
+See the [bootstrap reference](https://mise.jdx.dev/cli/bootstrap.html)
+for the available options.
+
+### Verify installation
+
+Check for missing setup:
+
+```sh
+mise bootstrap status --missing
+mise bootstrap dotfiles status --missing
+```
+
+Your saved environments apply to these commands too.
+
+## Container
+
+Run the Arch Linux environment in a container without installing the dotfiles on
+your host.
+You'll need Docker.
+
+### Pull and run from GHCR
+
+The [release workflow](.github/workflows/release.yml) is configured to publish
+versioned images to `ghcr.io/nettlesh/dotfiles`, but publishing is currently
+disabled.
+Once an image is published, replace `VERSION` with its release version:
+
+```sh
+docker pull ghcr.io/nettlesh/dotfiles:VERSION
+docker run --rm -it ghcr.io/nettlesh/dotfiles:VERSION
+```
+
+See GitHub's
+[Container registry guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+for registry access and pulling images.
+
+### Build and run locally
+
+From a checkout of this repo:
 
 ```sh
 docker build -t dotfiles .
 docker run --rm -it dotfiles
 ```
 
-The image carries a placeholder Git identity.
-Bake in your own at build time:
+The image uses a placeholder Git email.
+To build it with your own:
 
 ```sh
 docker build --build-arg git_email=you@example.com -t dotfiles .
 ```
 
-Or set it per-container, which takes precedence over the baked-in value:
+Or override it when starting a container, using either the local or GHCR image:
 
 ```sh
 docker run --rm -it \
@@ -151,3 +286,93 @@ docker run --rm -it \
   -e GIT_COMMITTER_EMAIL=you@example.com \
   dotfiles
 ```
+
+## Private history
+
+The history watcher saves edits to the tracked files under `~/.dotfiles`,
+including changes you haven't committed to the public repo.
+These saves, called checkpoints, live in a separate Git history.
+Full setup starts the watcher after installing the tools it needs.
+
+You can keep that history local or share it through your own private repository.
+Normal setup doesn't connect one for you.
+
+### Connect a private repository
+
+After setup, sign in to GitHub and configure its Git credential helper:
+
+```sh
+mise x gh -- gh auth login --hostname github.com --git-protocol https --web
+GIT_CONFIG_GLOBAL="$HOME/.gitconfig" mise x gh -- gh auth setup-git --hostname github.com
+```
+
+Review tracked files and saved versions:
+
+```sh
+mise bootstrap dotfiles paths
+mise bootstrap dotfiles history show --files
+```
+
+Create an empty private repository, then connect it using your own URL:
+
+```sh
+mise bootstrap dotfiles origin set https://github.com/YOUR-USER/dotfiles-history.git --sync sync
+mise bootstrap dotfiles status
+```
+
+Review earlier checkpoints as well as the current files:
+all saved versions are shared.
+The watcher will push your saves
+and apply changes from your other machines automatically.
+The repository connection and Git credentials stay local to this machine.
+See the [mise history guide](https://mise.jdx.dev/history.html)
+for manual syncing and conflict recovery.
+
+### After syncing
+
+Incoming changes can edit files in your public checkout.
+Review and commit them to the public repo when you're ready.
+History sync doesn't commit or push that repo, install packages,
+or regenerate files from templates.
+Run `mise bootstrap` from `~/.dotfiles`
+when a restored configuration needs those steps,
+or `mise bootstrap dotfiles apply` for dotfiles alone.
+
+Your local Git email, account credentials,
+and private keys aren't included in this history.
+Set those up separately on each machine.
+
+## Configuration
+
+Most shared files are symlinked,
+so editing them changes the source in this repo.
+
+### Git
+
+For shared Git settings,
+edit `git/config` or use `git config --file ~/.dotfiles/git/config ...`.
+`git config --global` can write to the separate `~/.gitconfig`,
+where the GitHub credential helper is configured.
+
+Your Git identity is generated at `~/.config/git/identity` from a template
+and your local email.
+Change those inputs instead of copying the generated file into the repo.
+Desktop signing settings live in `~/.config/git/1password`;
+keep signing enabled only in that include.
+
+### Shell and agent integrations
+
+fish adds the system tool directories to PATH so it can find mise
+before activation. mise also sets up PATH
+for commands it launches in other shells.
+
+Shared agent skills live in `agents/skills` and are linked into the Claude Code
+and Codex skill directories.
+The herdr integration scripts and registrations are kept in this repo;
+setup doesn't run the herdr integration installer.
+
+### Source checks
+
+For source checks, `mise run check` runs the linters
+and `mise run fix` applies their automatic fixes.
+CI also builds the Arch container and runs the baseline setup on macOS.

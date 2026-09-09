@@ -1,14 +1,35 @@
-[tools]
-jq = "latest" # NOTE: Required by done on Sway and Niri
-
 [bootstrap.packages]
+# NOTE: Remove CachyOS defaults superseded by these dotfiles or mise tools
+"pacman:alacritty" = { state = "absent", env = "cachyos" }
+"pacman:bat" = { state = "absent", env = "cachyos" }
+"pacman:cachyos-fish-config" = { state = "absent", env = "cachyos" }
+"pacman:cachyos-gaming-applications" = { env = "cachyos" }           # Pulls the gaming meta which pulls steam
+"pacman:chatgpt-desktop-bin" = { env = "cachyos" }
+"pacman:claude-desktop" = { env = "cachyos" }
 "pacman:curl" = "latest"
+"pacman:eza" = { state = "absent", env = "cachyos" }
+"pacman:fastfetch" = { state = "absent", env = "cachyos" }
 "pacman:fish" = "latest"
+"pacman:fish-autopair" = { state = "absent", env = "cachyos" }
+"pacman:fish-pure-prompt" = { state = "absent", env = "cachyos" }
 "pacman:fisher" = "latest"
+"pacman:fzf" = { state = "absent", env = "cachyos" }
 "pacman:gcc" = "latest"
 "pacman:git" = "latest"
 "pacman:neovim" = "latest"
 "pacman:openssh" = "latest"
+"pacman:tealdeer" = { state = "absent", env = "cachyos" }
+"pacman:ttf-fantasque-nerd" = { state = "absent", env = "cachyos" }
 
 [bootstrap.user]
 login_shell = "/usr/bin/fish"
+
+# codex user state stays writable while shared defaults use its system layer
+[bootstrap.directories."/etc/codex"]
+owner = "root"
+group = "root"
+
+[bootstrap.files."/etc/codex/config.toml"]
+source = "codex/config.toml"
+owner = "root"
+group = "root"

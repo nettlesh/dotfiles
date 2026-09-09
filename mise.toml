@@ -1,4 +1,4 @@
-min_version = "2026.9.0"
+min_version = "2026.9.4"
 
 [settings]
 lockfile = true
@@ -9,6 +9,15 @@ git_email = { required = "Set git_email in mise.local.toml or the process enviro
 git_signing_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOWqnOUZkNfa0mvlobU+pg15gwMi5F4/5Ab9lf9y8vP"
 op_personal_account = "my.1password.com"
 op_work_account = "obscurity-labs.1password.com"
+
+[bootstrap.directories."~/.ssh/config.d"]
+mode = "0700"
+
+[bootstrap.hooks.pre-dotfiles]
+run = [
+  "touch {{ config_root | quote }}/mise.local.toml",
+  "{{ mise_bin | quote }} config set --file {{ config_root | quote }}/mise.local.toml --type string vars.git_email {{ vars.git_email | quote }}",
+]
 
 [bootstrap.hooks.post-tools]
 run = [
@@ -21,16 +30,21 @@ run = [
 run = "mise bootstrap status --missing"
 
 [dotfiles]
+"~/.agents/skills/herdr" = "agents/skills/herdr"
 "~/.claude" = { source = "claude", mode = "symlink-each" }
+"~/.claude/skills/herdr" = "agents/skills/herdr"
+"~/.codex/herdr-agent-state.sh" = "codex/herdr-agent-state.sh"
+"~/.codex/hooks.json" = "codex/hooks.json"
 "~/.config/bat/config" = "bat/config"
 "~/.config/fastfetch/config.jsonc" = "fastfetch/config.jsonc"
 "~/.config/fish" = { source = "fish", mode = "symlink-each" }
 "~/.config/fnox/config.toml" = "fnox/config.toml"
 "~/.config/ghostty/config.ghostty" = "ghostty/config.ghostty"
-"~/.config/git/config" = { source = "git/config.tmpl", mode = "template" }
+"~/.config/git/config" = "git/config"
+"~/.config/git/identity" = { source = "git/identity.tmpl", mode = "template" }
 "~/.config/herdr/config.toml" = "herdr/config.toml"
 "~/.config/hk" = "hk"
-"~/.config/mise" = "mise"
+"~/.config/mise" = { source = "mise", mode = "symlink-each" }
 "~/.config/nvim" = "nvim"
 "~/.config/ripgrep" = "ripgrep"
 "~/.config/starship.toml" = "starship/starship.toml"
@@ -92,6 +106,24 @@ fi
 
 if ! claude mcp get fnox >/dev/null 2>&1; then
     claude mcp add --scope user --transport stdio fnox -- fnox --config "{{ xdg_config_home }}/fnox/config.toml" mcp
+fi
+'''
+
+[tasks."bootstrap:codex"]
+hide = true
+run = '''
+set -eu
+
+if ! codex mcp get hk >/dev/null 2>&1; then
+    codex mcp add hk -- hk mcp
+fi
+
+if ! codex mcp get mise >/dev/null 2>&1; then
+    codex mcp add mise --env MISE_EXPERIMENTAL=1 -- mise mcp
+fi
+
+if ! codex mcp get fnox >/dev/null 2>&1; then
+    codex mcp add fnox -- fnox --config "{{ xdg_config_home }}/fnox/config.toml" mcp
 fi
 '''
 

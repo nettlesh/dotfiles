@@ -1,9 +1,15 @@
+[env]
+_.path = ["~/.local/bin", "/opt/homebrew/bin"]
+
 [bootstrap.packages]
 "brew:fish" = "latest"
 "brew:fisher" = "latest"
 "brew:git" = "latest"
 "brew:neovim" = "latest"
 "brew:terminal-notifier" = "latest"
+
+[bootstrap.brew]
+adopt = true
 
 [bootstrap.macos.dock]
 mru_spaces = false
@@ -21,5 +27,12 @@ press_and_hold = false
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/fish"
 
-[env]
-_.path = ["~/.local/bin", "/opt/homebrew/bin"]
+# codex user state stays writable while shared defaults use its system layer
+[bootstrap.directories."/etc/codex"]
+owner = "root"
+group = "wheel"
+
+[bootstrap.files."/etc/codex/config.toml"]
+source = "codex/config.toml"
+owner = "root"
+group = "wheel"
