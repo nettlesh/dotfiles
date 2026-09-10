@@ -21,9 +21,6 @@
 "pacman:tealdeer" = { state = "absent", env = "cachyos" }
 "pacman:ttf-fantasque-nerd" = { state = "absent", env = "cachyos" }
 
-[bootstrap.user]
-login_shell = "/usr/bin/fish"
-
 # codex user state stays writable while shared defaults use its system layer
 [bootstrap.directories."/etc/codex"]
 owner = "root"
@@ -33,3 +30,6 @@ group = "root"
 source = "codex/config.toml"
 owner = "root"
 group = "root"
+
+[bootstrap.user]
+login_shell = "/usr/bin/fish"
