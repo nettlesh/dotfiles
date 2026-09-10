@@ -10,24 +10,19 @@ git_signing_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOWqnOUZkNfa0mvlobU+pg15
 op_personal_account = "my.1password.com"
 op_work_account = "obscurity-labs.1password.com"
 
-[bootstrap.directories."~/.ssh/config.d"]
-mode = "0700"
+# hk finds its linters through mise when Git runs hooks
+[env]
+HK_MISE = 1
 
-[bootstrap.hooks.pre-dotfiles]
-run = [
-  "touch {{ config_root | quote }}/mise.local.toml",
-  "{{ mise_bin | quote }} config set --file {{ config_root | quote }}/mise.local.toml --type string vars.git_email {{ vars.git_email | quote }}",
-]
-
-[bootstrap.hooks.post-tools]
-run = [
-  'mkdir -p "{{ xdg_config_home }}/fish/completions"',
-  'mise completion fish >"{{ xdg_config_home }}/fish/completions/mise.fish"',
-  "{{ '/opt/homebrew/bin/fish' if os() == 'macos' else '/usr/bin/fish' }} -c 'fisher update'",
-]
-
-[bootstrap.hooks.final]
-run = "mise bootstrap status --missing"
+[tools]
+editorconfig-checker = "latest"
+hk = "latest"
+pkl = "latest"
+rumdl = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+stylua = "latest"
+tombi = "latest"
 
 [dotfiles]
 "~/.agents/skills/herdr" = "agents/skills/herdr"
@@ -50,45 +45,24 @@ run = "mise bootstrap status --missing"
 "~/.config/starship.toml" = "starship/starship.toml"
 "~/.config/tealdeer/config.toml" = "tealdeer/config.toml"
 
-[tools]
-editorconfig-checker = "latest"
-hk = "latest"
-pkl = "latest"
-rumdl = "latest"
-shellcheck = "latest"
-shfmt = "latest"
-stylua = "latest"
-tombi = "latest"
+[bootstrap.directories."~/.ssh/config.d"]
+mode = "0700"
 
-# hk finds its linters through mise when Git runs hooks
-[env]
-HK_MISE = 1
+[bootstrap.hooks.pre-dotfiles]
+run = [
+  "touch {{ config_root | quote }}/mise.local.toml",
+  "{{ mise_bin | quote }} config set --file {{ config_root | quote }}/mise.local.toml --type string vars.git_email {{ vars.git_email | quote }}",
+]
 
-[tasks."bootstrap:identity"]
-hide = true
-interactive = true
-run = '''
-set -eu
+[bootstrap.hooks.post-tools]
+run = [
+  'mkdir -p "{{ xdg_config_home }}/fish/completions"',
+  'mise completion fish >"{{ xdg_config_home }}/fish/completions/mise.fish"',
+  "{{ '/opt/homebrew/bin/fish' if os() == 'macos' else '/usr/bin/fish' }} -c 'fisher update'",
+]
 
-op_personal_account="{{ vars.op_personal_account }}"
-op_work_account="{{ vars.op_work_account }}"
-
-for account in "$op_personal_account" "$op_work_account"; do
-    if ! op account get --account "$account" >/dev/null 2>&1; then
-        eval "$(op account add --address "$account" --signin)"
-    fi
-done
-
-age_file="{{ xdg_config_home }}/fnox/age.txt"
-if [ ! -f "$age_file" ]; then
-    eval "$(op signin --account "$op_personal_account")"
-    mkdir -p "$(dirname "$age_file")"
-    # age identity file document, by ID so renaming the item can't break bootstrap
-    op document get pfrztbtg5nchqnm6gdsnx72yqq \
-        --account "$op_personal_account" \
-        --out-file "$age_file"
-fi
-'''
+[bootstrap.hooks.final]
+run = "mise bootstrap status --missing"
 
 [tasks."bootstrap:claude"]
 hide = true
@@ -124,6 +98,32 @@ fi
 
 if ! codex mcp get fnox >/dev/null 2>&1; then
     codex mcp add fnox -- fnox --config "{{ xdg_config_home }}/fnox/config.toml" mcp
+fi
+'''
+
+[tasks."bootstrap:identity"]
+hide = true
+interactive = true
+run = '''
+set -eu
+
+op_personal_account="{{ vars.op_personal_account }}"
+op_work_account="{{ vars.op_work_account }}"
+
+for account in "$op_personal_account" "$op_work_account"; do
+    if ! op account get --account "$account" >/dev/null 2>&1; then
+        eval "$(op account add --address "$account" --signin)"
+    fi
+done
+
+age_file="{{ xdg_config_home }}/fnox/age.txt"
+if [ ! -f "$age_file" ]; then
+    eval "$(op signin --account "$op_personal_account")"
+    mkdir -p "$(dirname "$age_file")"
+    # age identity file document, by ID so renaming the item can't break bootstrap
+    op document get pfrztbtg5nchqnm6gdsnx72yqq \
+        --account "$op_personal_account" \
+        --out-file "$age_file"
 fi
 '''
 

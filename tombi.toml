@@ -1,4 +1,3 @@
-# Matches mise's own formatter byte-for-byte, so both can format these files
 [format.rules]
 trailing-comment-alignment = true
 trailing-comment-space-width = 1
@@ -7,11 +6,17 @@ trailing-comment-space-width = 1
 path = "https://mise.jdx.dev/schema/mise.json"
 include = ["mise.toml", "mise.*.toml", "**/mise/config.toml"]
 
-# Keeps these tables alphabetical
-# NOTE: Must stay attached to the mise schema above
-#       [[schemas.overrides]] binds to the nearest preceding [[schemas]]
+# NOTE: Overrides bind to the preceding mise schema
 [[schemas.overrides]]
-targets = ["tools", "dotfiles", "env", "bootstrap.packages"]
+targets = [
+  "settings",
+  "tools",
+  "dotfiles",
+  "bootstrap.packages",
+  "bootstrap.directories",
+  "bootstrap.files",
+  "tasks",
+]
 
 [schemas.overrides.format.rules]
 table-keys-order = "ascending"

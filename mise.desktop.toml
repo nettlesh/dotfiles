@@ -2,6 +2,11 @@
 # NOTE: Required by done on Sway and Niri
 jq = { version = "latest", os = ["linux"] }
 
+[dotfiles]
+"~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
+"~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }
+"~/.ssh/config" = { source = "ssh/config.tmpl", mode = "template" }
+
 [bootstrap.packages]
 "aur:1password" = { os = "linux" }
 "aur:1password-cli" = { os = "linux" }
@@ -36,8 +41,3 @@ if [ "{{ os() }}" = "linux" ]; then
     mise bootstrap packages apply --manager flatpak --yes
 fi
 '''
-
-[dotfiles]
-"~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
-"~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }
-"~/.ssh/config" = { source = "ssh/config.tmpl", mode = "template" }

@@ -1,13 +1,13 @@
+[env]
+FNOX_PROFILE = "work"
+OP_ACCOUNT = "{{ vars.op_work_account }}"
+
 [bootstrap.hooks.post-dotfiles]
 run = '"{{ mise_bin }}" set --file "{{ xdg_config_home }}/mise/config.local.toml" FNOX_PROFILE=work OP_ACCOUNT={{ vars.op_work_account | quote }}'
 
 # fnox check needs profile secrets, so it cannot run on the baseline
 [bootstrap.hooks.final]
 run = "fnox check"
-
-[env]
-FNOX_PROFILE = "work"
-OP_ACCOUNT = "{{ vars.op_work_account }}"
 
 [tasks.bootstrap]
 run = [

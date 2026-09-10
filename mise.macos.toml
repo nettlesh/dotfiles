@@ -11,6 +11,16 @@ _.path = ["~/.local/bin", "/opt/homebrew/bin"]
 [bootstrap.brew]
 adopt = true
 
+# codex user state stays writable while shared defaults use its system layer
+[bootstrap.directories."/etc/codex"]
+owner = "root"
+group = "wheel"
+
+[bootstrap.files."/etc/codex/config.toml"]
+source = "codex/config.toml"
+owner = "root"
+group = "wheel"
+
 [bootstrap.macos.dock]
 mru_spaces = false
 show_recents = false
@@ -26,13 +36,3 @@ press_and_hold = false
 
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/fish"
-
-# codex user state stays writable while shared defaults use its system layer
-[bootstrap.directories."/etc/codex"]
-owner = "root"
-group = "wheel"
-
-[bootstrap.files."/etc/codex/config.toml"]
-source = "codex/config.toml"
-owner = "root"
-group = "wheel"
