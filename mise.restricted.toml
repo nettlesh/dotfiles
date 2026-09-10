@@ -1,0 +1,12 @@
+[bootstrap.packages]
+"brew-cask:font-fira-code-nerd-font" = { os = "macos" }
+"brew-cask:ghostty" = { os = "macos" }
+"brew-cask:obsidian" = { os = "macos" }
+"brew-cask:zen" = { os = "macos" }
+
+# The watcher also runs outside this project
+[bootstrap.hooks.pre-dotfiles]
+run = [
+  "touch {{ xdg_config_home | quote }}/mise/config.local.toml",
+  "{{ mise_bin | quote }} config set --file {{ xdg_config_home | quote }}/mise/config.local.toml --type string settings.history.sync manual",
+]
