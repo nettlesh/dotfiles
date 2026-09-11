@@ -1,6 +1,26 @@
-# dotfiles
+<!-- The centered banner uses HTML and precedes the title -->
+<!-- rumdl-disable MD033 -->
+<!-- rumdl-disable MD041 -->
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+<p align="center">
+  <img src="dotfiles.png" alt="A black hole bending light beside the word dotfiles" width="100%">
+</p>
+
+<h1 align="center">dotfiles</h1>
+
+<!-- rumdl-enable MD041 -->
+
+<p align="center">
+  <a href="https://github.com/nettlesh/dotfiles/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nettlesh/dotfiles/ci.yml?branch=main&amp;style=for-the-badge&amp;label=build" alt="Build status"></a>
+  <a href="https://github.com/nettlesh/dotfiles/releases"><img src="https://img.shields.io/badge/version-unreleased-555555?style=for-the-badge" alt="Version: unreleased"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-555555?style=for-the-badge" alt="License: MIT"></a>
+</p>
+
+<p align="center"><b>A black hole for my free time.</b></p>
+
+<!-- rumdl-enable MD033 -->
+
+## Overview
 
 My dotfiles for CachyOS and macOS, managed by [mise](https://mise.jdx.dev).
 Most configuration lives under `~/.config`.
@@ -12,6 +32,7 @@ There's a lot of cool stuff here
 
 ## Contents
 
+- [Overview](#overview)
 - [Features](#features)
 - [Installation](#installation)
   - [Requirements](#requirements)
@@ -35,26 +56,31 @@ There's a lot of cool stuff here
 
 ## Features
 
-| Category        |                            Source                            |                                      Config                                       |
-| --------------- | :----------------------------------------------------------: | :-------------------------------------------------------------------------------: |
-| Terminal        |           [Ghostty](https://github.com/ghostty-org/ghostty)           | [config.ghostty](https://github.com/nettlesh/dotfiles/blob/main/ghostty/config.ghostty) |
-| Shell           |            [fish](https://github.com/fish-shell/fish-shell)            | [config.fish](https://github.com/nettlesh/dotfiles/blob/main/fish/config.fish)    |
-| Plugin Manager  |          [Fisher](https://github.com/jorgebucaran/fisher)          | [fish_plugins](https://github.com/nettlesh/dotfiles/blob/main/fish/fish_plugins) |
-| Prompt          |                   [Starship](https://starship.rs)                   | [starship.toml](https://github.com/nettlesh/dotfiles/blob/main/starship/starship.toml)    |
-| Multiplexer     |                   [herdr](https://herdr.dev)                    | [config.toml](https://github.com/nettlesh/dotfiles/blob/main/herdr/config.toml)   |
-| Editor          | [Neovim](https://github.com/neovim/neovim)/[mini.nvim](https://github.com/nvim-mini/mini.nvim) | [nvim](https://github.com/nettlesh/dotfiles/tree/main/nvim) |
-| Tool Manager    |                [mise](https://github.com/jdx/mise)                | [mise.toml](https://github.com/nettlesh/dotfiles/blob/main/mise.toml)             |
-| Version Control |                   [Git](https://git-scm.com)                    | [config](https://github.com/nettlesh/dotfiles/blob/main/git/config)     |
-| Diff Viewer     |          [delta](https://github.com/dandavison/delta)          | [delta](https://github.com/nettlesh/dotfiles/blob/main/git/delta) |
-| Search          |          [ripgrep](https://github.com/BurntSushi/ripgrep)          | [ripgreprc](https://github.com/nettlesh/dotfiles/blob/main/ripgrep/ripgreprc)     |
-| Fuzzy Finder    |                 [fzf](https://github.com/junegunn/fzf)                 | [config.fish](https://github.com/nettlesh/dotfiles/blob/main/fish/config.fish)    |
+| Category | Source | Config |
+| --- | :---: | :---: |
+| Terminal | [Ghostty](https://github.com/ghostty-org/ghostty) | [config.ghostty](ghostty/config.ghostty) |
+| Shell | [fish](https://github.com/fish-shell/fish-shell) | [config.fish](fish/config.fish) |
+| Plugin Manager | [Fisher](https://github.com/jorgebucaran/fisher) | [fish_plugins](fish/fish_plugins) |
+| Prompt | [Starship](https://starship.rs) | [starship.toml](starship/starship.toml) |
+| Multiplexer | [herdr](https://herdr.dev) | [config.toml](herdr/config.toml) |
+| Editor | [Neovim](https://github.com/neovim/neovim) | [nvim](nvim) |
+| Tool Manager | [mise](https://github.com/jdx/mise) | [config.toml](mise/config.toml) |
+| Version Control | [Git](https://git-scm.com) | [config](git/config) |
+| Diff Viewer | [delta](https://github.com/dandavison/delta) | [delta](git/delta) |
+| File Viewer | [bat](https://github.com/sharkdp/bat) | [config](bat/config) |
+| Search | [ripgrep](https://github.com/BurntSushi/ripgrep) | [ripgreprc](ripgrep/ripgreprc) |
+| TL;DR | [tealdeer](https://github.com/tealdeer-rs/tealdeer) | [config.toml](tealdeer/config.toml) |
+| SSH | [OpenSSH](https://www.openssh.com) | [config.tmpl](ssh/config.tmpl), [allowed_signers.tmpl](ssh/allowed_signers.tmpl) |
+| Secrets | [fnox](https://github.com/jdx/fnox) | [config.toml](fnox/config.toml) |
+| Git Hooks | [hk](https://github.com/jdx/hk) | [config.pkl](hk/config.pkl) |
+| arch btw | [fastfetch](https://github.com/fastfetch-cli/fastfetch) | [config.jsonc](fastfetch/config.jsonc) |
 
 A few other tools I use:
 
-- [bat](https://github.com/sharkdp/bat)
+- [1Password](https://1password.com)
 - [eza](https://github.com/eza-community/eza)
-- [fastfetch](https://github.com/fastfetch-cli/fastfetch)
 - [fd](https://github.com/sharkdp/fd)
+- [fzf](https://github.com/junegunn/fzf)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [zoxide](https://github.com/ajeetdsouza/zoxide)
 
