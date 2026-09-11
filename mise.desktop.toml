@@ -1,7 +1,3 @@
-[tools]
-# NOTE: Required by done on Sway and Niri
-jq = { version = "latest", os = ["linux"] }
-
 [dotfiles]
 "~/.config/git/1password" = { source = "git/1password.tmpl", mode = "template" }
 "~/.ssh/allowed_signers" = { source = "ssh/allowed_signers.tmpl", mode = "template" }

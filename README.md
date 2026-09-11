@@ -325,6 +325,31 @@ Full setup starts the watcher after installing the tools it needs.
 You can keep that history local or share it through your own private repository.
 Normal setup doesn't connect one for you.
 
+History tracks shared setup inputs: the root mise layers,
+application configuration bundles, scripts, templates, dependency manifests,
+and their lockfiles.
+Complete application bundles include their supporting configuration,
+such as `nvim/.stylua.toml`.
+Vendored integration scripts are inputs too: bootstrap deploys the saved copies.
+Rendered files, installed plugins, caches, credentials,
+and machine-local settings stay outside history.
+This follows mise's
+[source and template tracking workflow](https://mise.jdx.dev/bootstrap/setup.html#use-a-template-optional).
+
+Keep each lockfile with the configuration that owns its tool requests:
+`mise.lock` for the root project and `mise/mise.lock` for the global tools.
+A shared environment that declares tools needs its corresponding lockfile in Git
+and history; a layer containing only system packages does not.
+Local lockfiles stay ignored alongside their local configuration.
+See mise's
+[lockfile reference](https://mise.jdx.dev/dev-tools/mise-lock.html#environment-specific-lockfiles).
+
+Repository-wide checks, agent instructions, documentation,
+and build and release files stay in ordinary Git.
+History supplements the public checkout,
+so [restoring from history](#restore-from-history) starts by cloning
+that repository.
+
 ### Connect a private repository
 
 After setup, sign in to GitHub and configure its Git credential helper:
