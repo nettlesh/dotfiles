@@ -45,13 +45,13 @@ There's a lot of cool stuff here
 | Editor          | [Neovim](https://github.com/neovim/neovim)/[mini.nvim](https://github.com/nvim-mini/mini.nvim) | [nvim](https://github.com/nettlesh/dotfiles/tree/main/nvim) |
 | Tool Manager    |                [mise](https://github.com/jdx/mise)                | [mise.toml](https://github.com/nettlesh/dotfiles/blob/main/mise.toml)             |
 | Version Control |                   [Git](https://git-scm.com)                    | [config](https://github.com/nettlesh/dotfiles/blob/main/git/config)     |
+| Diff Viewer     |          [delta](https://github.com/dandavison/delta)          | [delta](https://github.com/nettlesh/dotfiles/blob/main/git/delta) |
 | Search          |          [ripgrep](https://github.com/BurntSushi/ripgrep)          | [ripgreprc](https://github.com/nettlesh/dotfiles/blob/main/ripgrep/ripgreprc)     |
 | Fuzzy Finder    |                 [fzf](https://github.com/junegunn/fzf)                 | [config.fish](https://github.com/nettlesh/dotfiles/blob/main/fish/config.fish)    |
 
 A few other tools I use:
 
 - [bat](https://github.com/sharkdp/bat)
-- [delta](https://github.com/dandavison/delta)
 - [eza](https://github.com/eza-community/eza)
 - [fastfetch](https://github.com/fastfetch-cli/fastfetch)
 - [fd](https://github.com/sharkdp/fd)
@@ -359,6 +359,10 @@ and your local email.
 Change those inputs instead of copying the generated file into the repo.
 Desktop signing settings live in `~/.config/git/1password`;
 keep signing enabled only in that include.
+
+delta's settings and the `cuttlefish` theme live in `git/delta`,
+included from `git/config`.
+Its colours are ANSI names, so they follow the terminal palette.
 
 ### Shell and agent integrations
 

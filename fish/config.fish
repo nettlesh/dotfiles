@@ -2,7 +2,6 @@
 set -gx RIPGREP_CONFIG_PATH ~/.config/ripgrep/ripgreprc # ripgrep has no default config location
 set -gx TEALDEER_CONFIG_DIR ~/.config/tealdeer
 
-set -gx LESS -c # Display text from the top-down
 set -gx MANPAGER "sh -c 'col -bx | bat -plman'" # Use bat for man pages
 set -gx MANROFFOPT -c
 
@@ -16,6 +15,7 @@ set -gx FZF_CTRL_T_OPTS "--walker-skip .git,node_modules,.venv,__pycache__,.ruff
 # Locate host tools before mise activation
 if test (uname) = Darwin
     fish_add_path --path --move /opt/homebrew/bin
+    fish_add_path --path --move ~/.docker/bin
 end
 
 fish_add_path --path --move ~/.local/bin

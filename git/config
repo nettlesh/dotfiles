@@ -1,13 +1,11 @@
 [include]
     path = ~/.config/git/identity
     path = ~/.config/git/1password
+    path = ~/.config/git/delta
 
 [core]
     editor = nvim
     pager  = delta
-
-[delta]
-    navigate = true
 
 [interactive]
     diffFilter = delta --color-only

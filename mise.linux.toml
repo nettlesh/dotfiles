@@ -7,6 +7,9 @@
 "pacman:chatgpt-desktop-bin" = { env = "cachyos" }
 "pacman:claude-desktop" = { env = "cachyos" }
 "pacman:curl" = "latest"
+"pacman:docker" = "latest"
+"pacman:docker-buildx" = "latest"
+"pacman:docker-compose" = "latest"
 "pacman:eza" = { state = "absent", env = "cachyos" }
 "pacman:fastfetch" = { state = "absent", env = "cachyos" }
 "pacman:fish" = "latest"
@@ -21,6 +24,10 @@
 "pacman:tealdeer" = { state = "absent", env = "cachyos" }
 "pacman:ttf-fantasque-nerd" = { state = "absent", env = "cachyos" }
 
+[bootstrap.services.containerd]
+
+[bootstrap.services.docker]
+
 # codex user state stays writable while shared defaults use its system layer
 [bootstrap.directories."/etc/codex"]
 owner = "root"
@@ -33,3 +40,11 @@ group = "root"
 
 [bootstrap.user]
 login_shell = "/usr/bin/fish"
+
+[bootstrap.hooks.post-user]
+# Add the user running bootstrap because account names vary between machines
+run = '''
+if ! id -nG | tr ' ' '\n' | grep -qx docker; then
+    sudo usermod -aG docker "$(id -un)"
+fi
+'''
