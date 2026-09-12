@@ -466,8 +466,8 @@ Install the project tools with `mise install --locked` before running checks;
 on an unbootstrapped checkout, supply `git_email=you@example.com`.
 The tool requests live in `mise.toml`,
 with versions and checksums in `mise.lock`.
-[hk builtins](https://hk.jdx.dev/builtins.html) define how to invoke tools; the
-tool binaries are installed separately by mise.
+[hk builtins](https://hk.jdx.dev/builtins.html) define how to invoke tools;
+the tool binaries are installed separately by mise.
 
 | Tool | Purpose | Configuration |
 | --- | --- | --- |
