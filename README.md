@@ -425,6 +425,19 @@ for commands it launches in other shells.
 
 Shared agent skills live in `agents/skills` and are linked into the Claude Code
 and Codex skill directories.
+
+Repository-local skills live in `.agents/skills`.
+The [adding-tools skill](.agents/skills/adding-tools/SKILL.md) covers tool
+comparison, configuration review, and integration into these dotfiles.
+Claude Code shares it through `.claude/skills/adding-tools`,
+a relative symlink to the same skill directory.
+These local skills stay in the repository and are not deployed globally.
+See the
+[Codex](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
+and
+[Claude Code](https://code.claude.com/docs/en/skills#choose-where-skills-load)
+skill discovery documentation.
+
 The herdr integration scripts and registrations are kept in this repo;
 setup doesn't run the herdr integration installer.
 

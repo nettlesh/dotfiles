@@ -4,64 +4,66 @@ Rules for working in this repository.
 
 ## Review
 
-- Audit every file you read against all applicable rules,
-  not just task-relevant lines
-- Assume existing work may be noncompliant
-- Fix in-scope violations; report others
+- Audit every file you read in full against applicable rules;
+  do not assume existing work is compliant
+- Fix in-scope violations; report those outside the task's scope
 
 ## Research
 
-- Before proposing a tool-based solution, configuring a tool,
-  or describing its capabilities,
-  read the relevant canonical documentation or configuration reference in full;
-  summaries are insufficient
-- Use experiments only to confirm the documentation.
-  Results establish behavior only for the tested machine, input,
-  and defaults—not intent, supported configuration, or portability
-- Never truncate evidence used in reasoning
-- Label assumptions and unverified claims
-- After a warning or failure,
-  re-read the documentation for that mechanism before proposing a change,
-  even if already read this session
+- Before proposing a tool-based solution, configuring a tool, or describing
+  its capabilities, read the relevant canonical documentation or configuration
+  reference in full; summaries are insufficient
+- Prefer canonical references and upstream baselines over ad hoc choices.
+  Before adding ignore rules,
+  check [github/gitignore](https://github.com/github/gitignore)
+  for a matching baseline.
+- Prefer the documented solution;
+  invent one only as a last resort after checking authoritative guidance
+  and explaining why documented paths do not fit;
+  disclose it as a custom proposal, not a documented solution
+- Cite documentation for claims of tool support or recommendations;
+  distinguish community conventions from official guidance
+- Use experiments only to confirm documentation;
+  results establish behavior for the tested machine, input, and defaults,
+  not intent, supported configuration, or portability
+- Never truncate evidence used in reasoning;
+  label assumptions and unverified claims
+- After a warning or failure, re-read the mechanism's documentation before
+  proposing a change, even if already read this session
 - Reconsider a rejected option only
-  after stating what new information changed the decision
-- Claim a tool supports or recommends a pattern only with a documentation
-  citation; otherwise call it a convention
-- Use documented mechanisms only.
-  Where none fits, say so and stop; never invent a name, file, variable,
-  or structure to fill the gap
-- Mark anything you originate as proposed, and never present it
-  alongside established names as though it carried the same weight
+  after explaining what new information warrants it
 
 ## Implementation
 
-- Address observed problems only;
-  do not add defensive handling for hypothetical failures.
-  Let them surface first
-- Documented setup is not speculative;
-  follow the golden path before anything breaks
-- Agree the design before writing it.
-  Present the options, name the tradeoffs, and wait
+- Prefer the simplest solution;
+  add complexity only for a demonstrated design need
+- Do not add defensive handling for hypothetical failures;
+  complete documented setup proactively
+- Present design options and tradeoffs,
+  then wait for explicit approval to implement.
+  Positive feedback and refinements to a proposal are not implementation
+  approval.
+  Once approved, proceed within the agreed scope without repeat approval.
 
 ## Configuration
 
-- Add only meaningful deviations from documented defaults;
-  never restate a default
+- Never restate defaults; explain when no configuration changes are warranted
+- For added or relocated configuration, assess deployment and mise history
+  tracking separately against README.md's policy; explain any omission
 
 ## Comments
 
 - Comment only non-obvious ordering, deliberate rule violations,
   or constraints likely to be re-derived or re-litigated
-- Write for a reader with no prior context; state the current constraint,
-  not its history
-- Do not restate code, mention removed tools or old revisions,
-  depend on unstated plans, or leave stale comments
-- Preserve canonical spelling for names and identifiers, including at the
-  start of a sentence; for example, hk, herdr, mise, and fish remain lowercase
-- Otherwise capitalise comments, omit terminal punctuation, and prefer one line
-- Keep comments short and to the point
-- Use conventional annotations such as `NOTE:`, `TODO:`,
-  and `FIXME:` when appropriate
+- Make comments self-contained and current; omit code restatements, history,
+  removed tools, old revisions, and unstated plans
+- Keep comments short, preferably one line, without terminal punctuation
+- Capitalise comments, but preserve canonical spelling and case for names
+  and identifiers, even at sentence starts (for example, mise and fish)
+- Use established codetags where appropriate;
+  consult references such as
+  [PEP 350's mnemonic list](https://peps.python.org/pep-0350/#mnemonics).
+  Examples include `NOTE:`, `TODO:`, and `FIXME:`, but are not exhaustive.
 
 ## hk
 
