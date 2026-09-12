@@ -64,6 +64,7 @@ Rules for working in this repository.
   consult references such as
   [PEP 350's mnemonic list](https://peps.python.org/pep-0350/#mnemonics).
   Examples include `NOTE:`, `TODO:`, and `FIXME:`, but are not exhaustive.
+- Align codetag continuation lines with the content after the tag
 
 ## hk
 
