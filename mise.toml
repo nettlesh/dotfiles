@@ -15,7 +15,10 @@ op_work_account = "obscurity-labs.1password.com"
 HK_MISE = 1
 
 [tools]
+actionlint = "latest"
+betterleaks = "latest"
 editorconfig-checker = "latest"
+hadolint = "latest"
 hk = "latest"
 pkl = "latest"
 rumdl = "latest"
@@ -23,6 +26,8 @@ shellcheck = "latest"
 shfmt = "latest"
 stylua = "latest"
 tombi = "latest"
+trivy = "latest"
+zizmor = "latest"
 
 [dotfiles]
 "~/.agents/skills/herdr" = "agents/skills/herdr"

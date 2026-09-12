@@ -13,36 +13,85 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Satisfies the required mise var, which is checked before any command runs
 env:
   git_email: you@example.com
+  MISE_VERSION: 2026.9.4
 
 jobs:
   check:
     name: Check
     runs-on: ubuntu-24.04
+    env:
+      HK_CONFIG_DIR: ${{ github.workspace }}/hk
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install fish
+        run: sudo apt-get update && sudo apt-get install --yes fish
+
+      - name: Set up mise
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+
+      - name: Check source files
+        run: mise run check
+
+      - name: Scan Git history for secrets
+        run: mise exec -- betterleaks git --redact --no-banner .
+
+  linux:
+    name: Linux bootstrap
+    needs: check
+    runs-on: ubuntu-24.04
+    container:
+      image: archlinux:base@sha256:82b1b08faae9d61e3e7e13d562f4d09114d939105b0d59ff34140f3bd418593a
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Prepare Arch container
+        run: |
+          pacman -Syu --noconfirm curl git sudo
+          curl --proto '=https' --proto-redir '=https' \
+            --fail --show-error --silent --location https://mise.run |
+            MISE_INSTALL_PATH=/usr/local/bin/mise sh
+          useradd --create-home --user-group --shell /bin/bash sebastian
+          printf '%s\n' 'sebastian ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/sebastian
+          chmod 0440 /etc/sudoers.d/sebastian
+
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Install fish
-        run: sudo apt-get install --yes fish
-
-      - name: Set up mise
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-
-      - name: Check source files
-        run: mise run check
-
-  linux:
-    name: Linux
-    needs: check
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Build Arch Linux image
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+      - name: Bootstrap and verify Arch baseline
+        env:
+          MISE_GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cp -a "$GITHUB_WORKSPACE" /home/sebastian/.dotfiles
+          chown -R sebastian:sebastian /home/sebastian/.dotfiles
+          cd /home/sebastian/.dotfiles
+          mise trust --all --quiet
+          sudo --set-home --user sebastian env \
+            git_email="$git_email" MISE_GITHUB_TOKEN="$MISE_GITHUB_TOKEN" \
+            bash <<'BOOTSTRAP'
+          set -euo pipefail
+          cd "$HOME/.dotfiles"
+          mise trust --all --quiet
+          mise bootstrap packages apply --yes
+          sudo --preserve-env=git_email /usr/local/bin/mise bootstrap user apply --yes
+          mise --locked bootstrap --yes --skip services,final-hook
+          mise bootstrap packages status --missing
+          mise bootstrap files status --missing
+          mise bootstrap dotfiles status --missing
+          mise bootstrap user status --missing
+          mise --locked install --dry-run-code
+          BOOTSTRAP
 
   macos:
     name: macOS
@@ -54,8 +103,80 @@ jobs:
         with:
           persist-credentials: false
 
-      # bootstrap.hooks.final verifies the baseline
-      - name: Bootstrap with mise
+      - name: Set up mise
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
-          bootstrap: true
+          version: ${{ env.MISE_VERSION }}
+          install: false
+
+      - name: Bootstrap with mise
+        env:
+          MISE_GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mise_bin="$(command -v mise)"
+          mise trust --all --quiet
+          mise bootstrap packages apply --yes
+          sudo --preserve-env=git_email "$mise_bin" trust --all --quiet
+          sudo --preserve-env=git_email "$mise_bin" bootstrap user apply --yes
+          mise --locked bootstrap --yes
+
+  image:
+    name: Dotfiles image
+    needs: check
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Trivy
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+          install_args: trivy
+          cache: false
+
+      - name: Build dotfiles image
+        id: build
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          load: true
+          platforms: linux/amd64
+
+      - name: Verify dotfiles contents
+        env:
+          IMAGE_ID: ${{ steps.build.outputs.imageid }}
+        run: |
+          docker run --rm --interactive "$IMAGE_ID" bash -se <<'VERIFY'
+          test "$(id -u)" -ne 0
+          mise bootstrap packages status --missing
+          mise bootstrap files status --missing
+          mise bootstrap dotfiles status --missing
+          mise bootstrap user status --missing
+          mise --locked install --dry-run-code
+          VERIFY
+          docker run --rm "$IMAGE_ID" fish --interactive --command exit
+
+      - name: Generate image SBOM
+        env:
+          IMAGE_ID: ${{ steps.build.outputs.imageid }}
+        run: trivy image --format spdx-json --output dotfiles.spdx.json "$IMAGE_ID"
+
+      - name: Upload image SBOM
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dotfiles-sbom
+          path: dotfiles.spdx.json
+          if-no-files-found: error
+
+      - name: Scan image vulnerabilities and configuration
+        env:
+          IMAGE_ID: ${{ steps.build.outputs.imageid }}
+        run: |
+          trivy image \
+            --image-config-scanners misconfig,secret \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            "$IMAGE_ID"

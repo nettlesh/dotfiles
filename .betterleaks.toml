@@ -1,0 +1,10 @@
+[extend]
+useDefault = true
+
+# NOTE: Additive allowlists preserve upstream filters when extending defaults
+[[allowlists]]
+targetRules = ["generic-password"]
+condition = "AND"
+paths = ['''^mise\.(macos|personal|work)\.toml$''']
+regexTarget = "line"
+regexes = ['''(?m)^"(brew-cask|aur):1password" = "latest"$''']

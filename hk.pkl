@@ -6,6 +6,8 @@ import "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Builtin
 local herdrHooks = "**/herdr-agent-state.sh"
 
 local linters = new Mapping {
+  ["actionlint"] = Builtins.actionlint
+  ["betterleaks"] = Builtins.betterleaks
   ["editorconfig-checker"] = (Builtins.editorconfig_checker) {
     exclude = herdrHooks
   }
@@ -19,6 +21,7 @@ local linters = new Mapping {
     check = "fish_indent -c {{ files }}"
     fix = "fish_indent -w {{ files }}"
   }
+  ["hadolint"] = Builtins.hadolint
   ["hk-test"] = Builtins.hk_test
   // mise and tombi intentionally enforce identical formatting
   ["mise"] = Builtins.mise
@@ -33,6 +36,7 @@ local linters = new Mapping {
   ["stylua"] = Builtins.stylua
   ["tombi"] = Builtins.tombi
   ["tombi-format"] = Builtins.tombi_format
+  ["zizmor"] = Builtins.zizmor
 }
 
 hooks {

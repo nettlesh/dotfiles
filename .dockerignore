@@ -2,5 +2,12 @@
 .git
 .github
 .rumdl_cache
+.env
+.env.*
 **/*.local.toml
+**/*.local.lock
+**/.DS_Store
+AGENTS.md
 Dockerfile
+README.md
+dotfiles.png
