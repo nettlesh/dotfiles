@@ -270,9 +270,26 @@ Your saved environments apply to these commands too.
 
 ## Container
 
-Run the Arch Linux environment in a container without installing the dotfiles on
-your host.
+Run the Arch Linux dotfiles image without installing the dotfiles on your host.
 You'll need Docker.
+The image targets `linux/amd64`; ARM hosts need x86-64 emulation.
+
+The image installs system packages from `mise.linux.toml`
+and tools from the root and global mise configurations and their lockfiles.
+Tools are installed normally as `sebastian`, under that user's home,
+following the
+[mise Docker cookbook](https://mise.jdx.dev/mise-cookbook/docker.html).
+Mount project directories rather than replacing the home directory,
+which would hide the installed tools and dotfiles.
+
+The container starts fish as an ordinary user.
+It includes the configured Docker packages but does not start Docker,
+containerd, or the mise history watcher.
+No desktop, personal, work, or CachyOS environment is selected.
+
+The Dockerfile and CI explicitly pin mise to `2026.9.4`,
+matching `min_version` in `mise.toml`.
+Update these pins together when changing the minimum.
 
 ### Pull and run from GHCR
 
@@ -282,8 +299,8 @@ disabled.
 Once an image is published, replace `VERSION` with its release version:
 
 ```sh
-docker pull ghcr.io/nettlesh/dotfiles:VERSION
-docker run --rm -it ghcr.io/nettlesh/dotfiles:VERSION
+docker pull --platform linux/amd64 ghcr.io/nettlesh/dotfiles:VERSION
+docker run --platform linux/amd64 --rm -it ghcr.io/nettlesh/dotfiles:VERSION
 ```
 
 See GitHub's
@@ -295,21 +312,21 @@ for registry access and pulling images.
 From a checkout of this repo:
 
 ```sh
-docker build -t dotfiles .
-docker run --rm -it dotfiles
+docker build --platform linux/amd64 -t dotfiles .
+docker run --platform linux/amd64 --rm -it dotfiles
 ```
 
 The image uses a placeholder Git email.
 To build it with your own:
 
 ```sh
-docker build --build-arg git_email=you@example.com -t dotfiles .
+docker build --platform linux/amd64 --build-arg git_email=you@example.com -t dotfiles .
 ```
 
 Or override it when starting a container, using either the local or GHCR image:
 
 ```sh
-docker run --rm -it \
+docker run --platform linux/amd64 --rm -it \
   -e GIT_AUTHOR_EMAIL=you@example.com \
   -e GIT_COMMITTER_EMAIL=you@example.com \
   dotfiles
@@ -445,4 +462,60 @@ setup doesn't run the herdr integration installer.
 
 For source checks, `mise run check` runs the linters
 and `mise run fix` applies their automatic fixes.
-CI also builds the Arch container and runs the baseline setup on macOS.
+Install the project tools with `mise install --locked` before running checks;
+on an unbootstrapped checkout, supply `git_email=you@example.com`.
+The tool requests live in `mise.toml`,
+with versions and checksums in `mise.lock`.
+[hk builtins](https://hk.jdx.dev/builtins.html) define how to invoke tools; the
+tool binaries are installed separately by mise.
+
+| Tool | Purpose | Configuration |
+| --- | --- | --- |
+| [actionlint](https://github.com/rhysd/actionlint) | Workflow syntax and expressions | `Builtins.actionlint` in `hk.pkl` |
+| [zizmor](https://docs.zizmor.sh/) | GitHub Actions security | `Builtins.zizmor` in `hk.pkl` |
+| [Hadolint](https://github.com/hadolint/hadolint) | Dockerfile linting | `Builtins.hadolint` in `hk.pkl` |
+| [Betterleaks](https://github.com/betterleaks/betterleaks) | Secrets in source files and Git history | `Builtins.betterleaks` in `hk.pkl`; history scan in CI |
+| [Trivy](https://trivy.dev/) | Image vulnerabilities, secrets, configuration, and SBOM | `.github/workflows/ci.yml` |
+
+These linters use their standard rules.
+The repository's `.betterleaks.toml` extends Betterleaks' default rules
+and filters confirmed false positives
+for exact 1Password package declarations with the version `latest` in three mise
+environment files.
+CI points `HK_CONFIG_DIR` at the repository's `hk` directory
+so the shared hygiene checks run without deploying the dotfiles first.
+Betterleaks redacts findings,
+and the CI checkout includes full history for its Git scan.
+GitHub secret scanning and push protection are separate repository settings;
+adding a scanner here does not enable them.
+
+CI checks source files, independently verifies Linux and macOS bootstrap,
+and builds the dotfiles image.
+The Linux job uses an ordinary user with passwordless sudo inside an Arch
+container.
+It installs the declared packages, applies the login shell through sudo,
+and runs bootstrap with services and the final hook excluded.
+Explicit resource checks verify packages, files, dotfiles, the login shell,
+and installed tool versions. macOS installs the declared packages
+and applies the login shell through sudo
+before running the full baseline bootstrap, including its final status check.
+These jobs do not select optional environments.
+
+The image job builds locally without a tag or registry push,
+verifies its contents and fish startup,
+and scans the image returned by the build action.
+The Trivy setup disables mise-action caching to address the
+[zizmor cache-poisoning audit](https://docs.zizmor.sh/audits/#cache-poisoning).
+Trivy produces an SPDX JSON SBOM uploaded
+as the `dotfiles-sbom` workflow artifact.
+The scan fails on HIGH or CRITICAL findings, including unfixed vulnerabilities,
+and enables image-configuration checks for misconfiguration and secrets.
+Coverage depends on Trivy's supported package and binary analyzers;
+the SBOM is not a guarantee that every executable is represented.
+Release publishing and attaching SBOMs to releases are configured separately.
+
+The project tool manifest and lockfile already participate in mise history.
+Repository-wide `hk.pkl`, `.betterleaks.toml`, workflows, Docker files,
+and this documentation stay in ordinary Git under the
+[history policy](#private-history); they are not deployed as global
+configuration.

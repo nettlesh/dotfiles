@@ -4,11 +4,16 @@ FROM archlinux:base@sha256:82b1b08faae9d61e3e7e13d562f4d09114d939105b0d59ff34140
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Use Git's suggested placeholder identity
+ARG MISE_VERSION=2026.9.4
 ARG git_email=you@example.com
 
-RUN pacman -Syu --noconfirm curl \
-    && curl https://mise.run | MISE_INSTALL_PATH=/usr/local/bin/mise sh \
+# NOTE: Disable pacman syscall filtering during package installation for amd64 emulation on Apple Silicon
+#       https://github.com/apple/container/issues/1628
+RUN sed -i '/^\[options\]$/a DisableSandboxSyscalls' /etc/pacman.conf \
+    && pacman -Syu --noconfirm curl \
+    && curl --proto '=https' --proto-redir '=https' \
+        --fail --show-error --silent --location https://mise.run \
+        | MISE_INSTALL_PATH=/usr/local/bin/mise sh \
     && pacman -Scc --noconfirm \
     && groupadd --gid 1000 sebastian \
     && useradd --create-home --gid sebastian --no-log-init --shell /bin/bash --uid 1000 sebastian
@@ -18,16 +23,17 @@ WORKDIR /home/sebastian/.dotfiles
 
 RUN mise trust --all --quiet \
     && mise bootstrap packages apply --yes \
-    && MISE_GLOBAL_CONFIG_FILE=/home/sebastian/.dotfiles/mise/config.toml \
-        mise --locked install --system \
+    && mise bootstrap files apply --yes \
+    && usermod --shell /usr/bin/fish sebastian \
     && pacman -Scc --noconfirm \
-    && usermod --shell /usr/bin/fish sebastian
+    && sed -i '/^DisableSandboxSyscalls$/d' /etc/pacman.conf
 
-ENV HOME="/home/sebastian"
+ENV HOME=/home/sebastian
+ENV PATH=/home/sebastian/.local/share/mise/shims:$PATH
 
-USER sebastian
+USER 1000:1000
 
 RUN mise trust --all --quiet \
-    && mise --locked bootstrap --yes --skip packages,user
+    && mise --locked bootstrap --yes --skip packages,user,services,final-hook
 
 CMD ["fish"]
