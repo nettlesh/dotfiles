@@ -52,6 +52,7 @@ There's a lot of cool stuff here
   - [Connect a private repository](#connect-a-private-repository)
   - [After syncing](#after-syncing)
 - [Configuration](#configuration)
+  - [Neovim](#neovim)
   - [Git](#git)
   - [Shell and agent integrations](#shell-and-agent-integrations)
   - [Source checks](#source-checks)
@@ -416,6 +417,22 @@ Set those up separately on each machine.
 
 Most shared files are symlinked,
 so editing them changes the source in this repo.
+
+### Neovim
+
+The [Neovim configuration](nvim) is inspired by
+[MiniMax](https://github.com/nvim-mini/MiniMax), with mini.nvim providing most
+editing features and Neovim's built-in `vim.pack` managing plugins.
+
+`init.lua` loads options, theme settings, and handwritten keymaps from `lua/`.
+The numbered files in `plugin/` configure plugins in startup order.
+Edit [theme.lua](nvim/lua/theme.lua) for colors and popup styling.
+Edit [keymaps.lua](nvim/lua/keymaps.lua) for mappings and their descriptions.
+Space is the leader key; pause after it to see the available groups.
+
+Language servers and formatters are managed outside Neovim with mise.
+Conform formats on save, using StyLua for Lua.
+It falls back to language-server formatting for everything else.
 
 ### Git
 
