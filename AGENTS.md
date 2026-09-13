@@ -54,9 +54,12 @@ Rules for working in this repository.
 ## Comments
 
 - Comment only non-obvious ordering, deliberate rule violations,
-  or constraints likely to be re-derived or re-litigated
+  or constraints likely to be re-derived or re-litigated.
+  Section headings that mark where a part of a long file begins are also fine
 - Make comments self-contained and current; omit code restatements, history,
-  removed tools, old revisions, and unstated plans
+  removed tools, old revisions, and unstated plans.
+  A code restatement explains one line to someone who can already read it;
+  a heading that labels a section is not one
 - Keep comments short, preferably one line, without terminal punctuation
 - Capitalise comments, but preserve canonical spelling and case for names
   and identifiers, even at sentence starts (for example, mise and fish)
