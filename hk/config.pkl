@@ -1,9 +1,9 @@
-amends "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Config.pkl"
+amends "package://github.com/jdx/hk/releases/download/v2.0.0/hk@2.0.0#/Config.pkl"
 
-import "package://github.com/jdx/hk/releases/download/v1.57.0/hk@1.57.0#/Builtins.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.0.0/hk@2.0.0#/Builtins.pkl"
 
 // hk provides these hygiene steps without external binaries
-local hygiene = new Mapping {
+steps {
   ["byte-order-marker"] = Builtins.byte_order_marker
   ["check-added-large-files"] = Builtins.check_added_large_files
   ["check-case-conflict"] = Builtins.check_case_conflict
@@ -17,22 +17,10 @@ local hygiene = new Mapping {
   ["trailing-whitespace"] = Builtins.trailing_whitespace
 }
 
-// Repository hooks inherit these steps unless they replace a step with the same name
 hooks {
-  ["check"] {
-    steps = hygiene
-  }
   ["commit-msg"] {
     steps {
       ["check-conventional-commit"] = Builtins.check_conventional_commit
     }
-  }
-  ["fix"] {
-    steps = hygiene
-  }
-  ["pre-commit"] {
-    fix = true
-    stash = "git"
-    steps = hygiene
   }
 }

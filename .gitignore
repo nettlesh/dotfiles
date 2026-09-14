@@ -96,3 +96,7 @@ mise/*.local.lock
 
 # https://mise.jdx.dev/configuration.html#tool-versions
 #.tool-versions
+
+/.agents/skills/.mise-skills.json
+/.agents/skills/hk-configure
+/.agents/skills/hk-debug
