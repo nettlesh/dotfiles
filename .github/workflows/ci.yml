@@ -15,7 +15,7 @@ concurrency:
 
 env:
   git_email: you@example.com
-  MISE_VERSION: 2026.9.6
+  MISE_VERSION: 2026.9.7
 
 jobs:
   check:
