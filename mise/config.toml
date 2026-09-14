@@ -41,6 +41,9 @@ _.path = "~/.local/bin"
 [settings]
 minimum_release_age_excludes = ["claude-code", "codex"]
 
+[settings.github]
+credential_command = 'gh auth token --hostname "$MISE_CREDENTIAL_HOST"'
+
 [settings.skills]
 dir = ".agents/skills"
 auto_sync = true
