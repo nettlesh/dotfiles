@@ -159,8 +159,8 @@ git_email=you@example.com mise bootstrap \
   --from-dir "$HOME/.dotfiles"
 ```
 
-[`--from`](https://mise.jdx.dev/bootstrap.html#starting-from-a-repository)
-uses the public repo's `mise.toml` and source files.
+[`--from`](https://mise.jdx.dev/bootstrap.html#starting-from-a-repository) uses
+the public repo's `mise.toml` and source files.
 `--adopt` restores [shared history](#restore-from-history).
 
 For an existing checkout:
@@ -287,10 +287,6 @@ The container starts fish as an ordinary user.
 It includes the configured Docker packages but does not start Docker,
 containerd, or the mise history watcher.
 No desktop, personal, work, or CachyOS environment is selected.
-
-The Dockerfile and CI explicitly pin mise to `2026.9.4`,
-matching `min_version` in `mise.toml`.
-Update these pins together when changing the minimum.
 
 ### Pull and run from GHCR
 
@@ -461,11 +457,20 @@ Shared agent skills live in `agents/skills` and are linked into the Claude Code
 and Codex skill directories.
 
 Repository-local skills live in `.agents/skills`.
-The [adding-tools skill](.agents/skills/adding-tools/SKILL.md) covers tool
-comparison, configuration review, and integration into these dotfiles.
+The [adding-tools skill](.agents/skills/adding-tools/SKILL.md) covers evaluating
+tool adoption or replacement and integrating selected tools into these dotfiles.
 Claude Code shares it through `.claude/skills/adding-tools`,
 a relative symlink to the same skill directory.
-These local skills stay in the repository and are not deployed globally.
+
+mise fetches hk's version-matched skills through Packslip
+and automatically links them into each project's `.agents/skills` directory
+after installing or changing tool versions.
+The generated links stay out of version control alongside handwritten skills.
+`mise skills sync --global` links the active skills into `~/.agents/skills`;
+run it again after an hk version change
+because automatic synchronization only writes inside a project root.
+See mise's
+[Packslip skills documentation](https://mise.jdx.dev/dev-tools/packslip-resources.html#skills).
 See the
 [Codex](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
 and
@@ -483,8 +488,8 @@ Install the project tools with `mise install --locked` before running checks;
 on an unbootstrapped checkout, supply `git_email=you@example.com`.
 The tool requests live in `mise.toml`,
 with versions and checksums in `mise.lock`.
-[hk builtins](https://hk.jdx.dev/builtins.html) define how to invoke tools;
-the tool binaries are installed separately by mise.
+[hk builtins](https://hk.jdx.dev/builtins.html) define how to invoke tools; the
+tool binaries are installed separately by mise.
 
 | Tool | Purpose | Configuration |
 | --- | --- | --- |

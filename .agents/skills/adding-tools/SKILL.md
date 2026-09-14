@@ -1,9 +1,9 @@
 ---
 name: adding-tools
 description: >-
-  Evaluates and adds new or replacement tools to this dotfiles repository,
-  covering alternatives, configuration, installation, tracking, and documentation.
-  Use when comparing tools for adoption or integrating a selected tool here.
+  Evaluate adopting or replacing tools, and integrate selected tools into this
+  dotfiles repository. Excludes configuring existing tools and answering factual
+  questions about them.
 ---
 
 # Adding tools
@@ -13,16 +13,13 @@ implementation approval, configuration defaults, and checks.
 
 ## Evaluate
 
-- Compare relevant alternatives,
+- When asked to evaluate adoption, compare relevant alternatives,
   including tools already serving the same purpose.
   Prefer newer, faster tools over older, stable alternatives;
   explain tradeoffs and justify exceptions.
-- Audit the tool's full configuration reference, official recommendations,
-  and common patterns; assess which settings
-  and integrations fit this environment.
-  Distinguish official guidance from community conventions.
-- Present the recommendation, configuration choices,
-  and planned repository changes for implementation approval.
+- If the user has selected a tool, proceed to integration without reopening
+  the alternatives comparison.
+- Identify settings and integrations needed for adoption.
   For an evaluation-only request, stop at the recommendation.
 
 ## Integrate
@@ -35,10 +32,7 @@ implementation approval, configuration defaults, and checks.
 - Add the tool to the appropriate installation manifest
   and place its shared configuration in the repository's existing layout.
   Apply the approved settings and integrations.
-- Register configuration for deployment and dotfiles history tracking.
-  Include shared setup inputs and required lockfiles in version control;
-  exclude credentials, generated state, and machine-local settings.
+- Assess deployment and history tracking separately under README.md's policy;
+  include required lockfiles with their owning configuration.
 - Update README.md with the tool's purpose, configuration location,
   chosen settings, and required setup.
-- Validate the changed files and applicable setup using documented checks;
-  inspect the patch and report any verification limits.
