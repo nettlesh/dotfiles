@@ -4,6 +4,11 @@ min_version = "2026.9.6"
 lockfile = true
 lockfile_platforms = ["linux-x64", "macos-arm64"]
 
+[settings.skills]
+dir = ".agents/skills"
+auto_sync = true
+prune = true
+
 [vars]
 git_email = { required = "Set git_email in mise.local.toml or the process environment" }
 git_signing_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOWqnOUZkNfa0mvlobU+pg15gwMi5F4/5Ab9lf9y8vP"

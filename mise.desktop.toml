@@ -16,6 +16,7 @@
 "brew-cask:font-fira-code-nerd-font" = { os = "macos" }
 "brew-cask:ghostty" = { os = "macos" }
 "brew-cask:keymapp" = { os = "macos" }
+"brew-cask:linear" = { os = "macos" }
 "brew-cask:obsidian" = { os = "macos" }
 "brew-cask:spotify" = { os = "macos" }
 "brew-cask:zen" = { os = "macos" }
