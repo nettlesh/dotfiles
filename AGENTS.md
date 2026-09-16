@@ -28,8 +28,8 @@ Rules for working in this repository.
   not intent, supported configuration, or portability
 - Never truncate evidence used in reasoning;
   label assumptions and unverified claims
-- After a warning or failure, re-read the mechanism's documentation before
-  proposing a change, even if already read this session
+- Reuse documentation already available in context;
+  re-read only when relevant details are missing or may have changed
 - Reconsider a rejected option only
   after explaining what new information warrants it
 
