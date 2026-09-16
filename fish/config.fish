@@ -1,18 +1,5 @@
-# Env vars
-set -gx RIPGREP_CONFIG_PATH ~/.config/ripgrep/ripgreprc # ripgrep has no default config location
-set -gx TEALDEER_CONFIG_DIR ~/.config/tealdeer
-
-set -gx MANPAGER "sh -c 'col -bx | bat -plman'" # Use bat for man pages
-set -gx MANROFFOPT -c
-
-set -gx EDITOR nvim
-set -gx VISUAL nvim
-
-set -gx EZA_ICONS_AUTO 1
-set -gx FZF_CTRL_T_OPTS "--walker-skip .git,node_modules,.venv,__pycache__,.ruff_cache,.pytest_cache,target --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
 # PATH
-# Locate host tools before mise activation
+# Keep host tools available before mise activation and in non-interactive fish
 if test (uname) = Darwin
     fish_add_path --path --move /opt/homebrew/bin
     fish_add_path --path --move ~/.docker/bin
@@ -21,6 +8,13 @@ end
 fish_add_path --path --move ~/.local/bin
 
 status is-interactive; or exit
+
+# Env vars
+set -gx MANPAGER "sh -c 'col -bx | bat -plman'" # Use bat for man pages
+set -gx MANROFFOPT -c
+
+set -gx EZA_ICONS_AUTO 1
+set -gx FZF_CTRL_T_OPTS "--walker-skip .git,node_modules,.venv,__pycache__,.ruff_cache,.pytest_cache,target --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 set -g fish_greeting # Remove greeting
 fish_vi_key_bindings
@@ -36,7 +30,7 @@ alias la 'eza -a --group-directories-first'
 alias ll 'eza -al --group-directories-first'
 alias tree 'eza -T --group-directories-first'
 
-alias cat='bat --paging=never' # Use bat instead
+alias cat='bat --style=plain --paging=never' # Use bat instead
 
 alias n nvim
 alias v nvim

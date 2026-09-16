@@ -14,12 +14,21 @@ steps {
   // fish -n treats additional paths as arguments, so validate each file separately
   ["fish"] = new Step {
     glob = "**/*.fish"
-    check = "failed=0; for f in {{ files }}; do fish -n \"$f\" || failed=1; done; exit $failed"
+    check = new CommandSpec {
+      command = "failed=0; for f in {{ files }}; do fish -n \"$f\" || failed=1; done; exit $failed"
+      effect = "read"
+    }
   }
   ["fish-format"] = new Step {
     glob = "**/*.fish"
-    check = "fish_indent -c {{ files }}"
-    fix = "fish_indent -w {{ files }}"
+    check = new CommandSpec {
+      command = new Command { argv = List("fish_indent", "-c", "{{files}}") }
+      effect = "read"
+    }
+    fix = new CommandSpec {
+      command = new Command { argv = List("fish_indent", "-w", "{{files}}") }
+      effect = "write"
+    }
   }
   ["hadolint"] = Builtins.hadolint
   ["hk-test"] = Builtins.hk_test

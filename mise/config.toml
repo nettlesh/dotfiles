@@ -36,6 +36,10 @@ yq = "latest"
 zoxide = "latest"
 
 [env]
+EDITOR = "nvim"
+VISUAL = "nvim"
+RIPGREP_CONFIG_PATH = "{{ xdg_config_home }}/ripgrep/ripgreprc"
+TEALDEER_CONFIG_DIR = "{{ xdg_config_home }}/tealdeer"
 _.path = "~/.local/bin"
 
 [settings]
@@ -77,6 +81,7 @@ prune = true
 "~/.dotfiles/ssh" = { mode = "track" }
 "~/.dotfiles/starship" = { mode = "track" }
 "~/.dotfiles/tealdeer" = { mode = "track" }
+"~/.dotfiles/zsh/.zshrc" = { mode = "track" }
 
 [bootstrap.services.mise-history]
 builtin = "history-watch"
