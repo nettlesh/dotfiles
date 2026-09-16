@@ -16,6 +16,7 @@ vault = "Personal"
 
 [profiles.personal.secrets]
 DOCKERHUB_TOKEN = { provider = "op", value = "kmr6imxnt6iqfl6klg33n3qr3y/credential" }
+OPENAI_API_KEY = { provider = "op", value = "bhshtpp4fop5de3x2tnaqb545m/credential" }
 
 [profiles.work.providers.op]
 type = "1password"

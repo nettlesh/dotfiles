@@ -1,0 +1,13 @@
+context = "Personal dotfiles for Linux and macOS, managed by mise, with a published container image."
+
+system_extra = """
+Write concise release notes explaining changes that affect people using these dotfiles.
+Group related changes and explain their practical effect instead of repeating commit subjects.
+Call out breaking changes and required setup or migration steps with verified commands when useful.
+Omit internal maintenance unless it affects installation, configuration, or daily use.
+Keep small releases short, avoid marketing language, and include source links where available.
+"""
+
+[defaults]
+model = "gpt-5.4-mini"
+emoji = false

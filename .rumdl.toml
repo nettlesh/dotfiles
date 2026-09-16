@@ -3,3 +3,6 @@
 [MD013]
 reflow = true
 reflow-mode = "semantic-line-breaks"
+
+[per-file-ignores]
+"CHANGELOG.md" = ["MD012", "MD013"]

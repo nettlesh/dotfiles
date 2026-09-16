@@ -22,6 +22,7 @@ HK_MISE = 1
 [tools]
 actionlint = "latest"
 betterleaks = "latest"
+communique = "latest"
 editorconfig-checker = "latest"
 hadolint = "latest"
 hk = "latest"

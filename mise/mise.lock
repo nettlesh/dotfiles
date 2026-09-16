@@ -297,13 +297,13 @@ url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-darwin-arm64.tar.gz"
 
 [[tools."npm:bash-language-server"]]
 version = "5.6.0"
-aube = { path = ".mise/locks/npm-bash-language-server/5.6.0", digest = "sha256:7f4f3baacf73274e9b24d45bc8a8e501bbd1b2fd639bc7fde80a96f515c9e61e" }
+aube = { path = "locks/npm-bash-language-server/5.6.0", digest = "sha256:7f4f3baacf73274e9b24d45bc8a8e501bbd1b2fd639bc7fde80a96f515c9e61e" }
 backend = "npm:bash-language-server"
 specifiers = ["latest"]
 
 [[tools."npm:fish-lsp"]]
 version = "1.1.4"
-aube = { path = ".mise/locks/npm-fish-lsp/1.1.4", digest = "sha256:41c396093a0e0f848070db5170f78b61a57fce3fffed6728394959cdbeb4ae2b" }
+aube = { path = "locks/npm-fish-lsp/1.1.4", digest = "sha256:41c396093a0e0f848070db5170f78b61a57fce3fffed6728394959cdbeb4ae2b" }
 backend = "npm:fish-lsp"
 specifiers = ["latest"]
 

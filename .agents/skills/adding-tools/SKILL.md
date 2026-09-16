@@ -34,5 +34,14 @@ implementation approval, configuration defaults, and checks.
   Apply the approved settings and integrations.
 - Assess deployment and history tracking separately under README.md's policy;
   include required lockfiles with their owning configuration.
-- Update README.md with the tool's purpose, configuration location,
-  chosen settings, and required setup.
+  Report these assessments in the task response.
+- Update README.md only when adoption changes information needed to understand,
+  install, restore, or customize these dotfiles.
+  Write for the owner maintaining the environment and readers inspecting
+  or adapting it; preserve the existing structure.
+  Add or update an entry in the appropriate existing tools table
+  when it helps explain the dotfiles environment or source checks.
+  Installing a dependency alone does not warrant a table entry or section.
+  Keep prose specific to this repository's choices and required setup;
+  omit generic tool tutorials, incidental maintenance tooling,
+  and implementation reports.

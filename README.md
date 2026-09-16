@@ -159,10 +159,6 @@ git_email=you@example.com mise bootstrap \
   --from-dir "$HOME/.dotfiles"
 ```
 
-[`--from`](https://mise.jdx.dev/bootstrap.html#starting-from-a-repository) uses
-the public repo's `mise.toml` and source files.
-`--adopt` restores [shared history](#restore-from-history).
-
 For an existing checkout:
 
 ```sh
@@ -277,9 +273,7 @@ The image targets `linux/amd64`; ARM hosts need x86-64 emulation.
 
 The image installs system packages from `mise.linux.toml`
 and tools from the root and global mise configurations and their lockfiles.
-Tools are installed normally as `sebastian`, under that user's home,
-following the
-[mise Docker cookbook](https://mise.jdx.dev/mise-cookbook/docker.html).
+Tools are installed under the `sebastian` user's home directory.
 Mount project directories rather than replacing the home directory,
 which would hide the installed tools and dotfiles.
 
@@ -290,29 +284,14 @@ No desktop, personal, work, or CachyOS environment is selected.
 
 ### Pull and run from GHCR
 
-The [release workflow](.github/workflows/release.yml) uses release-please to
-prepare release pull requests from Conventional Commits on `main`.
-Merging a release pull request creates a GitHub release
-and triggers publication of a versioned image to `ghcr.io/nettlesh/dotfiles`.
+The [release workflow](.github/workflows/release.yml) publishes versioned images
+to `ghcr.io/nettlesh/dotfiles`.
 Once an image is published, replace `VERSION` with its release version:
 
 ```sh
 docker pull --platform linux/amd64 ghcr.io/nettlesh/dotfiles:VERSION
 docker run --platform linux/amd64 --rm -it ghcr.io/nettlesh/dotfiles:VERSION
 ```
-
-See GitHub's
-[Container registry guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
-for registry access and pulling images.
-
-The workflow requires an Actions secret named `RELEASE_PLEASE_TOKEN` with
-repository access to create release pull requests, tags, and releases.
-Use a personal access token so CI runs on the generated pull requests,
-as described in the
-[release-please credentials guide](https://github.com/googleapis/release-please-action#github-credentials).
-The `simple` release strategy updates `version.txt`
-and generates `CHANGELOG.md`.
-Review and merge the generated release pull request when ready to publish.
 
 ### Build and run locally
 
@@ -475,20 +454,11 @@ tool adoption or replacement and integrating selected tools into these dotfiles.
 Claude Code shares it through `.claude/skills/adding-tools`,
 a relative symlink to the same skill directory.
 
-mise fetches hk's version-matched skills through Packslip
-and automatically links them into each project's `.agents/skills` directory
-after installing or changing tool versions.
-The generated links stay out of version control alongside handwritten skills.
-`mise skills sync --global` links the active skills into `~/.agents/skills`;
-run it again after an hk version change
-because automatic synchronization only writes inside a project root.
+hk's generated skill links stay out of version control.
+After changing hk versions,
+run `mise skills sync --global` to refresh the skills in `~/.agents/skills`.
 See mise's
 [Packslip skills documentation](https://mise.jdx.dev/dev-tools/packslip-resources.html#skills).
-See the
-[Codex](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
-and
-[Claude Code](https://code.claude.com/docs/en/skills#choose-where-skills-load)
-skill discovery documentation.
 
 The herdr integration scripts and registrations are kept in this repo;
 setup doesn't run the herdr integration installer.
@@ -501,8 +471,6 @@ Install the project tools with `mise install --locked` before running checks;
 on an unbootstrapped checkout, supply `git_email=you@example.com`.
 The tool requests live in `mise.toml`,
 with versions and checksums in `mise.lock`.
-[hk builtins](https://hk.jdx.dev/builtins.html) define how to invoke tools; the
-tool binaries are installed separately by mise.
 
 | Tool | Purpose | Configuration |
 | --- | --- | --- |
@@ -512,45 +480,12 @@ tool binaries are installed separately by mise.
 | [Betterleaks](https://github.com/betterleaks/betterleaks) | Secrets in source files and Git history | `Builtins.betterleaks` in `hk.pkl`; history scan in CI |
 | [Trivy](https://trivy.dev/) | Image vulnerabilities, secrets, configuration, and SBOM | `.github/workflows/ci.yml` |
 
-These linters use their standard rules.
-The repository's `.betterleaks.toml` extends Betterleaks' default rules
-and filters confirmed false positives
-for exact 1Password package declarations with the version `latest` in three mise
-environment files.
+`.betterleaks.toml` holds the exceptions for 1Password package declarations.
 CI points `HK_CONFIG_DIR` at the repository's `hk` directory
 so the shared hygiene checks run without deploying the dotfiles first.
-Betterleaks redacts findings,
-and the CI checkout includes full history for its Git scan.
-GitHub secret scanning and push protection are separate repository settings;
-adding a scanner here does not enable them.
 
-CI checks source files, independently verifies Linux and macOS bootstrap,
-and builds the dotfiles image.
-The Linux job uses an ordinary user with passwordless sudo inside an Arch
-container.
-It installs the declared packages, applies the login shell through sudo,
-and runs bootstrap with services and the final hook excluded.
-Explicit resource checks verify packages, files, dotfiles, the login shell,
-and installed tool versions. macOS installs the declared packages
-and applies the login shell through sudo
-before running the full baseline bootstrap, including its final status check.
-These jobs do not select optional environments.
-
-The image job builds locally without a tag or registry push,
-verifies its contents and fish startup,
-and scans the image returned by the build action.
-The Trivy setup disables mise-action caching to address the
-[zizmor cache-poisoning audit](https://docs.zizmor.sh/audits/#cache-poisoning).
-Trivy produces an SPDX JSON SBOM uploaded
+[CI](.github/workflows/ci.yml) checks source files and Git history,
+verifies Linux and macOS bootstrap without optional environments,
+and builds and scans the dotfiles image.
+The image's software bill of materials is available
 as the `dotfiles-sbom` workflow artifact.
-The scan fails on HIGH or CRITICAL findings, including unfixed vulnerabilities,
-and enables image-configuration checks for misconfiguration and secrets.
-Coverage depends on Trivy's supported package and binary analyzers;
-the SBOM is not a guarantee that every executable is represented.
-Release publishing and attaching SBOMs to releases are configured separately.
-
-The project tool manifest and lockfile already participate in mise history.
-Repository-wide `hk.pkl`, `.betterleaks.toml`, workflows, Docker files,
-and this documentation stay in ordinary Git under the
-[history policy](#private-history); they are not deployed as global
-configuration.
