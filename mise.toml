@@ -55,6 +55,7 @@ zizmor = "latest"
 "~/.config/ripgrep" = "ripgrep"
 "~/.config/starship.toml" = "starship/starship.toml"
 "~/.config/tealdeer/config.toml" = "tealdeer/config.toml"
+"~/.zshrc" = "zsh/.zshrc"
 
 [bootstrap.directories."~/.ssh/config.d"]
 mode = "0700"

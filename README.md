@@ -290,9 +290,10 @@ No desktop, personal, work, or CachyOS environment is selected.
 
 ### Pull and run from GHCR
 
-The [release workflow](.github/workflows/release.yml) is configured to publish
-versioned images to `ghcr.io/nettlesh/dotfiles`, but publishing is currently
-disabled.
+The [release workflow](.github/workflows/release.yml) uses release-please to
+prepare release pull requests from Conventional Commits on `main`.
+Merging a release pull request creates a GitHub release
+and triggers publication of a versioned image to `ghcr.io/nettlesh/dotfiles`.
 Once an image is published, replace `VERSION` with its release version:
 
 ```sh
@@ -303,6 +304,15 @@ docker run --platform linux/amd64 --rm -it ghcr.io/nettlesh/dotfiles:VERSION
 See GitHub's
 [Container registry guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 for registry access and pulling images.
+
+The workflow requires an Actions secret named `RELEASE_PLEASE_TOKEN` with
+repository access to create release pull requests, tags, and releases.
+Use a personal access token so CI runs on the generated pull requests,
+as described in the
+[release-please credentials guide](https://github.com/googleapis/release-please-action#github-credentials).
+The `simple` release strategy updates `version.txt`
+and generates `CHANGELOG.md`.
+Review and merge the generated release pull request when ready to publish.
 
 ### Build and run locally
 
@@ -449,9 +459,12 @@ Its colours are ANSI names, so they follow the terminal palette.
 
 ### Shell and agent integrations
 
-fish adds the system tool directories to PATH so it can find mise
-before activation. mise also sets up PATH
-for commands it launches in other shells.
+fish adds the system tool directories to PATH before mise activation and
+for non-interactive shells. mise declares the same directories
+for environments it builds.
+A minimal zsh configuration loads the mise environment
+for AI coding agents whose command runners
+and shell snapshots require a POSIX shell.
 
 Shared agent skills live in `agents/skills` and are linked into the Claude Code
 and Codex skill directories.

@@ -1,5 +1,5 @@
 [env]
-_.path = ["~/.local/bin", "/opt/homebrew/bin"]
+_.path = ["~/.local/bin", "~/.docker/bin", "/opt/homebrew/bin"]
 
 [bootstrap.packages]
 "brew-cask:docker-desktop" = "latest"

@@ -64,8 +64,8 @@ Rules for working in this repository.
 - Capitalise comments, but preserve canonical spelling and case for names
   and identifiers, even at sentence starts (for example, mise and fish)
 - Use established codetags where appropriate;
-  consult references such as
-  [PEP 350's mnemonic list](https://peps.python.org/pep-0350/#mnemonics).
+  consult references such
+  as [PEP 350's mnemonic list](https://peps.python.org/pep-0350/#mnemonics).
   Examples include `NOTE:`, `TODO:`, and `FIXME:`, but are not exhaustive.
 - Align codetag continuation lines with the content after the tag
 
