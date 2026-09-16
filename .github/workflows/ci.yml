@@ -14,7 +14,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  git_email: you@example.com
   MISE_VERSION: 2026.9.7
 
 jobs:
@@ -78,19 +77,23 @@ jobs:
           cd /home/sebastian/.dotfiles
           mise trust --all --quiet
           sudo --set-home --user sebastian env \
-            git_email="$git_email" MISE_GITHUB_TOKEN="$MISE_GITHUB_TOKEN" \
+            MISE_GITHUB_TOKEN="$MISE_GITHUB_TOKEN" \
             bash <<'BOOTSTRAP'
           set -euo pipefail
           cd "$HOME/.dotfiles"
           mise trust --all --quiet
           mise bootstrap packages apply --yes
-          sudo --preserve-env=git_email /usr/local/bin/mise bootstrap user apply --yes
+          sudo /usr/local/bin/mise bootstrap user apply --yes
           mise --locked bootstrap --yes --skip services,final-hook
           mise bootstrap packages status --missing
           mise bootstrap files status --missing
           mise bootstrap dotfiles status --missing
           mise bootstrap user status --missing
           mise --locked install --dry-run-code
+          test -z "$(git config get --file "$HOME/.config/git/identity" user.email)"
+          git_email=ci@example.com mise bootstrap --only dotfiles --yes
+          test "$(git config get --file "$HOME/.config/git/identity" user.email)" = ci@example.com
+          test "$(mise config get --file mise.local.toml vars.git_email)" = ci@example.com
           BOOTSTRAP
 
   macos:
@@ -116,8 +119,8 @@ jobs:
           mise_bin="$(command -v mise)"
           mise trust --all --quiet
           mise bootstrap packages apply --yes
-          sudo --preserve-env=git_email "$mise_bin" trust --all --quiet
-          sudo --preserve-env=git_email "$mise_bin" bootstrap user apply --yes
+          sudo "$mise_bin" trust --all --quiet
+          sudo "$mise_bin" bootstrap user apply --yes
           mise --locked bootstrap --yes
 
   image:
@@ -151,6 +154,7 @@ jobs:
         run: |
           docker run --rm --interactive "$IMAGE_ID" bash -se <<'VERIFY'
           test "$(id -u)" -ne 0
+          test -z "$(git config get user.email)"
           mise bootstrap packages status --missing
           mise bootstrap files status --missing
           mise bootstrap dotfiles status --missing

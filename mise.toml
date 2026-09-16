@@ -10,7 +10,7 @@ auto_sync = true
 prune = true
 
 [vars]
-git_email = { required = "Set git_email in mise.local.toml or the process environment" }
+git_email = { default = "" }
 git_signing_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOWqnOUZkNfa0mvlobU+pg15gwMi5F4/5Ab9lf9y8vP"
 op_personal_account = "my.1password.com"
 op_work_account = "obscurity-labs.1password.com"
@@ -62,10 +62,12 @@ zizmor = "latest"
 mode = "0700"
 
 [bootstrap.hooks.pre-dotfiles]
-run = [
-  "touch {{ config_root | quote }}/mise.local.toml",
-  "{{ mise_bin | quote }} config set --file {{ config_root | quote }}/mise.local.toml --type string vars.git_email {{ vars.git_email | quote }}",
-]
+run = '''
+if [ -n {{ vars.git_email | quote }} ]; then
+    touch {{ config_root | quote }}/mise.local.toml
+    {{ mise_bin | quote }} config set --file {{ config_root | quote }}/mise.local.toml --type string vars.git_email {{ vars.git_email | quote }}
+fi
+'''
 
 [bootstrap.hooks.post-tools]
 run = [

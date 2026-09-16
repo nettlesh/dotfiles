@@ -12,18 +12,15 @@ if [ -z "${GIT_EMAIL:-}" ] && [ -f mise.local.toml ]; then
     fi
 fi
 
-if [ -z "${GIT_EMAIL:-}" ]; then
-    printf 'Git email: '
-    IFS= read -r GIT_EMAIL
+if [ -z "${GIT_EMAIL:-}" ] && [ -t 0 ]; then
+    printf 'Git email (optional; Enter to skip): '
+    IFS= read -r GIT_EMAIL || GIT_EMAIL=
 fi
 
-if [ -z "$GIT_EMAIL" ]; then
-    printf 'Git email is required\n' >&2
-    exit 1
+if [ -n "${GIT_EMAIL:-}" ]; then
+    export GIT_EMAIL
+    export git_email="$GIT_EMAIL"
 fi
-
-export GIT_EMAIL
-export git_email="$GIT_EMAIL"
 
 mise trust --all --quiet
 

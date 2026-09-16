@@ -154,7 +154,7 @@ the `personal` and `work` setup tasks ask you to sign in when needed.
 Clone and bootstrap with mise:
 
 ```sh
-git_email=you@example.com mise bootstrap \
+mise bootstrap \
   --from https://github.com/nettlesh/dotfiles.git \
   --from-dir "$HOME/.dotfiles"
 ```
@@ -164,11 +164,14 @@ For an existing checkout:
 ```sh
 cd ~/.dotfiles
 mise trust
-git_email=you@example.com mise bootstrap
+mise bootstrap
 ```
 
-The dotfiles step saves your email in `mise.local.toml`, which Git ignores.
-Later runs reuse it.
+Git email is optional during setup.
+To set it now or later, run
+`git_email=you@example.com mise bootstrap --only dotfiles`.
+The dotfiles step saves a supplied email in `mise.local.toml`,
+which Git ignores, and later runs reuse it.
 A dry run doesn't save the email.
 
 #### Using install.sh
@@ -181,7 +184,9 @@ cd ~/.dotfiles
 ./install.sh
 ```
 
-The script prompts for your email unless one is saved.
+In an interactive terminal,
+the script prompts for your email unless one is saved.
+Press Enter to skip it.
 To supply it directly:
 
 ```sh
@@ -216,7 +221,7 @@ then bootstrap from the restored checkout:
 ```sh
 cd ~/.dotfiles
 mise trust
-git_email=you@example.com mise bootstrap
+mise bootstrap
 ```
 
 Or use `./install.sh` for the email prompt.
@@ -238,7 +243,6 @@ mise bootstrap --dry-run
 mise bootstrap --only dotfiles
 ```
 
-On the first run, supply `git_email=you@example.com` as above.
 The installer accepts the same options:
 
 ```sh
@@ -302,14 +306,9 @@ docker build --platform linux/amd64 -t dotfiles .
 docker run --platform linux/amd64 --rm -it dotfiles
 ```
 
-The image uses a placeholder Git email.
-To build it with your own:
-
-```sh
-docker build --platform linux/amd64 --build-arg git_email=you@example.com -t dotfiles .
-```
-
-Or override it when starting a container, using either the local or GHCR image:
+The image has no Git email configured.
+To create commits, supply your email when starting either the local
+or GHCR image:
 
 ```sh
 docker run --platform linux/amd64 --rm -it \
@@ -428,9 +427,15 @@ where the GitHub credential helper is configured.
 
 Your Git identity is generated at `~/.config/git/identity` from a template
 and your local email.
+If no email is supplied, the template omits it.
+Git's
+[`user.useConfigOnly`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-useruseConfigOnly)
+setting prevents Git from guessing an email when creating commits; configure one
+or supply `GIT_AUTHOR_EMAIL` and `GIT_COMMITTER_EMAIL` as needed.
 Change those inputs instead of copying the generated file into the repo.
 Desktop signing settings live in `~/.config/git/1password`;
 keep signing enabled only in that include.
+The SSH allowed-signers entry is generated only when an email is configured.
 
 delta's settings and the `cuttlefish` theme live in `git/delta`,
 included from `git/config`.
@@ -467,8 +472,7 @@ setup doesn't run the herdr integration installer.
 
 For source checks, `mise run check` runs the linters
 and `mise run fix` applies their automatic fixes.
-Install the project tools with `mise install --locked` before running checks;
-on an unbootstrapped checkout, supply `git_email=you@example.com`.
+Install the project tools with `mise install --locked` before running checks.
 The tool requests live in `mise.toml`,
 with versions and checksums in `mise.lock`.
 

@@ -3,6 +3,9 @@
     path = ~/.config/git/1password
     path = ~/.config/git/delta
 
+[user]
+    useConfigOnly = true
+
 [core]
     editor = nvim
     pager  = delta
