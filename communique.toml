@@ -1,13 +1,25 @@
-context = "Personal dotfiles for Linux and macOS, managed by mise, with a published container image."
+context = "Personal dotfiles for Linux and macOS, managed by mise."
 
 system_extra = """
-Write concise release notes explaining changes that affect people using these dotfiles.
-Group related changes and explain their practical effect instead of repeating commit subjects.
-Call out breaking changes and required setup or migration steps with verified commands when useful.
-Omit internal maintenance unless it affects installation, configuration, or daily use.
-Keep small releases short, avoid marketing language, and include source links where available.
+Write practical release notes for the owner of these dotfiles and people borrowing the setup.
+Explain what changed and its effect instead of repeating commit subjects.
+Group related commits into one item.
+
+Scale the format to the release:
+- For a few small changes, use a short bullet list without an introduction.
+- For larger releases, add a brief summary only when it provides useful context.
+- Use Action required, Added, Changed, and Fixed sections when helpful; omit empty sections.
+
+Put breaking changes and required setup or migration steps first.
+Include short, verified commands or configuration examples only when they help someone act.
+Identify the affected platform or environment when a change is specific to one.
+
+Include maintenance changes that affect installation, configuration, daily use, or maintaining the repository.
+Omit routine dependency bumps and internal refactoring unless they have a practical effect.
+Use concise bullets, backticks for commands and paths, and relevant PR or commit links.
+Avoid marketing language, repetitive summaries, and self-congratulation.
 """
 
 [defaults]
-model = "gpt-5.4-mini"
+model = "gpt-5.6-luna"
 emoji = false
