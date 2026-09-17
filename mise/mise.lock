@@ -139,7 +139,7 @@ url = "https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-aarch6
 url_api = "https://api.github.com/repos/sharkdp/fd/releases/assets/530481346"
 
 [[tools.fnox]]
-version = "1.35.1"
+version = "1.35.2"
 backend = "github:jdx/fnox"
 specifiers = ["latest"]
 
