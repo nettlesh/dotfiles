@@ -191,19 +191,19 @@ url_api = "https://api.github.com/repos/cli/cli/releases/assets/542974295"
 provenance = "github-attestations"
 
 [[tools.herdr]]
-version = "0.9.0"
+version = "0.9.1"
 backend = "aqua:herdrdev/herdr"
 specifiers = ["latest"]
 
 [tools.herdr."platforms.linux-x64"]
-checksum = "sha256:4fa1a01158dd8043da92d31b270780b0dcc10603038d9b61cac4d81ab63fb71f"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.0/herdr-linux-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/549270163"
+checksum = "sha256:2a02fed16beb651ef006e1d43f048f652ca4dc58ad053cd2d44450563d5c54b7"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.1/herdr-linux-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/568559679"
 
 [tools.herdr."platforms.macos-arm64"]
-checksum = "sha256:32b53df09872628059c789a69f02a6b8e29e14ddf26711421f3463f70c1aef17"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.0/herdr-macos-aarch64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/549270162"
+checksum = "sha256:5fc7a7e7adfaca56fa80aa89dcb025693357268dab8285b9ce2d08a2313c89de"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.1/herdr-macos-aarch64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/568559677"
 
 [[tools.hk]]
 version = "2.0.0"
