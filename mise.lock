@@ -86,18 +86,18 @@ url_api = "https://api.github.com/repos/hadolint/hadolint/releases/assets/496546
 provenance = "github-attestations"
 
 [[tools.hk]]
-version = "2.0.0"
+version = "2.0.1"
 backend = "packslip:github.com/jdx/hk"
 specifiers = ["latest"]
 
 [tools.hk."platforms.linux-x64"]
-checksum = "sha256:d2cdde7a68dba648b2d25605ceab364074a057fb93618b46ce7ac3e298bfba2c"
-url = "https://github.com/jdx/hk/releases/download/v2.0.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:f14d0290a07f82911f32ea5e4a91dd80d90abb852488912b1ade9b240f70d615"
+url = "https://github.com/jdx/hk/releases/download/v2.0.1/hk-x86_64-unknown-linux-gnu.tar.gz"
 signer = "sigstore-oidc:https://github.com/jdx/hk/.github/workflows/release.yml"
 
 [tools.hk."platforms.macos-arm64"]
-checksum = "sha256:9ee3f4350b321677e5ce291882c6441b153773b32705734d2208f93ac71ce12f"
-url = "https://github.com/jdx/hk/releases/download/v2.0.0/hk-aarch64-apple-darwin.tar.gz"
+checksum = "sha256:6ec393f898f562f76c4839a910356b4afec6740eff23f18ebdf8cf41c793a461"
+url = "https://github.com/jdx/hk/releases/download/v2.0.1/hk-aarch64-apple-darwin.tar.gz"
 signer = "sigstore-oidc:https://github.com/jdx/hk/.github/workflows/release.yml"
 
 [[tools.pkl]]
