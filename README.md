@@ -482,7 +482,7 @@ with versions and checksums in `mise.lock`.
 | [zizmor](https://docs.zizmor.sh/) | GitHub Actions security | `Builtins.zizmor` in `hk.pkl` |
 | [Hadolint](https://github.com/hadolint/hadolint) | Dockerfile linting | `Builtins.hadolint` in `hk.pkl` |
 | [Betterleaks](https://github.com/betterleaks/betterleaks) | Secrets in source files and Git history | `Builtins.betterleaks` in `hk.pkl`; history scan in CI |
-| [Trivy](https://trivy.dev/) | Image vulnerabilities, secrets, configuration, and SBOM | `.github/workflows/ci.yml` |
+| [Trivy](https://trivy.dev/) | Image vulnerabilities, secrets, and configuration | `.github/actions/verify-image/action.yml` |
 
 `.betterleaks.toml` holds the exceptions for 1Password package declarations.
 CI points `HK_CONFIG_DIR` at the repository's `hk` directory
@@ -491,5 +491,8 @@ so the shared hygiene checks run without deploying the dotfiles first.
 [CI](.github/workflows/ci.yml) checks source files and Git history,
 verifies Linux and macOS bootstrap without optional environments,
 and builds and scans the dotfiles image.
-The image's software bill of materials is available
-as the `dotfiles-sbom` workflow artifact.
+Pull requests do not upload build artifacts.
+
+Releases run after all CI jobs pass on `main`.
+The release job tests and scans its image before publishing it.
+Docker reuses the tested build's cache and attaches the SBOM to the image.

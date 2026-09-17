@@ -1,0 +1,38 @@
+name: Verify image
+description: Build the image, check shell startup, and scan for vulnerabilities
+
+inputs:
+  mise-version:
+    description: mise version used to install Trivy
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Trivy
+      uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+      with:
+        version: ${{ inputs.mise-version }}
+        install_args: trivy
+        cache: false
+
+    - name: Build image
+      id: build
+      uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+      env:
+        DOCKER_BUILD_RECORD_UPLOAD: false
+      with:
+        context: .
+        load: true
+        platforms: linux/amd64
+
+    - name: Scan image
+      shell: bash
+      env:
+        IMAGE_ID: ${{ steps.build.outputs.imageid }}
+      run: |
+        trivy image \
+          --image-config-scanners misconfig,secret \
+          --severity HIGH,CRITICAL \
+          --exit-code 1 \
+          "$IMAGE_ID"

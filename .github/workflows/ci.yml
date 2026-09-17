@@ -11,7 +11,8 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Let main finish publishing even when another commit arrives
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   MISE_VERSION: 2026.9.7
@@ -22,6 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       HK_CONFIG_DIR: ${{ github.workspace }}/hk
+      MISE_IGNORED_CONFIG_PATHS: ${{ github.workspace }}/mise
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -44,9 +46,10 @@ jobs:
         run: mise exec -- betterleaks git --redact --no-banner .
 
   linux:
-    name: Linux bootstrap
+    name: Linux
     needs: check
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     container:
       image: archlinux:base@sha256:82b1b08faae9d61e3e7e13d562f4d09114d939105b0d59ff34140f3bd418593a
     defaults:
@@ -68,38 +71,46 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Bootstrap and verify Arch baseline
-        env:
-          MISE_GITHUB_TOKEN: ${{ github.token }}
+      - name: Prepare dotfiles checkout
         run: |
           cp -a "$GITHUB_WORKSPACE" /home/sebastian/.dotfiles
           chown -R sebastian:sebastian /home/sebastian/.dotfiles
           cd /home/sebastian/.dotfiles
-          mise trust --all --quiet
-          sudo --set-home --user sebastian env \
-            MISE_GITHUB_TOKEN="$MISE_GITHUB_TOKEN" \
-            bash <<'BOOTSTRAP'
-          set -euo pipefail
-          cd "$HOME/.dotfiles"
+          sudo -nH mise trust --all --quiet
+
+      - name: Install system packages
+        working-directory: /home/sebastian/.dotfiles
+        shell: sudo -nH -u sebastian bash -eo pipefail {0}
+        run: |
           mise trust --all --quiet
           mise bootstrap packages apply --yes
-          sudo /usr/local/bin/mise bootstrap user apply --yes
-          mise --locked bootstrap --yes --skip services,final-hook
+
+      - name: Set login shell
+        timeout-minutes: 2
+        working-directory: /home/sebastian/.dotfiles
+        shell: sudo -nH -u sebastian bash -eo pipefail {0}
+        # mise uses SUDO_USER to select the account whose shell it changes
+        run: sudo -nH mise bootstrap user apply --yes
+
+      - name: Bootstrap
+        working-directory: /home/sebastian/.dotfiles
+        shell: sudo -nH -u sebastian --preserve-env=MISE_GITHUB_TOKEN bash -eo pipefail {0}
+        env:
+          MISE_GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # Keep the user phase so its post-user hook adds Docker group membership
+          mise --locked bootstrap --yes --skip packages,services,final-hook
           mise bootstrap packages status --missing
           mise bootstrap files status --missing
           mise bootstrap dotfiles status --missing
           mise bootstrap user status --missing
           mise --locked install --dry-run-code
-          test -z "$(git config get --file "$HOME/.config/git/identity" user.email)"
-          git_email=ci@example.com mise bootstrap --only dotfiles --yes
-          test "$(git config get --file "$HOME/.config/git/identity" user.email)" = ci@example.com
-          test "$(mise config get --file mise.local.toml vars.git_email)" = ci@example.com
-          BOOTSTRAP
 
   macos:
     name: macOS
     needs: check
     runs-on: macos-26
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -112,19 +123,35 @@ jobs:
           version: ${{ env.MISE_VERSION }}
           install: false
 
-      - name: Bootstrap with mise
+      - name: Prepare dotfiles checkout
+        run: cp -a "$GITHUB_WORKSPACE" "$HOME/.dotfiles"
+
+      - name: Install system packages
         env:
           MISE_GITHUB_TOKEN: ${{ github.token }}
         run: |
-          mise_bin="$(command -v mise)"
+          cd "$HOME/.dotfiles"
           mise trust --all --quiet
           mise bootstrap packages apply --yes
-          sudo "$mise_bin" trust --all --quiet
-          sudo "$mise_bin" bootstrap user apply --yes
-          mise --locked bootstrap --yes
+
+      - name: Set login shell
+        timeout-minutes: 2
+        run: |
+          cd "$HOME/.dotfiles"
+          mise_bin="$(command -v mise)"
+          sudo -nH "$mise_bin" trust --all --quiet
+          sudo -nH "$mise_bin" bootstrap user apply --yes
+
+      - name: Bootstrap
+        env:
+          MISE_GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd "$HOME/.dotfiles"
+          # Package/user apply omits phase hooks; update CI if either phase gains hooks
+          mise --locked bootstrap --yes --skip packages,user
 
   image:
-    name: Dotfiles image
+    name: Image
     needs: check
     runs-on: ubuntu-24.04
     steps:
@@ -133,54 +160,23 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Trivy
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+      - name: Verify image
+        uses: $/.github/actions/verify-image
         with:
-          version: ${{ env.MISE_VERSION }}
-          install_args: trivy
-          cache: false
+          mise-version: ${{ env.MISE_VERSION }}
 
-      - name: Build dotfiles image
-        id: build
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
-        with:
-          context: .
-          load: true
-          platforms: linux/amd64
-
-      - name: Verify dotfiles contents
-        env:
-          IMAGE_ID: ${{ steps.build.outputs.imageid }}
-        run: |
-          docker run --rm --interactive "$IMAGE_ID" bash -se <<'VERIFY'
-          test "$(id -u)" -ne 0
-          test -z "$(git config get user.email)"
-          mise bootstrap packages status --missing
-          mise bootstrap files status --missing
-          mise bootstrap dotfiles status --missing
-          mise bootstrap user status --missing
-          mise --locked install --dry-run-code
-          VERIFY
-          docker run --rm "$IMAGE_ID" fish --interactive --command exit
-
-      - name: Generate image SBOM
-        env:
-          IMAGE_ID: ${{ steps.build.outputs.imageid }}
-        run: trivy image --format spdx-json --output dotfiles.spdx.json "$IMAGE_ID"
-
-      - name: Upload image SBOM
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: dotfiles-sbom
-          path: dotfiles.spdx.json
-          if-no-files-found: error
-
-      - name: Scan image vulnerabilities and configuration
-        env:
-          IMAGE_ID: ${{ steps.build.outputs.imageid }}
-        run: |
-          trivy image \
-            --image-config-scanners misconfig,secret \
-            --severity HIGH,CRITICAL \
-            --exit-code 1 \
-            "$IMAGE_ID"
+  release:
+    name: Release
+    needs: [linux, macos, image]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
+      issues: write
+      packages: write
+      pull-requests: write
+    uses: $/.github/workflows/release.yml
+    secrets:
+      RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
