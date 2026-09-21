@@ -1,5 +1,5 @@
 name: Verify image
-description: Build the image, check shell startup, and scan for vulnerabilities
+description: Build the image and scan for security findings
 
 inputs:
   mise-version:
@@ -26,12 +26,34 @@ runs:
         load: true
         platforms: linux/amd64
 
-    - name: Scan image
+    - name: Report vulnerabilities
       shell: bash
       env:
         IMAGE_ID: ${{ steps.build.outputs.imageid }}
       run: |
         trivy image \
+          --scanners vuln \
+          --severity HIGH,CRITICAL \
+          "$IMAGE_ID"
+
+    - name: Check critical vulnerabilities
+      shell: bash
+      env:
+        IMAGE_ID: ${{ steps.build.outputs.imageid }}
+      run: |
+        trivy image \
+          --scanners vuln \
+          --severity CRITICAL \
+          --exit-code 1 \
+          "$IMAGE_ID"
+
+    - name: Check secrets and configuration
+      shell: bash
+      env:
+        IMAGE_ID: ${{ steps.build.outputs.imageid }}
+      run: |
+        trivy image \
+          --scanners secret \
           --image-config-scanners misconfig,secret \
           --severity HIGH,CRITICAL \
           --exit-code 1 \
