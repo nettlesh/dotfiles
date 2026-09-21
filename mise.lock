@@ -37,18 +37,18 @@ url_api = "https://api.github.com/repos/betterleaks/betterleaks/releases/assets/
 provenance = "cosign"
 
 [[tools.communique]]
-version = "1.4.0"
+version = "1.4.1"
 backend = "packslip:github.com/jdx/communique"
 specifiers = ["latest"]
 
 [tools.communique."platforms.linux-x64"]
-checksum = "sha256:c14a432005f9e06b7dffb998080fdfe920fb343ee6766db1d57b8f0ff067a3b7"
-url = "https://github.com/jdx/communique/releases/download/v1.4.0/communique-x86_64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:5d26d71176c3988fff795a2b147ca0f1cf5bb4ed39f64a4f23733cfcd3728dda"
+url = "https://github.com/jdx/communique/releases/download/v1.4.1/communique-x86_64-unknown-linux-gnu.tar.gz"
 signer = "sigstore-oidc:https://github.com/jdx/communique/.github/workflows/release.yml"
 
 [tools.communique."platforms.macos-arm64"]
-checksum = "sha256:0d183c2f46544d09e3b89b9322ea6a8ed8435f9b6cb1a46e5db90155755554af"
-url = "https://github.com/jdx/communique/releases/download/v1.4.0/communique-aarch64-apple-darwin.tar.gz"
+checksum = "sha256:7537d304bb5e750d79260454164af42975a67ba6ff1513e9c20ea75bc8f6983e"
+url = "https://github.com/jdx/communique/releases/download/v1.4.1/communique-aarch64-apple-darwin.tar.gz"
 signer = "sigstore-oidc:https://github.com/jdx/communique/.github/workflows/release.yml"
 
 [[tools.editorconfig-checker]]
