@@ -74,6 +74,7 @@ prune = true
 "~/.dotfiles/mise.personal.toml" = { mode = "track" }
 "~/.dotfiles/mise.toml" = { mode = "track" }
 "~/.dotfiles/mise.work.toml" = { mode = "track" }
+"~/.dotfiles/mise/.mise/locks" = { mode = "track" }
 "~/.dotfiles/mise/config.toml" = { mode = "track" }
 "~/.dotfiles/mise/mise.lock" = { mode = "track" }
 "~/.dotfiles/nvim" = { mode = "track" }

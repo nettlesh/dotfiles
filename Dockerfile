@@ -4,7 +4,7 @@ FROM archlinux:base@sha256:63c7b061c0c001cb7ce4f8d11b63d351c23e7f97121bc5c8bd5d9
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ARG MISE_VERSION=2026.9.7
+ARG MISE_VERSION=2026.9.12
 
 # NOTE: Disable pacman syscall filtering during package installation for amd64 emulation on Apple Silicon
 #       https://github.com/apple/container/issues/1628

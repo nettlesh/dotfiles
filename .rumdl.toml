@@ -1,8 +1,6 @@
-# Markdown Style Guide wrap:inner-sentence, which rumdl implements as semantic line breaks
-# https://cirosantilli.com/markdown-style-guide/#line-wrapping
 [MD013]
 reflow = true
-reflow-mode = "semantic-line-breaks"
+reflow-mode = "normalize"
 
 [per-file-ignores]
 "CHANGELOG.md" = ["MD012", "MD013"]

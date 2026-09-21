@@ -89,8 +89,11 @@ now_if_args(function()
     Config.new_autocmd("User", "MiniFilesWindowUpdate", function(ev)
         local state = MiniFiles.get_explorer_state()
         for _, window in ipairs(state.windows) do
+            -- mini.files ends imaginary paths with a NUL byte,
+            -- which vim.fn rejects as a Blob
             if
                 window.win_id == ev.data.win_id
+                and not window.path:find("\0", 1, true)
                 and vim.fn.isdirectory(window.path) == 0
             then
                 local config = vim.api.nvim_win_get_config(window.win_id)

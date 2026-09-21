@@ -21,11 +21,22 @@
     "refreshInterval": 60,
     "hideVimModeIndicator": true
   },
-  "theme": "auto",
-  "editorMode": "vim",
+  "extraKnownMarketplaces": {
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
+    }
+  },
   "voice": {
     "enabled": true
   },
+  "theme": "auto",
+  "editorMode": "vim",
+  "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "inputNeededNotifEnabled": true
+  "enabledPlugins": {
+    "cloudflare@cloudflare": true
+  }
 }
