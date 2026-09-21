@@ -116,20 +116,20 @@ url = "https://github.com/apple/pkl/releases/download/0.32.1/pkl-macos-aarch64"
 url_api = "https://api.github.com/repos/apple/pkl/releases/assets/487426570"
 
 [[tools.rumdl]]
-version = "0.2.73"
+version = "0.2.75"
 backend = "aqua:rvben/rumdl"
 specifiers = ["latest"]
 
 [tools.rumdl."platforms.linux-x64"]
-checksum = "sha256:d56a8e40471af32fe3229e845f3e299e3691665b15cd4ca28f2deb502c487666"
-url = "https://github.com/rvben/rumdl/releases/download/v0.2.73/rumdl-v0.2.73-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/557839623"
+checksum = "sha256:2831bd2eb58389e805c120463f4f52774fce225fa835111bc412131801d9da90"
+url = "https://github.com/rvben/rumdl/releases/download/v0.2.75/rumdl-v0.2.75-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/577473568"
 provenance = "github-attestations"
 
 [tools.rumdl."platforms.macos-arm64"]
-checksum = "sha256:54e0e7c3031b8bfa37e3c57104cc0c93988e02f5b7023c1804749fd180822f9e"
-url = "https://github.com/rvben/rumdl/releases/download/v0.2.73/rumdl-v0.2.73-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/557839617"
+checksum = "sha256:22771c73a49ab5fb3f426c287bd2f1cc88b5544edfc013eb66723a2789f96c62"
+url = "https://github.com/rvben/rumdl/releases/download/v0.2.75/rumdl-v0.2.75-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/577473581"
 provenance = "github-attestations"
 
 [[tools.shellcheck]]
