@@ -20,7 +20,7 @@ env:
 jobs:
   check:
     name: Check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       HK_CONFIG_DIR: ${{ github.workspace }}/hk
       MISE_IGNORED_CONFIG_PATHS: ${{ github.workspace }}/mise
@@ -48,7 +48,7 @@ jobs:
   linux:
     name: Linux
     needs: check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     container:
       image: archlinux:base@sha256:63c7b061c0c001cb7ce4f8d11b63d351c23e7f97121bc5c8bd5d9f431e615d7d
@@ -153,7 +153,7 @@ jobs:
   image:
     name: Image
     needs: check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
