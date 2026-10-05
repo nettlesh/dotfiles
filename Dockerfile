@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM archlinux:base@sha256:63c7b061c0c001cb7ce4f8d11b63d351c23e7f97121bc5c8bd5d9f431e615d7d
+FROM archlinux:base@sha256:4e77cf2ea5f410e6f8be5abf93ccf17ce2436e87a138c167208356711a405dbd
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
