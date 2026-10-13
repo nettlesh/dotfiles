@@ -11,7 +11,7 @@ on:
 # Called workflows don't inherit the caller's env
 env:
   # renovate: datasource=github-releases depName=jdx/mise
-  MISE_VERSION: 2026.9.12
+  MISE_VERSION: 2026.10.9
 
 jobs:
   release:
