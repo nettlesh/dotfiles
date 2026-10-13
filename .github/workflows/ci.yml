@@ -22,6 +22,7 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     env:
       HK_CONFIG_DIR: ${{ github.workspace }}/hk
       MISE_IGNORED_CONFIG_PATHS: ${{ github.workspace }}/mise
@@ -60,12 +61,20 @@ jobs:
       - name: Prepare Arch container
         run: |
           pacman -Syu --noconfirm curl git sudo
-          curl --proto '=https' --proto-redir '=https' \
-            --fail --show-error --silent --location https://mise.run |
-            MISE_INSTALL_PATH=/usr/local/bin/mise sh
           useradd --create-home --user-group --shell /bin/bash sebastian
           printf '%s\n' 'sebastian ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/sebastian
           chmod 0440 /etc/sudoers.d/sebastian
+
+      - name: Set up mise
+        uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8 # v5.1.2
+        with:
+          version: ${{ env.MISE_VERSION }}
+          install: false
+          cache: false
+
+      # sudo resets PATH, so the bootstrap user needs mise in a system directory
+      - name: Install mise for all users
+        run: install -m 0755 "$(command -v mise)" /usr/local/bin/mise
 
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -157,6 +166,7 @@ jobs:
     name: Image
     needs: check
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

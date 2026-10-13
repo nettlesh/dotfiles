@@ -459,7 +459,7 @@ checksums in `mise.lock`.
 
 | Tool | Purpose | Configuration |
 | --- | --- | --- |
-| [actionlint](https://github.com/rhysd/actionlint) | Workflow syntax and expressions | `Builtins.actionlint` in `hk.pkl` |
+| [jactionlint](https://jactionlint.jdx.dev) | Workflow syntax and expressions | `Builtins.jactionlint` in `hk.pkl` |
 | [zizmor](https://docs.zizmor.sh/) | GitHub Actions security | `Builtins.zizmor` in `hk.pkl` |
 | [Hadolint](https://github.com/hadolint/hadolint) | Dockerfile linting | `Builtins.hadolint` in `hk.pkl` |
 | [Betterleaks](https://github.com/betterleaks/betterleaks) | Secrets in source files and Git history | `Builtins.betterleaks` in `hk.pkl`; history scan in CI |
