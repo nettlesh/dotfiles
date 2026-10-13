@@ -100,7 +100,8 @@ jobs:
           MISE_GITHUB_TOKEN: ${{ github.token }}
         run: |
           # Keep the user phase so its post-user hook adds Docker group membership
-          mise --locked bootstrap --yes --skip packages,services,final-hook
+          # Fresh runners ship a default ~/.bashrc that the agent shell replaces
+          mise --locked bootstrap --yes --force-dotfiles --skip packages,services,final-hook
           mise bootstrap packages status --missing
           mise bootstrap files status --missing
           mise bootstrap dotfiles status --missing
@@ -149,7 +150,8 @@ jobs:
         run: |
           cd "$HOME/.dotfiles"
           # Package/user apply omits phase hooks; update CI if either phase gains hooks
-          mise --locked bootstrap --yes --skip packages,user
+          # Fresh runners ship a default ~/.bashrc that the agent shell replaces
+          mise --locked bootstrap --yes --force-dotfiles --skip packages,user
 
   image:
     name: Image
