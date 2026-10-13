@@ -3,7 +3,7 @@ set -eu
 
 cd "$(dirname "$0")"
 
-command -v mise >/dev/null 2>&1 || curl https://mise.run | sh
+command -v mise >/dev/null 2>&1 || curl -fsSL https://mise.run | sh
 export PATH="$HOME/.local/bin:$PATH"
 
 if [ -z "${GIT_EMAIL:-}" ] && [ -f mise.local.toml ]; then
@@ -24,10 +24,4 @@ fi
 
 mise trust --all --quiet
 
-if [ "${1:-}" = "-E" ] && [ -n "${2:-}" ]; then
-  profile=$2
-  shift 2
-  mise -E "$profile" bootstrap "$@"
-else
-  mise bootstrap "$@"
-fi
+mise bootstrap "$@"

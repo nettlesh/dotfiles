@@ -10,7 +10,7 @@
 "pacman:docker" = "latest"
 "pacman:docker-buildx" = "latest"
 "pacman:docker-compose" = "latest"
-"pacman:eza" = { state = "absent", env = "cachyos" }
+"pacman:eza" = "latest"
 "pacman:fastfetch" = { state = "absent", env = "cachyos" }
 "pacman:fish" = "latest"
 "pacman:fish-autopair" = { state = "absent", env = "cachyos" }

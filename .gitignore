@@ -97,6 +97,7 @@ mise/*.local.lock
 # https://mise.jdx.dev/configuration.html#tool-versions
 #.tool-versions
 
-/.agents/skills/.mise-skills.json
-/.agents/skills/hk-configure
-/.agents/skills/hk-debug
+# mise links each tool's skills here; only handwritten skills belong in Git
+# TODO: Revisit if mise ignores its own skill links (jdx/mise#14367)
+/.agents/skills/*
+!/.agents/skills/adding-tools/

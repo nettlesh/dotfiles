@@ -3,6 +3,7 @@ _.path = ["~/.local/bin", "~/.docker/bin", "/opt/homebrew/bin"]
 
 [bootstrap.packages]
 "brew-cask:docker-desktop" = "latest"
+"brew:eza" = "latest"
 "brew:fish" = "latest"
 "brew:fisher" = "latest"
 "brew:git" = "latest"
