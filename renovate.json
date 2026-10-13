@@ -1,6 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
+  "extends": [
+    "config:best-practices",
+    "customManagers:dockerfileVersions",
+    "customManagers:githubActionsVersions"
+  ],
   "npm": {
     "enabled": false
   },
@@ -11,8 +15,18 @@
     },
     {
       "matchManagers": ["mise"],
+      "matchFileNames": ["mise/config.toml"],
       "matchUpdateTypes": ["major", "minor", "patch"],
       "enabled": false
+    },
+    {
+      "matchManagers": ["mise"],
+      "matchFileNames": ["mise.toml"],
+      "groupName": "mise project tools"
+    },
+    {
+      "matchPackageNames": ["jdx/mise"],
+      "groupName": "mise"
     }
   ]
 }
