@@ -34,7 +34,9 @@ ENV PATH=/home/sebastian/.local/share/mise/shims:$PATH
 USER 1000:1000
 
 # useradd copies a default ~/.bashrc that the agent shell replaces
-RUN mise trust --all --quiet \
+# A GitHub token avoids the API rate limit that anonymous builds share
+RUN --mount=type=secret,id=github_token,env=MISE_GITHUB_TOKEN \
+    mise trust --all --quiet \
     && mise --locked bootstrap --yes --force-dotfiles --skip packages,user,services,final-hook
 
 CMD ["fish"]

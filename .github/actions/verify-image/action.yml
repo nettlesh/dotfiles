@@ -25,6 +25,7 @@ runs:
         context: .
         load: true
         platforms: linux/amd64
+        secrets: github_token=${{ github.token }}
 
     - name: Report vulnerabilities
       shell: bash

@@ -116,6 +116,7 @@ jobs:
           platforms: linux/amd64
           push: true
           sbom: true
+          secrets: github_token=${{ github.token }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.release.outputs.version }}
 
       - name: Generate artifact attestation
