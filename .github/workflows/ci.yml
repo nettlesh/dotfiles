@@ -21,7 +21,7 @@ env:
 jobs:
   check:
     name: Check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     env:
       HK_CONFIG_DIR: ${{ github.workspace }}/hk
@@ -50,7 +50,7 @@ jobs:
   linux:
     name: Linux
     needs: check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     container:
       image: archlinux:base@sha256:3c64b538588416593f69a1aebd2f2ec0f2541b29159f32556fa7def2167147a0
@@ -165,7 +165,7 @@ jobs:
   image:
     name: Image
     needs: check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     steps:
       - name: Checkout repository
