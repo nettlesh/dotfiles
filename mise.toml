@@ -20,12 +20,13 @@ op_work_account = "obscurity-labs.1password.com"
 HK_MISE = 1
 
 [tools]
-actionlint = "latest"
 betterleaks = "latest"
 communique = "latest"
 editorconfig-checker = "latest"
 hadolint = "latest"
 hk = "latest"
+# TODO: Track latest once hk releases its jactionlint v2 builtin (jdx/hk#1687)
+jactionlint = "1"
 pkl = "latest"
 rumdl = "latest"
 shellcheck = "latest"
