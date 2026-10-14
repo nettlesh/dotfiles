@@ -37,6 +37,7 @@ zizmor = "latest"
 
 [dotfiles]
 "~/.agents/skills/herdr" = "agents/skills/herdr"
+"~/.bashrc" = "bash/.bashrc"
 "~/.claude" = { source = "claude", mode = "symlink-each" }
 "~/.claude/skills/herdr" = "agents/skills/herdr"
 "~/.codex/herdr-agent-state.sh" = "codex/herdr-agent-state.sh"

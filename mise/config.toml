@@ -1,11 +1,13 @@
 [tools]
 age = "latest"
+aube = "latest"
 bat = "latest"
 claude-code = "latest"
 cmake = "latest"
 codex = "latest"
 delta = "latest"
-eza = "latest"
+# HACK: eza is a system package; it has no macOS binaries, and Renovate can't
+#       run the vfox plugin mise falls back to when it refreshes mise.lock
 fastfetch = "latest"
 fd = "latest"
 fnox = "latest"
@@ -56,6 +58,7 @@ prune = true
 [dotfiles]
 "~/.dotfiles/.miserc.toml" = { mode = "track" }
 "~/.dotfiles/agents/skills" = { mode = "track" }
+"~/.dotfiles/bash/.bashrc" = { mode = "track" }
 "~/.dotfiles/bat" = { mode = "track" }
 "~/.dotfiles/claude" = { mode = "track" }
 "~/.dotfiles/codex" = { mode = "track" }
@@ -72,6 +75,7 @@ prune = true
 "~/.dotfiles/mise.lock" = { mode = "track" }
 "~/.dotfiles/mise.macos.toml" = { mode = "track" }
 "~/.dotfiles/mise.personal.toml" = { mode = "track" }
+"~/.dotfiles/mise.restricted.toml" = { mode = "track" }
 "~/.dotfiles/mise.toml" = { mode = "track" }
 "~/.dotfiles/mise.work.toml" = { mode = "track" }
 "~/.dotfiles/mise/.mise/locks" = { mode = "track" }

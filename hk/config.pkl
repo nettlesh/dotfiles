@@ -20,7 +20,7 @@ steps {
 hooks {
   ["commit-msg"] {
     steps {
-      ["check-conventional-commit"] = Builtins.check_conventional_commit
+      ["conventional-commit"] = Builtins.check_conventional_commit
     }
   }
 }

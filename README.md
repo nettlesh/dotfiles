@@ -124,13 +124,16 @@ Headless machines don't need any of these environments. `desktop` adds graphical
 apps, Fastmail, and 1Password. `personal` and `work` both set up my two
 1Password accounts, but choose different defaults for `FNOX_PROFILE` and
 `OP_ACCOUNT`. `cachyos` adds packages from the CachyOS repositories and removes
-some bundled packages that this setup replaces.
+some bundled packages that this setup replaces. `restricted` suits managed
+machines with limits on what you can install or sync: on macOS it installs only
+Ghostty, Obsidian, Zen, and the Fira Code font, and it switches history sync to
+manual.
 
 This file stays on the machine and applies to mise in other projects too. Use
 `-E` to
-[choose environments for one command](https://mise.jdx.dev/configuration/environments.html)
-without changing the saved choice. The repo's `.miserc.toml` selects the Linux
-or macOS configuration automatically.
+[choose environments for one command](https://mise.jdx.dev/configuration/environments.html),
+such as `./install.sh -E restricted`, without changing the saved choice. The
+repo's `.miserc.toml` selects the Linux or macOS configuration automatically.
 
 Shared mise files are linked individually with `symlink-each`. That leaves
 `~/.config/mise` as a regular directory, with room for your own `miserc.toml`
@@ -423,8 +426,11 @@ delta's settings and the `cuttlefish` theme live in `git/delta`, included from
 
 fish adds the system tool directories to PATH before mise activation and for
 non-interactive shells. mise declares the same directories for environments it
-builds. A minimal zsh configuration loads the mise environment for AI coding
-agents whose command runners and shell snapshots require a POSIX shell.
+builds. Minimal zsh and bash configurations load the mise environment for AI
+coding agents, which run commands in zsh or bash rather than fish. Codex keeps
+the exports from its shell snapshot. Claude Code keeps only aliases, functions,
+and options, so a SessionStart hook persists the exports from `~/.bashrc`
+through `CLAUDE_ENV_FILE`.
 
 Shared agent skills live in `agents/skills` and are linked into the Claude Code
 and Codex skill directories.
@@ -435,9 +441,10 @@ tool adoption or replacement and integrating selected tools into these dotfiles.
 Claude Code shares it through `.claude/skills/adding-tools`, a relative symlink
 to the same skill directory.
 
-hk's generated skill links stay out of version control. After changing hk
-versions, run `mise skills sync --global` to refresh the skills in
-`~/.agents/skills`. See mise's
+mise links each tool's skills into `.agents/skills`, and `.gitignore` keeps
+those links out of version control, so a new handwritten skill needs its own
+exception there. After changing hk versions, run `mise skills sync --global` to
+refresh the skills in `~/.agents/skills`. See mise's
 [Packslip skills documentation](https://mise.jdx.dev/dev-tools/packslip-resources.html#skills).
 
 The herdr integration scripts and registrations are kept in this repo; setup
