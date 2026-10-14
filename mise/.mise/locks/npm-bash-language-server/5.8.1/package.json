@@ -2,6 +2,6 @@
   "name": "mise-npm-install",
   "private": true,
   "dependencies": {
-    "fish-lsp": "1.1.4"
+    "bash-language-server": "5.8.1"
   }
 }
