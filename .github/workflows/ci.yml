@@ -16,7 +16,7 @@ concurrency:
 
 env:
   # renovate: datasource=github-releases depName=jdx/mise
-  MISE_VERSION: 2026.10.9
+  MISE_VERSION: 2026.10.13
 
 jobs:
   check:
