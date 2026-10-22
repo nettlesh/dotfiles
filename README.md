@@ -125,11 +125,12 @@ apps, Fastmail, and 1Password: the app, its CLI, and the SSH agent and commit
 signing the app provides. `personal` and `work` both set up my two 1Password
 accounts, but choose different defaults for `FNOX_PROFILE` and `OP_ACCOUNT`.
 They rely on the 1Password app, so select them only alongside `desktop`.
-`cachyos` adds packages from the CachyOS repositories and removes some bundled
-packages that this setup replaces. `restricted` suits managed machines with
-limits on what you can install or sync. Select it on its own, in place of
-`desktop`: on macOS it adds only Ghostty, Obsidian, Zen, and the Fira Code font
-to the base packages, and it switches history sync to manual.
+`personal` also clones my private homelab repository to `~/homelab`. `cachyos`
+adds packages from the CachyOS repositories and removes some bundled packages
+that this setup replaces. `restricted` suits managed machines with limits on
+what you can install or sync. Select it on its own, in place of `desktop`: on
+macOS it adds only Ghostty, Obsidian, Zen, and the Fira Code font to the base
+packages, and it switches history sync to manual.
 
 This file stays on the machine and applies to mise in other projects too. Use
 `-E` to
@@ -148,7 +149,10 @@ Choose one of the methods below. If you have shared history to restore, use
 You don't need to sign in to 1Password just to apply the dotfiles; the
 `personal` and `work` setup tasks ask you to sign in when needed. Before they
 run, sign in to the 1Password app and turn on **Integrate with 1Password CLI**
-and **Integrate with MCP clients** in its Developer settings.
+and **Integrate with MCP clients** in its Developer settings. On a `personal`
+machine, sign in to GitHub first, as in
+[Restore from history](#restore-from-history), so bootstrap can clone the
+private homelab repository.
 
 #### Direct mise setup
 
