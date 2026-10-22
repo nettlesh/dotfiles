@@ -162,9 +162,11 @@ jobs:
           # Fresh runners ship a default ~/.bashrc that the agent shell replaces
           mise --locked bootstrap --yes --force-dotfiles --skip packages,user
 
+  # The slow image build and scan gates releases rather than pull requests
   image:
     name: Image
     needs: check
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-26.04
     timeout-minutes: 20
     steps:
