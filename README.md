@@ -3,7 +3,7 @@
 <!-- rumdl-disable MD041 -->
 
 <p align="center">
-  <img src="dotfiles.png" alt="A black hole bending light beside the word dotfiles" width="100%">
+  <img src="dotfiles.png" alt="A leading dot beside the word dotfiles" width="100%">
 </p>
 
 <h1 align="center">dotfiles</h1>
@@ -17,8 +17,6 @@
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&amp;logo=linux&amp;logoColor=black" alt="Linux">
   <img src="https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&amp;logo=apple&amp;logoColor=white" alt="macOS">
 </p>
-
-<p align="center"><b>A black hole for my free time.</b></p>
 
 <!-- rumdl-enable MD033 -->
 

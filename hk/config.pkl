@@ -5,10 +5,7 @@ import "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Builtins.
 // hk provides these hygiene steps without external binaries
 steps {
   ["byte-order-marker"] = Builtins.byte_order_marker
-  // The README banner is deliberately larger than the 500 KB limit
-  ["check-added-large-files"] = (Builtins.check_added_large_files) {
-    exclude = "dotfiles.png"
-  }
+  ["check-added-large-files"] = Builtins.check_added_large_files
   ["check-case-conflict"] = Builtins.check_case_conflict
   ["check-executables-have-shebangs"] = Builtins.check_executables_have_shebangs
   ["check-merge-conflict"] = Builtins.check_merge_conflict
