@@ -207,10 +207,14 @@ git clone https://github.com/nettlesh/dotfiles.git ~/.dotfiles
 cd ~
 mise x gh -- gh auth login --hostname github.com --git-protocol https --web
 GIT_CONFIG_GLOBAL="$HOME/.gitconfig" \
+  GH_PATH="$HOME/.local/share/mise/shims/gh" \
   mise x gh -- gh auth setup-git --hostname github.com
 mise bootstrap \
   --adopt https://github.com/YOUR-USER/dotfiles-history.git --only dotfiles
 ```
+
+`GH_PATH` makes Git's credential helper call gh through its mise shim rather
+than one installed version's path, so it keeps working after gh updates.
 
 This uses mise's
 [history adoption workflow](https://mise.jdx.dev/bootstrap/setup.html#set-up-another-machine)
@@ -354,6 +358,7 @@ After setup, sign in to GitHub and configure its Git credential helper:
 ```sh
 mise x gh -- gh auth login --hostname github.com --git-protocol https --web
 GIT_CONFIG_GLOBAL="$HOME/.gitconfig" \
+  GH_PATH="$HOME/.local/share/mise/shims/gh" \
   mise x gh -- gh auth setup-git --hostname github.com
 ```
 
