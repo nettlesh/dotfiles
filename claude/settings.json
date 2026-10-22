@@ -25,11 +25,21 @@
     "refreshInterval": 60,
     "hideVimModeIndicator": true
   },
+  "enabledPlugins": {
+    "cloudflare@cloudflare": true,
+    "1password@1password": true
+  },
   "extraKnownMarketplaces": {
     "cloudflare": {
       "source": {
         "source": "github",
         "repo": "cloudflare/skills"
+      }
+    },
+    "1password": {
+      "source": {
+        "source": "github",
+        "repo": "1Password/1password-claude-plugin"
       }
     }
   },
@@ -39,8 +49,5 @@
   "theme": "auto",
   "editorMode": "vim",
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "enabledPlugins": {
-    "cloudflare@cloudflare": true
-  }
+  "agentPushNotifEnabled": true
 }
