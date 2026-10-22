@@ -469,9 +469,10 @@ checksums in `mise.lock`.
 points `HK_CONFIG_DIR` at the repository's `hk` directory so the shared hygiene
 checks run without deploying the dotfiles first.
 
-[CI](.github/workflows/ci.yml) checks source files and Git history, verifies
-Linux and macOS bootstrap without optional environments, and builds and scans
-the dotfiles image. Pull requests do not upload build artifacts.
+[CI](.github/workflows/ci.yml) checks source files and Git history and verifies
+Linux and macOS bootstrap without optional environments. Pushes to `main` also
+build and scan the dotfiles image. Pull requests skip that slower job, so a
+`Dockerfile` change is first built after it merges.
 
 Releases run after all CI jobs pass on `main`. The release job tests and scans
 its image before publishing it. Docker reuses the tested build's cache and
