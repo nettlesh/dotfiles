@@ -2,6 +2,15 @@
 FNOX_PROFILE = "personal"
 OP_ACCOUNT = "{{ vars.op_personal_account }}"
 
+[bootstrap.packages]
+# Gaming
+"brew-cask:steam" = { os = "macos" }
+"pacman:steam" = { os = "linux" }
+
+# Game development
+"brew-cask:godot" = { os = "macos" }
+"pacman:godot" = { os = "linux" }
+
 # Cloned before dotfiles deploy the 1Password SSH config, so this uses HTTPS
 [bootstrap.repos]
 "~/homelab" = { url = "https://github.com/nettlesh/homelab.git" }
