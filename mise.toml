@@ -61,11 +61,11 @@ zizmor = "latest"
 "~/.config/tealdeer/config.toml" = "tealdeer/config.toml"
 "~/.zshrc" = "zsh/.zshrc"
 
-[bootstrap.directories."~/.ssh/config.d"]
-mode = "0700"
-
 [bootstrap.hooks.pre-dotfiles]
 run = '''
+# Keep SSH directory creation outside mise's privileged system-file batch
+install -d -m 700 "$HOME/.ssh" "$HOME/.ssh/config.d"
+
 if [ -n {{ vars.git_email | quote }} ]; then
     touch {{ config_root | quote }}/mise.local.toml
     {{ mise_bin | quote }} config set --file {{ config_root | quote }}/mise.local.toml --type string vars.git_email {{ vars.git_email | quote }}
@@ -159,24 +159,43 @@ interactive = true
 run = '''
 set -eu
 
-op_personal_account="{{ vars.op_personal_account }}"
-op_work_account="{{ vars.op_work_account }}"
+op_personal_account={{ vars.op_personal_account | quote }}
+op_work_account={{ vars.op_work_account | quote }}
+
+# Account discovery must not start an interactive sign-in with hidden prompts
+op_accounts=$(op account list --format json)
 
 for account in "$op_personal_account" "$op_work_account"; do
-    if ! op account get --account "$account" >/dev/null 2>&1; then
-        eval "$(op account add --address "$account" --signin)"
+    account_exists=$(printf '%s\n' "$op_accounts" |
+        jq --arg account "$account" 'any(.[]; .url == $account)')
+    if [ "$account_exists" = false ]; then
+        printf '1Password account is not available to the CLI: %s\n' "$account" >&2
+        printf '%s\n' \
+            'Add both accounts to the 1Password desktop app and unlock it.' \
+            'Enable system authentication in Settings > Security and Integrate with 1Password CLI in Settings > Developer.' \
+            'Then rerun mise bootstrap.' >&2
+        printf 'For manual CLI authentication instead, run: op account add --address %s\n' "$account" >&2
+        exit 1
     fi
-done
 
-age_file="{{ xdg_config_home }}/fnox/age.txt"
+    printf 'Signing in to 1Password account: %s\n' "$account" >&2
+    # Capture session exports separately so authentication failures stop bootstrap
+    op_exports=$(op signin --account "$account")
+    eval "$op_exports"
+done
+unset op_exports
+
+age_file={{ xdg_config_home | quote }}/fnox/age.txt
 if [ ! -f "$age_file" ]; then
-    eval "$(op signin --account "$op_personal_account")"
     mkdir -p "$(dirname "$age_file")"
     # age identity file document, by ID so renaming the item can't break bootstrap
     op document get pfrztbtg5nchqnm6gdsnx72yqq \
         --account "$op_personal_account" \
         --out-file "$age_file"
 fi
+
+# Validate secrets while this shell still holds any manual sign-in sessions
+fnox check
 '''
 
 [tasks.check]

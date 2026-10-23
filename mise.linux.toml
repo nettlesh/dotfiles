@@ -1,5 +1,6 @@
 [bootstrap.packages]
 # NOTE: Remove CachyOS defaults superseded by these dotfiles or mise tools
+#       Keep system fzf and Fantasque for CachyOS package dependencies
 "pacman:alacritty" = { state = "absent", env = "cachyos" }
 "pacman:bat" = { state = "absent", env = "cachyos" }
 "pacman:cachyos-fish-config" = { state = "absent", env = "cachyos" }
@@ -16,13 +17,11 @@
 "pacman:fish-autopair" = { state = "absent", env = "cachyos" }
 "pacman:fish-pure-prompt" = { state = "absent", env = "cachyos" }
 "pacman:fisher" = "latest"
-"pacman:fzf" = { state = "absent", env = "cachyos" }
 "pacman:gcc" = "latest"
 "pacman:git" = "latest"
 "pacman:neovim" = "latest"
 "pacman:openssh" = "latest"
 "pacman:tealdeer" = { state = "absent", env = "cachyos" }
-"pacman:ttf-fantasque-nerd" = { state = "absent", env = "cachyos" }
 
 [bootstrap.services.containerd]
 
