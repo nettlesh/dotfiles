@@ -5,7 +5,7 @@ FROM archlinux:base@sha256:52dfbd5afb23a220d5ee92dafcb4c788d96c026ed04179890c23a
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # renovate: datasource=github-releases depName=jdx/mise
-ARG MISE_VERSION=2026.10.17
+ARG MISE_VERSION=2026.10.25
 
 # NOTE: Disable pacman syscall filtering during package installation for amd64 emulation on Apple Silicon
 #       https://github.com/apple/container/issues/1628
