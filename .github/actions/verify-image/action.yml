@@ -10,7 +10,7 @@ runs:
   using: composite
   steps:
     - name: Set up Trivy
-      uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+      uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
       with:
         version: ${{ inputs.mise-version }}
         install_args: trivy
